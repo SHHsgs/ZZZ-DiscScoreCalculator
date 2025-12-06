@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #e0e0e0;
   --foreground: #171717;
 }
 
@@ -12,12 +12,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* NOTE: Removed automatic OS/browser dark-mode detection.
+   Theme is controlled explicitly by the ThemeToggle component and saved in localStorage. */
 
 body {
   background: var(--background);
