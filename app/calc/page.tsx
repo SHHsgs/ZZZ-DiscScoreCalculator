@@ -8,8 +8,9 @@ import BarChart from "../components/BarChart";
 import { useSearchParams } from "next/navigation";
 
 export default function CalcPage() {
+  const searchParams = useSearchParams();
   const agentOptions = characters.map((ch) => ({ value: ch.name, label: ch.name }));
-  const [a, setA] = useState(useSearchParams().get("agent") ?? agentOptions[0]?.value ?? "");
+  const [a, setA] = useState(searchParams.get("agent") ?? agentOptions[0]?.value ?? "");
   const equipmentOptions = engineEquipments.map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const [b, setB] = useState(equipmentOptions[0]?.value ?? "");
   const [c, setC] = useState("opt1");
