@@ -1,6 +1,6 @@
 import { Attribute, Character, Role } from "../../types/character";
 
-// サンプルのキャラクターデータ（画面表示は行いない）
+// サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
     name: "風の勇者",

@@ -12,9 +12,10 @@ type Props = {
   options: Option[];
   className?: string;
   onChange?: (value: string) => void;
+  selected?: string;
 };
 
-export default function PullDown({ label, value, onChange, options, className }: Props) {
+export default function PullDown({ label, value, onChange, options, className, selected }: Props) {
   return (
     <label className={`flex flex-col ${className ?? ""}`}>
       {label && <span className="mb-1 font-medium">{label}</span>}
@@ -23,6 +24,7 @@ export default function PullDown({ label, value, onChange, options, className }:
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         disabled={!onChange}
         className={`border p-2 rounded ${!onChange ? "opacity-50 cursor-not-allowed" : ""}`}
+        defaultValue={selected}
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>
