@@ -1,10 +1,11 @@
-import { Character, Role } from "../../types/character";
+import { Attribute, Character, Role } from "../../types/character";
 
 // サンプルのキャラクターデータ（画面表示は行いない）
 export const characters: Character[] = [
   {
     name: "風の勇者",
     role: Role.Attack,
+    attribute: Attribute.Physical,
     motif: "ee-001",
     baseHp: 1024,
     baseAtk: 132,
@@ -18,6 +19,7 @@ export const characters: Character[] = [
   {
     name: "炎の戦士",
     role: Role.Rupture,
+    attribute: Attribute.Fire,
     motif: "ee-002",
     baseHp: 1210,
     baseAtk: 156,
@@ -31,6 +33,7 @@ export const characters: Character[] = [
   {
     name: "水の賢者",
     role: Role.Support,
+    attribute: Attribute.Ice,
     motif: "od-004",
     baseHp: 900,
     baseAtk: 110,
@@ -44,6 +47,7 @@ export const characters: Character[] = [
   {
     name: "イヴリン",
     role: Role.Attack,
+    attribute: Attribute.Fire,
     motif: "ee-ive",
     baseHp: 7788,
     baseAtk: 854+75,

@@ -6,6 +6,9 @@ export type Character = {
   // 役割（ロール）
   // 役割（ロール）: 列挙型 `Role` を使用します
   role: Role;
+
+  // 属性
+  attribute: Attribute;
   
   // モチーフ: 参照先は `EngineEquipment` の `id`（文字列）
   // 例: "od-001"
@@ -21,6 +24,15 @@ export type Character = {
   baseCritRate: number; // 基礎会心率（%で表すなら 5 -> 5%）
   baseCritDamage: number; // 基礎会心ダメージ（%で表すなら 50 -> 50%）
 };
+
+// 属性の列挙型
+export enum Attribute {
+  Physical = "物理",
+  Fire = "炎",
+  Ice = "氷",
+  Electric = "電気",
+  Ether = "エーテル",
+}
 
 // ロールの列挙型
 export enum Role {

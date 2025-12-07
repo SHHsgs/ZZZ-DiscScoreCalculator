@@ -5,6 +5,7 @@ import characters from "../data/characters";
 import engineEquipments from "../data/engineEquipments";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
+import { useSearchParams } from "next/navigation";
 
 export default function CalcPage() {
   const agentOptions = characters.map((ch) => ({ value: ch.name, label: ch.name }));
@@ -57,7 +58,7 @@ export default function CalcPage() {
       <h1 className="text-2xl font-bold mb-4">タイトル</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <PullDown label="エージェント" value={a} onChange={setA} options={agentOptions} />
+        <PullDown label="エージェント" value={a} onChange={setA} options={agentOptions} selected={useSearchParams().get("agent") || ""}/>
         <PullDown label="音動機" value={b} onChange={setB} options={equipmentOptions} />
         <PullDown label="Select C" value={c} onChange={setC} options={genericOptions} />
       </div>
