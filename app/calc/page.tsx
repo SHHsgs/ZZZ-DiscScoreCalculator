@@ -5,10 +5,11 @@ import characters from "../data/characters";
 import engineEquipments from "../data/engineEquipments";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
+import { useSearchParams } from "next/navigation";
 
 export default function CalcPage() {
   const agentOptions = characters.map((ch) => ({ value: ch.name, label: ch.name }));
-  const [a, setA] = useState(agentOptions[0]?.value ?? "");
+  const [a, setA] = useState(useSearchParams().get("agent") ?? agentOptions[0]?.value ?? "");
   const equipmentOptions = engineEquipments.map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const [b, setB] = useState(equipmentOptions[0]?.value ?? "");
   const [c, setC] = useState("opt1");
@@ -45,9 +46,7 @@ export default function CalcPage() {
     { value: "defPercent", label: "防御力%" },
   ];
 
-  const [g1, setG1] = useState("2200");
-  const [g2, setG2] = useState("316");
-  const [g3, setG3] = useState("184");
+  const g2 = "316";
   const [g4, setG4] = useState(g4Options[0].value);
   const [g5, setG5] = useState(g5Options[0].value);
   const [g6, setG6] = useState(g6Options[0].value);
@@ -59,7 +58,7 @@ export default function CalcPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <PullDown label="エージェント" value={a} onChange={setA} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={equipmentOptions} />
-        <PullDown label="Select C" value={c} onChange={setC} options={genericOptions} />
+        <PullDown label="4セット" value={c} onChange={setC} options={genericOptions} />
       </div>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">タイトル2</h2>
@@ -67,7 +66,7 @@ export default function CalcPage() {
       <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center gap-2">
           <div className="flex-1">
-            <PullDown label={"1.HP"} value={g1} options={[{ value: "2200", label: "2200" }]} />
+            <PullDown label={"1.HP"} value="2200" options={[{ value: "2200", label: "2200" }]} />
           </div>
         </div>
 
@@ -79,7 +78,7 @@ export default function CalcPage() {
 
         <div className="flex items-center gap-2">
           <div className="flex-1">
-            <PullDown label={"2.攻撃"} value={g2} options={[{ value: "316", label: "316" }]} />
+            <PullDown label={"2.攻撃"} value="316" options={[{ value: "316", label: "316" }]} />
           </div>
         </div>
 
@@ -91,7 +90,7 @@ export default function CalcPage() {
 
         <div className="flex items-center gap-2">
           <div className="flex-1">
-            <PullDown label={"3.防御"} value={g3} options={[{ value: "184", label: "184" }]} />
+            <PullDown label={"3.防御"} value="184" options={[{ value: "184", label: "184" }]} />
           </div>
         </div>
 
