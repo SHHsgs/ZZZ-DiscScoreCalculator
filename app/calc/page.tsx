@@ -6,11 +6,11 @@ import discEffect from "../data/discEffect";
 import engineEquipments from "../data/engineEquipments";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
-import { useSearchParams } from "next/navigation";
 import { Role } from "@/types/character";
+import SearchParamReader from "./components/SearchParameterReader";
 
 export default function CalcPage() {
-  const searchParams = useSearchParams();
+  const searchParams = SearchParamReader();
   const agentOptions = characters.filter((ch) => [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
   const supportAgentOptions = characters.filter((ch) => Role.Support === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const stunAgentOptions = characters.filter((ch) => Role.Stun === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
