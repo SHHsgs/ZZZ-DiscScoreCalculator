@@ -1,4 +1,4 @@
-import { Attribute } from "@/types/character";
+import { Attribute, Role } from "@/types/character";
 import characters from "./data/characters";
 import Link from "next/link";
 
@@ -7,11 +7,12 @@ function renderAgentList(options: { value: string; label: string }[]) {
 }
 
 export default function Home() {
-  const agentOptionsPhysical = characters.filter((ch) => ch.attribute === Attribute.Physical).map((ch) => ({ value: ch.name, label: ch.name }));
-  const agentOptionsFire = characters.filter((ch) => ch.attribute === Attribute.Fire).map((ch) => ({ value: ch.name, label: ch.name }));
-  const agentOptionsIce = characters.filter((ch) => ch.attribute === Attribute.Ice).map((ch) => ({ value: ch.name, label: ch.name }));
-  const agentOptionsElectric = characters.filter((ch) => ch.attribute === Attribute.Electric).map((ch) => ({ value: ch.name, label: ch.name }));
-  const agentOptionsEther = characters.filter((ch) => ch.attribute === Attribute.Ether).map((ch) => ({ value: ch.name, label: ch.name }));
+  // 属性別のキャラクターリストを生成（アタッカーのみ）
+  const agentOptionsPhysical = characters.filter((ch) => ch.attribute === Attribute.Physical && [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const agentOptionsFire = characters.filter((ch) => ch.attribute === Attribute.Fire && [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const agentOptionsIce = characters.filter((ch) => ch.attribute === Attribute.Ice && [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const agentOptionsElectric = characters.filter((ch) => ch.attribute === Attribute.Electric && [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const agentOptionsEther = characters.filter((ch) => ch.attribute === Attribute.Ether && [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
   return (
     <div className="p-8 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">タイトル</h1>
