@@ -3,48 +3,6 @@ import { Attribute, Character, Role } from "../../types/character";
 // サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
-    name: "風の勇者",
-    role: Role.Attack,
-    attribute: Attribute.Physical,
-    motif: "ee-001",
-    baseHp: 1024,
-    baseAtk: 132,
-    baseDef: 86,
-    baseImpact: 12,
-    baseAbnormalControl: 8,
-    baseAbnormalMastery: 24,
-    baseCritRate: 5, // 5%
-    baseCritDamage: 50, // 50%
-  },
-  {
-    name: "炎の戦士",
-    role: Role.Rupture,
-    attribute: Attribute.Fire,
-    motif: "ee-002",
-    baseHp: 1210,
-    baseAtk: 156,
-    baseDef: 98,
-    baseImpact: 18,
-    baseAbnormalControl: 6,
-    baseAbnormalMastery: 30,
-    baseCritRate: 7.5,
-    baseCritDamage: 60,
-  },
-  {
-    name: "水の賢者",
-    role: Role.Support,
-    attribute: Attribute.Ice,
-    motif: "od-004",
-    baseHp: 900,
-    baseAtk: 110,
-    baseDef: 72,
-    baseImpact: 8,
-    baseAbnormalControl: 20,
-    baseAbnormalMastery: 40,
-    baseCritRate: 4,
-    baseCritDamage: 45,
-  },
-  {
     name: "イヴリン",
     role: Role.Attack,
     attribute: Attribute.Fire,
@@ -57,7 +15,86 @@ export const characters: Character[] = [
     baseAbnormalMastery: 90,
     baseCritRate: 5+14.4,
     baseCritDamage: 50,
-  }
+    buff: {
+      critRate: 25,
+      critDamage: 30,
+    },
+  },
+  {
+    name: "儀玄",
+    role: Role.Rupture,
+    attribute: Attribute.Ether,
+    motif: "ee-yi",
+    baseHp: 7953+420,
+    baseAtk: 872,
+    baseDef: 441,
+    baseImpact: 93,
+    baseAbnormalControl: 92,
+    baseAbnormalMastery: 90,
+    baseCritRate: 5+14.4,
+    baseCritDamage: 50,
+    buff: {
+      critDamage: 40, // 終結後のみを含むため要考慮
+      damage: 60, // ブレイク中のみ強化特殊が+30%だが一旦除外
+    },
+  },
+  {
+    name: "アストラ",
+    role: Role.Support,
+    attribute: Attribute.Ether,
+    motif: "ee-as",
+    baseHp: 0,
+    baseAtk: 3428,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      atkValue: 1200,
+      critDamage: 25,
+      damage: 20,
+    },
+  },
+  {
+    name: "リュシア",
+    role: Role.Support,
+    attribute: Attribute.Ether,
+    motif: "ee-ru",
+    baseHp: 24000,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      sheerForcePowerNum: 900,
+      critDamage: 30,
+      damage: 20,
+      // HPバフは最終HPに対して5%増加なのでディスクステの割合には影響しない
+    },
+  },
+  {
+    name: "福福",
+    role: Role.Stun,
+    attribute: Attribute.Fire,
+    motif: "ee-fu",
+    baseHp: 0,
+    baseAtk: 3400,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      critDamage: 30,
+      damage: 20, // 連携のみだが、終結は40、その他は無いため平均して20とする
+    },
+  },
 ];
 
 export default characters;
