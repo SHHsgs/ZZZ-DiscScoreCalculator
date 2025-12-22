@@ -82,7 +82,7 @@ export default function Main() {
       </div>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
-      <span className="text-sm text-gray-600">ここを変えても何も起きません</span>
+      <span className="text-sm opacity-75">ここを変えても何も起きません</span>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center gap-2">
@@ -122,8 +122,8 @@ export default function Main() {
         </div>
       </div>
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
-      <div className="text-sm text-gray-600">5番だけ実装済み</div>
-      <div className="text-sm text-gray-600 mb-2">貫通率は2セットパファーを含みます</div>
+      <div className="text-sm opacity-75">5番だけ実装済み</div>
+      <div className="text-sm opacity-75 mb-2">貫通率は2セットパファーを含みます</div>
       {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
 
       {/* derive selected objects to pass into BarChart */}
@@ -149,7 +149,7 @@ export default function Main() {
       })()}
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】サブステの火力上昇率</h2>
-      <span className="text-sm text-gray-600">個数が増えるほど１つあたりの効果は減少します。</span>
+      <span className="text-sm opacity-75">個数が増えるほど１つあたりの効果は減少します。</span>
       <LineChart
         series={[
           { name: "Series A", values: [5, 10, 12, 18, 22, 30, 28, 35, 40, 42, 45, 48, 50, 55, 58, 60, 62, 65, 68, 70], color: "#3B82F6" },
