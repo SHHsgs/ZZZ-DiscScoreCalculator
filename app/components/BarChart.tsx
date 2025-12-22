@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
-import { Character } from "../../types/character";
+import React, { useState } from "react";
+import { Character, Role } from "../../types/character";
 import { EngineEquipment } from "../../types/engineEquipment";
+import PullDown from "./PullDown";
+import { DiscEffect } from "@/types/DiscEffect";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -14,12 +16,14 @@ type Props = {
   maxY?: number; // optional override for Y axis max
   // 選択中のキャラクターと装備
   selectedCharacter?: Character | null;
+  selectedCharacter2?: Character | null;
+  selectedCharacter3?: Character | null;
   selectedEngineEquipment?: EngineEquipment | null;
-  // 2.攻撃 の値（bonusAttackNumMain）
-  attackValue2?: number;
+  selectedDisc2?: DiscEffect | null;
+  selectedDisc3?: DiscEffect | null;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 220, maxY, selectedCharacter, selectedEngineEquipment, attackValue2 }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedDisc2, selectedDisc3 }: Props) {
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() { return 5 + 7; } // 12
   function computeG4B() { return 10 + 8; } // 18
@@ -27,48 +31,96 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG4D() { return 7 + 7; } // 14
   function computeG4E() { return 8 + 8; } // 16
 
-  function computeG5Pierce() { return 12 + 10; } // 22 貫通率
-  function computeG5AttrDmg() { return 14 + 14; } // 28 属性ダメージ
-  function computeG5HP() { return 10 + 16; } // 26 HP%
+  const [baseDiffence, setBaseDiffence] = useState("952.8");
+  function computeG5Pierce() {
+    // 22 貫通率 2セット効果込み（24+8=32%）
+    if (selectedCharacter?.role === Role.Rupture) {
+      return 0;
+    }
+    const afterDiffence = parseFloat(baseDiffence) * (1 - (24 + 8) / 100);
+    return (794 / (794 + afterDiffence)) / (794 / (794 + parseFloat(baseDiffence))) * 100 - 100;
+  }
+  function computeG5AttrDmg() {
+    const beforeDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0)
+    + (selectedCharacter2?.buff?.damage || 0)
+    + (selectedCharacter3?.buff?.damage || 0)
+    + (selectedDisc2?.fourEffects?.damageBonus || 0)
+    + (selectedDisc3?.fourEffects?.damageBonus || 0);
+    const afterDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0)
+    + (selectedCharacter2?.buff?.damage || 0)
+    + (selectedCharacter3?.buff?.damage || 0)
+    + (selectedDisc2?.fourEffects?.damageBonus || 0)
+    + (selectedDisc3?.fourEffects?.damageBonus || 0)
+    + 30; // 5番メイン 固定 30%
+    return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
+  } // 28 属性ダメージ
+  function computeG5HP() {
+    if (selectedCharacter?.role !== Role.Rupture) {
+      return 0;
+    }
+    const baseHp = selectedCharacter?.baseHp ?? 0;
+    const bonusHpNumMain = 2200;
+    const bosusHpRateMain = 30; // 5番メイン 固定 30%
+    const bonusAttackNumMain = 316;
+
+    const eeAdvancedHpRate = selectedEngineEquipment?.advancedStats?.hp ?? 0;
+    const beforeHp = baseHp * (1 + eeAdvancedHpRate / 100) + bonusHpNumMain;
+    const afterHp = baseHp * (1 + (bosusHpRateMain + eeAdvancedHpRate) / 100) + bonusHpNumMain; // メイン30%追加
+
+    const atk = ((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0) + bonusAttackNumMain)
+    + (selectedCharacter2?.buff?.atkValue || 0)
+    + (selectedCharacter3?.buff?.atkValue || 0);
+
+    const beforeSheerForce = beforeHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
+    const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
+    return (afterSheerForce / beforeSheerForce) * 100 - 100;
+  } // 26 HP%
   function computeG5Atk() {
     // 攻撃力% の計算:
     // baseAttack: 選択キャラの baseAtk
-    // bonusAttackRate: 固定 30
-    // bonusAttackNumMain: g2（attackValue2）
-    // eeBaseAttack: 選択 EngineEquipment の baseAttack
+    // bonusAttackRate: 5番メイン 固定 30%
+    // bonusAttackNumMain: 2番メイン 固定 316
+    // eeBaseAttack: 選択した音動機の基礎ステ
     // eeAdvancedAttackRate: 選択 EngineEquipment の advancedStats?.atk（% として扱う）
     const baseAttack = selectedCharacter?.baseAtk ?? 0;
     const bonusAttackRate = 30;
-    const bonusAttackNumMain = attackValue2 ?? 0;
+    const bonusAttackNumMain = 316;
     const eeBaseAttack = selectedEngineEquipment?.baseAttack ?? 0;
     const eeAdvancedAttackRate = selectedEngineEquipment?.advancedStats?.atk ?? 0;
 
-    const before = (baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain;
-    const after = (baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + eeAdvancedAttackRate) / 100) + bonusAttackNumMain;
-    return Math.round(after/before * 100 - 100);
+    const beforeAtk = (baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
+    const afterAtk = (baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + eeAdvancedAttackRate) / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
+    if (selectedCharacter?.role === Role.Rupture) {
+      const hp = (selectedCharacter?.baseHp ?? 0);
+      const beforeSheerForce = hp * 0.1 + beforeAtk * 0.3;
+      const afterSheerForce = hp * 0.1 + afterAtk * 0.3;
+      return Math.round(afterSheerForce/beforeSheerForce * 100 - 100);
+    } else {
+      return Math.round(afterAtk/beforeAtk * 100 - 100);
+    }
   }
-  function computeG5Def() { return 7 + 8; } // 15 防御力%
+  function computeG5Def() { return 0; } // 15 防御力%
 
-  function computeG6A() { return 20 + 12; } // 32
-  function computeG6B() { return 12 + 13; } // 25
-  function computeG6C() { return 15 + 15; } // 30
+  function computeG6A() { return 2 + 12; } // 32
+  function computeG6B() { return 1 + 13; } // 25
+  function computeG6C() { return 1 + 15; } // 30
 
   const groups: Group[] = [
-    { name: "4", categories: [
+    { name: "4番", categories: [
       { name: "A", value: computeG4A() },
       { name: "B", value: computeG4B() },
       { name: "C", value: computeG4C() },
       { name: "D", value: computeG4D() },
       { name: "E", value: computeG4E() },
     ]},
-    { name: "5", categories: [
+    { name: "5番", categories: [
       { name: "貫通率", value: computeG5Pierce() },
       { name: "属性ダメージ", value: computeG5AttrDmg() },
       { name: "HP%", value: computeG5HP() },
       { name: "攻撃力%", value: computeG5Atk() },
       { name: "防御力%", value: computeG5Def() },
     ]},
-    { name: "6", categories: [
+    { name: "6番", categories: [
       { name: "A", value: computeG6A() },
       { name: "B", value: computeG6B() },
       { name: "C", value: computeG6C() },
@@ -76,7 +128,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   ];
   const padding = { top: 12, right: 12, bottom: 48, left: 40 };
   const innerW = width - padding.left - padding.right;
-  const innerH = height - padding.top - padding.bottom;
+  const innerH = (height - padding.top - padding.bottom) * 0.75;
 
   // compute global max
   const dataMax = Math.max(0, ...groups.flatMap((g) => g.categories.map((c) => c.value)));
@@ -143,9 +195,13 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   return (
     <div className="w-full overflow-auto">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
+        <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }]} />
+        <div className="relative w-4/3"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>
+      </div>
       <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} role="img" aria-label="Bar chart">
           <defs>
-            <style>{`.axis{stroke:#9ca3af;stroke-width:1}.label{fill:#6b7280;font-size:18px;font-family:Inter,Arial,sans-serif}`}</style>
+            <style>{`.axis{stroke:#9ca3af;stroke-width:1}.label{fill:#6b7280;font-size:12px;font-family:Inter,Arial,sans-serif}`}</style>
           </defs>
 
         {/* y grid and labels */}
@@ -154,7 +210,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
           const y = yForValue(v);
           return (
             <g key={i}>
-              <line x1={padding.left} x2={width - padding.right} y1={y} y2={y} stroke="#e5e7eb" strokeWidth={1} />
+              <line x1={padding.left} x2={width - padding.right} y1={y} y2={y} stroke="#333333" strokeWidth={0.5} />
               <text className="label" x={padding.left - 8} y={y + 4} textAnchor="end">
                 {v}
               </text>
@@ -176,7 +232,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
           return (
             <g key={g.name}>
               {/* group label: 下方向に余白を確保（全グループ共通） */}
-              <text className="label" x={gx + groupWidth / 2} y={padding.top + innerH + 84} textAnchor="middle">
+              <text className="label" x={gx + groupWidth / 2} y={padding.top + 20} textAnchor="middle">
                 {g.name}
               </text>
 
@@ -237,7 +293,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
                     />
                     {/* category label: 全グループで右90°回転（縦書き相当） */}
                     <text
-                      className="label"
+                      className="label text-sm"
                       x={bx + catWidth / 2}
                       y={padding.top + innerH + 26}
                       textAnchor="start"

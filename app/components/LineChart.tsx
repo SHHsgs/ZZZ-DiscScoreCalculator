@@ -51,7 +51,7 @@ export default function LineChart({ series, width = 700, height = 220, xMax = 20
     <div className="w-full overflow-auto">
       <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} role="img" aria-label="Line chart">
         <defs>
-          <style>{`.gridline{stroke:#e5e7eb;stroke-width:1}.axis{stroke:#9ca3af;stroke-width:1}.label{fill:#6b7280;font-size:18px;font-family:Inter,Arial,sans-serif}`}</style>
+          <style>{`.gridline{stroke:#e5e7eb;stroke-width:1}.axis{stroke:#9ca3af;stroke-width:1}.labelBar{fill:#6b7280;font-size:13px;font-family:Inter,Arial,sans-serif}`}</style>
         </defs>
 
         {/* grid horizontal lines and y labels */}
@@ -60,7 +60,7 @@ export default function LineChart({ series, width = 700, height = 220, xMax = 20
           return (
             <g key={y}>
               <line className="gridline" x1={padding.left} x2={width - padding.right} y1={yy} y2={yy} />
-              <text className="label" x={padding.left - 8} y={yy + 4} textAnchor="end">
+              <text className="labelBar" x={padding.left - 8} y={yy + 4} textAnchor="end">
                 {y}
               </text>
             </g>
@@ -77,7 +77,7 @@ export default function LineChart({ series, width = 700, height = 220, xMax = 20
             <g key={xt}>
               <line className="gridline" x1={x} x2={x} y1={padding.top + innerH} y2={padding.top + innerH + 4} />
               {show && (
-                <text className="label" x={x} y={padding.top + innerH + 24} textAnchor="middle">
+                <text className="labelBar" x={x} y={padding.top + innerH + 24} textAnchor="middle">
                   {xt}
                 </text>
               )}
@@ -86,10 +86,10 @@ export default function LineChart({ series, width = 700, height = 220, xMax = 20
         })}
 
         {/* axis units */}
-        <text className="label" x={width - padding.right} y={padding.top + innerH + 24} textAnchor="end">
+        <text className="labelBar" x={width - padding.right} y={padding.top + innerH + 24} textAnchor="end">
           個
         </text>
-        <text className="label" x={padding.left - 8} y={padding.top - 4} textAnchor="end">
+        <text className="labelBar" x={padding.left - 8} y={padding.top - 4} textAnchor="end">
           %
         </text>
 

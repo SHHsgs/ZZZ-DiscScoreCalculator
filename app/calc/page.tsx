@@ -2,49 +2,54 @@
 import React, { Suspense, useState } from "react";
 import PullDown from "../components/PullDown";
 import characters from "../data/characters";
+import discEffect from "../data/discEffect";
 import engineEquipments from "../data/engineEquipments";
 import LineChart from "../components/LineChart";
 import BarChart from "../components/BarChart";
 import { useSearchParams } from "next/navigation";
+import { Role } from "@/types/character";
 
 export default function CalcPage() {
   const searchParams = useSearchParams();
-  const agentOptions = characters.map((ch) => ({ value: ch.name, label: ch.name }));
+  const agentOptions = characters.filter((ch) => [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const supportAgentOptions = characters.filter((ch) => Role.Support === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
+  const stunAgentOptions = characters.filter((ch) => Role.Stun === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const [a, setA] = useState(searchParams.get("agent") ?? agentOptions[0]?.value ?? "");
-  const equipmentOptions = engineEquipments.map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
-  const [b, setB] = useState(equipmentOptions[0]?.value ?? "");
+  const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Anomaly].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const supportEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Support).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const stunEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Stun).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const [b, setB] = useState(attackEquipmentOptions[0]?.value ?? "");
   const [c, setC] = useState("opt1");
 
-  const genericOptions = [
-    { value: "opt1", label: "Option 1" },
-    { value: "opt2", label: "Option 2" },
-    { value: "opt3", label: "Option 3" },
-  ];
+  const [supportAgent, setSupportAgent] = useState("アストラ");
+  const [stunAgent, setStunAgent] = useState("福福");
+
+  const genericOptions = discEffect.filter((de) => [Role.Attack, Role.Rupture].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
 
   const g4Options = [
-    { value: "critRate", label: "会心率" },
-    { value: "critDamage", label: "会心ダメージ" },
-    { value: "abnormalMastery", label: "異常マスタリー" },
-    { value: "hpPercent", label: "HP%" },
-    { value: "atkPercent", label: "攻撃力%" },
-    { value: "defPercent", label: "防御力%" },
+    { value: "critRate", label: "会心率(24%)" },
+    { value: "critDamage", label: "会心ダメージ(48%)" },
+    { value: "abnormalMastery", label: "異常マスタリー(92)" },
+    { value: "hpPercent", label: "HP(30%)" },
+    { value: "atkPercent", label: "攻撃力(30%)" },
+    { value: "defPercent", label: "防御力(48%)" },
   ];
 
   const g5Options = [
-    { value: "penetration", label: "貫通率" },
-    { value: "elementalDamage", label: "属性ダメージ" },
-    { value: "hpPercent", label: "HP%" },
-    { value: "atkPercent", label: "攻撃力%" },
-    { value: "defPercent", label: "防御力%" },
+    { value: "penetration", label: "貫通率(24%)" },
+    { value: "elementalDamage", label: "属性ダメージ(30%)" },
+    { value: "hpPercent", label: "HP(30%)" },
+    { value: "atkPercent", label: "攻撃力(30%)" },
+    { value: "defPercent", label: "防御力(48%)" },
   ];
 
   const g6Options = [
-    { value: "abnormalControl", label: "異常掌握" },
-    { value: "impact", label: "衝撃力" },
-    { value: "energyRegenPercent", label: "エネルギー自動回復" },
-    { value: "hpPercent", label: "HP%" },
-    { value: "atkPercent", label: "攻撃力%" },
-    { value: "defPercent", label: "防御力%" },
+    { value: "abnormalControl", label: "異常掌握(30%)" },
+    { value: "impact", label: "衝撃力(18%)" },
+    { value: "energyRegenPercent", label: "エネルギー自動回復(60%)" },
+    { value: "hpPercent", label: "HP(30%)" },
+    { value: "atkPercent", label: "攻撃力(30%)" },
+    { value: "defPercent", label: "防御力(48%)" },
   ];
 
   const g2 = "316";
@@ -54,16 +59,32 @@ export default function CalcPage() {
 
   return (
     <Suspense>
-      <div className="p-8 max-w-xl mx-auto">
+      <div className="p-8 max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">タイトル</h1>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+          <div className="relative"><span className="absolute bottom-2 w-full text-center">アタッカー</span></div>
           <PullDown label="エージェント" value={a} onChange={setA} options={agentOptions} />
-          <PullDown label="音動機" value={b} onChange={setB} options={equipmentOptions} />
+          <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
           <PullDown label="4セット" value={c} onChange={setC} options={genericOptions} />
         </div>
 
-        <h2 className="text-xl font-semibold mt-6 mb-3">タイトル2</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+          <div className="relative"><span className="absolute bottom-2 w-full text-center">撃破</span></div>
+          <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
+          <PullDown value="燃獄ギア" options={stunEquipmentOptions} />
+          <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+          <div className="relative"><span className="absolute bottom-2 w-full text-center">支援</span></div>
+          <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
+          <PullDown value="ボンバルダム" options={supportEquipmentOptions} />
+          <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
+        </div>
+
+        <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
+        <span className="text-sm text-gray-600">ここを変えても何も起きません</span>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center gap-2">
@@ -102,26 +123,35 @@ export default function CalcPage() {
             </div>
           </div>
         </div>
-        <h2 className="text-xl font-semibold mt-6 mb-3">タイトル3</h2>
+        <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
+        <div className="text-sm text-gray-600">5番だけ実装済み</div>
+        <div className="text-sm text-gray-600 mb-2">貫通率は2セットパファーを含みます</div>
+        {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
 
         {/* derive selected objects to pass into BarChart */}
         {(() => {
           const selectedCharacter = characters.find((ch) => ch.name === a) ?? null;
+          const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? null;
+          const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? null;
           const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? null;
-          const attackValue2 = Number(g2 || 0);
           return (
             <BarChart
               // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
-              highlightIndices={[4, 2, 0]}
+              highlightIndices={[]}
               width={700}
-              height={220}
+              height={300}
               selectedCharacter={selectedCharacter}
+              selectedCharacter2={selectedCharacter2}
+              selectedCharacter3={selectedCharacter3}
               selectedEngineEquipment={selectedEngineEquipment}
-              attackValue2={attackValue2}
+              selectedDisc2={discEffect.find((de) => de.id === "df-taizan")}
+              selectedDisc3={discEffect.find((de) => de.id === "df-gekko")}
             />
           );
         })()}
 
+        <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】サブステの火力上昇率</h2>
+        <span className="text-sm text-gray-600">個数が増えるほど１つあたりの効果は減少します。</span>
         <LineChart
           series={[
             { name: "Series A", values: [5, 10, 12, 18, 22, 30, 28, 35, 40, 42, 45, 48, 50, 55, 58, 60, 62, 65, 68, 70], color: "#3B82F6" },
