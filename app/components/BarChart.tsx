@@ -15,15 +15,18 @@ type Props = {
   height?: number;
   maxY?: number; // optional override for Y axis max
   // 選択中のキャラクターと装備
-  selectedCharacter?: Character | null;
-  selectedCharacter2?: Character | null;
-  selectedCharacter3?: Character | null;
-  selectedEngineEquipment?: EngineEquipment | null;
-  selectedDisc2?: DiscEffect | null;
-  selectedDisc3?: DiscEffect | null;
+  selectedCharacter: Character;
+  selectedCharacter2: Character;
+  selectedCharacter3: Character;
+  selectedEngineEquipment: EngineEquipment;
+  selectedEngineEquipment2: EngineEquipment;
+  selectedEngineEquipment3: EngineEquipment;
+  selectedDisc: DiscEffect;
+  selectedDisc2: DiscEffect;
+  selectedDisc3: DiscEffect;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedDisc2, selectedDisc3 }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDisc, selectedDisc2, selectedDisc3 }: Props) {
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() { return 5 + 7; } // 12
   function computeG4B() { return 10 + 8; } // 18
@@ -32,28 +35,47 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG4E() { return 8 + 8; } // 16
 
   const [baseDiffence, setBaseDiffence] = useState("952.8");
-  function computeG5Pierce() {
+  function computeG5Pierce(PENRetio: number) {
     // 22 貫通率 2セット効果込み（24+8=32%）
-    if (selectedCharacter?.role === Role.Rupture) {
+    if (selectedCharacter.role === Role.Rupture) {
       return 0;
     }
-    const afterDiffence = parseFloat(baseDiffence) * (1 - (24 + 8) / 100);
-    return (794 / (794 + afterDiffence)) / (794 / (794 + parseFloat(baseDiffence))) * 100 - 100;
+    const registerDeffence = selectedCharacter.buff.registerDeffence || 0 + (selectedCharacter2.buff.registerDeffence || 0) + (selectedCharacter3.buff.registerDeffence || 0)
+    + (selectedEngineEquipment.effects.registerDeffence || 0) + (selectedEngineEquipment2.effects.registerDeffence || 0) + (selectedEngineEquipment3.effects.registerDeffence || 0);
+    const beforeDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100);
+    const afterDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - PENRetio / 100); // ここで貫通値は扱わない
+    return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
   }
   function computeG5AttrDmg() {
     // 28 属性ダメージ
-    const beforeDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0) // 自己バフ
-    + (selectedCharacter2?.buff?.damage || 0) // 撃破バフ
-    + (selectedCharacter3?.buff?.damage || 0) // 支援バフ
-    + (selectedDisc2?.fourEffects?.damageBonus || 0) // 撃破ディスク4セット効果
-    + (selectedDisc3?.fourEffects?.damageBonus || 0) // 支援ディスク4セット効果
-    + (selectedEngineEquipment?.effects?.damageBonus || 0); // 音動機効果
-    const afterDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0)
-    + (selectedCharacter2?.buff?.damage || 0)
-    + (selectedCharacter3?.buff?.damage || 0)
-    + (selectedDisc2?.fourEffects?.damageBonus || 0)
-    + (selectedDisc3?.fourEffects?.damageBonus || 0)
-    + (selectedEngineEquipment?.effects?.damageBonus || 0)
+    const beforeDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0) // 自己バフ
+    + (selectedCharacter2.buff.damageBonus || 0) // 撃破バフ
+    + (selectedCharacter3.buff.damageBonus || 0) // 支援バフ
+    + (selectedDisc2.fourEffects.damageBonus || 0) // 撃破ディスク4セット効果
+    + (selectedDisc3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
+    + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
+      ? (selectedEngineEquipment.effects.damageBonus || 0)
+      : 0); // アタッカーの音動機効果、属性が対応していれば加算
+    // + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
+    //   ? (selectedEngineEquipment2.effects.damageBonus || 0)
+    //   : 0); // 撃破の音動機効果、属性が対応していれば加算
+    // + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
+    //   ? (selectedEngineEquipment3.effects.damageBonus || 0)
+    //   : 0); // 支援の音動機効果、属性が対応していれば加算
+    const afterDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0)
+    + (selectedCharacter2.buff.damageBonus || 0)
+    + (selectedCharacter3.buff.damageBonus || 0)
+    + (selectedDisc2.fourEffects.damageBonus || 0)
+    + (selectedDisc3.fourEffects.damageBonus || 0)
+    + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
+      ? (selectedEngineEquipment.effects.damageBonus || 0)
+      : 0)
+    // + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
+    //   ? (selectedEngineEquipment2.effects.damageBonus || 0)
+    //   : 0);
+    // + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
+    //   ? (selectedEngineEquipment3.effects.damageBonus || 0)
+    //   : 0);
     + 30; // 5番メイン 固定 30%
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
@@ -65,12 +87,17 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const bonusHpNumMain = 2200;
     const bosusHpRateMain = 30; // 5番メイン 固定 30%
     const bonusAttackNumMain = 316;
+    const hpPercentInBattle = selectedCharacter.buff.hpPercentInBattle || 0 + (selectedCharacter2.buff.hpPercentInBattle || 0) + (selectedCharacter3.buff.hpPercentInBattle || 0);
 
-    const eeAdvancedHpRate = selectedEngineEquipment?.advancedStats?.hp ?? 0;
-    const beforeHp = baseHp * (1 + eeAdvancedHpRate / 100) + bonusHpNumMain;
-    const afterHp = baseHp * (1 + (bosusHpRateMain + eeAdvancedHpRate) / 100) + bonusHpNumMain; // メイン30%追加
+    const bonusHpRate = (selectedEngineEquipment?.advancedStats?.hp ?? 0) + ((selectedDisc.id === "df-ungaku") ? 10 : 0);
+    const beforeHp = (baseHp * (1 + (bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
+    const afterHp = (baseHp * (1 + (bosusHpRateMain + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
 
-    const atk = ((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0) + bonusAttackNumMain)
+    const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
+    + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
+    + (selectedDisc.fourEffects.atk || 0) + (selectedDisc2.fourEffects.atk || 0) + (selectedDisc3.fourEffects.atk || 0);
+    const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0) + bonusAttackNumMain))
+    * (1 + atkPercentInBattle / 100)
     + (selectedCharacter2?.buff?.atkValue || 0)
     + (selectedCharacter3?.buff?.atkValue || 0);
 
@@ -91,8 +118,16 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const eeBaseAttack = selectedEngineEquipment?.baseAttack ?? 0;
     const eeAdvancedAttackRate = selectedEngineEquipment?.advancedStats?.atk ?? 0;
 
-    const beforeAtk = (baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
-    const afterAtk = (baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + eeAdvancedAttackRate) / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
+    const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
+    + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
+    + (selectedDisc.fourEffects.atk || 0) + (selectedDisc2.fourEffects.atk || 0) + (selectedDisc3.fourEffects.atk || 0);
+
+    const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain)
+    * (1 + atkPercentInBattle / 100)
+    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
+    const afterAtk = ((baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + eeAdvancedAttackRate) / 100) + bonusAttackNumMain)
+    * (1 + atkPercentInBattle / 100)
+    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
     if (selectedCharacter?.role === Role.Rupture) {
       const bonusHpNumMain = 2200;
       const hp = (selectedCharacter?.baseHp ?? 0) * (1 + (selectedEngineEquipment?.advancedStats?.hp ?? 0) / 100) + bonusHpNumMain;
@@ -118,7 +153,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
       { name: "E", value: computeG4E() },
     ]},
     { name: "5番", categories: [
-      { name: "貫通率", value: computeG5Pierce() },
+      { name: "貫通率(2セットあり)", value: computeG5Pierce(24 + 8) },
+      { name: "貫通率(2セットなし)", value: computeG5Pierce(24) },
       { name: "属性ダメージ", value: computeG5AttrDmg() },
       { name: "HP%", value: computeG5HP() },
       { name: "攻撃力%", value: computeG5Atk() },
@@ -132,7 +168,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   ];
   const padding = { top: 12, right: 12, bottom: 48, left: 40 };
   const innerW = width - padding.left - padding.right;
-  const innerH = (height - padding.top - padding.bottom) * 0.75;
+  const innerH = (height - padding.top - padding.bottom) * 0.65;
 
   // compute global max
   const dataMax = Math.max(0, ...groups.flatMap((g) => g.categories.map((c) => c.value)));

@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from "react";
 import PullDown from "../../components/PullDown";
 import characters from "../../data/characters";
-import discEffect from "../../data/discEffect";
+import discEffect, { discEffects } from "../../data/discEffect";
 import engineEquipments from "../../data/engineEquipments";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
@@ -18,11 +18,17 @@ export default function Main() {
   const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Rupture].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const supportEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Support).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const stunEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Stun).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
-  const [b, setB] = useState(attackEquipmentOptions[0]?.value ?? "");
+  const [b, setB] = useState(attackEquipmentOptions.find((ae) => {
+    const selectedAgent = characters.find((agent) => agent.name === a);
+    return ae.value == selectedAgent?.motif;
+  })?.value
+  ?? attackEquipmentOptions[0]?.value);
   const [c, setC] = useState("opt1");
 
   const [supportAgent, setSupportAgent] = useState("アストラ");
+  const [supportEngineEquipment, setSupportEngineEquipment] = useState("ee-lu");
   const [stunAgent, setStunAgent] = useState("福福");
+  const [stunEngineEquipment, setStunEngineEquipment] = useState("ee-fufu");
 
   const genericOptions = discEffect.filter((de) => [Role.Attack, Role.Rupture].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
 
@@ -60,7 +66,7 @@ export default function Main() {
     setA(agentName);
     const agent = characters.find((ch) => ch.name === agentName);
     const motif = engineEquipments.find((eq) => eq.id === agent?.motif);
-    setB(motif?.id || "");
+    setB(motif?.id || "ee-ive");
   };
 
   return (
@@ -77,14 +83,14 @@ export default function Main() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">撃破</span></div>
         <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
-        <PullDown value="燃獄ギア" options={stunEquipmentOptions} />
+        <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions} />
         <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">支援</span></div>
         <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
-        <PullDown value="ボンバルダム" options={supportEquipmentOptions} />
+        <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
 
@@ -135,10 +141,15 @@ export default function Main() {
 
       {/* derive selected objects to pass into BarChart */}
       {(() => {
-        const selectedCharacter = characters.find((ch) => ch.name === a) ?? null;
-        const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? null;
-        const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? null;
-        const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? null;
+        const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
+        const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
+        const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
+        const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
+        const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
+        const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
+        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === c) ?? discEffects[0];
+        const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
+        const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
         return (
           <BarChart
             // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
@@ -149,8 +160,11 @@ export default function Main() {
             selectedCharacter2={selectedCharacter2}
             selectedCharacter3={selectedCharacter3}
             selectedEngineEquipment={selectedEngineEquipment}
-            selectedDisc2={discEffect.find((de) => de.id === "df-taizan")}
-            selectedDisc3={discEffect.find((de) => de.id === "df-gekko")}
+            selectedEngineEquipment2={selectedEngineEquipment2}
+            selectedEngineEquipment3={selectedEngineEquipment3}
+            selectedDisc={selectedDiscFourSet}
+            selectedDisc2={selectedDiscFourSet2}
+            selectedDisc3={selectedDiscFourSet3}
           />
         );
       })()}
