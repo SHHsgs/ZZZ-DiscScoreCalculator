@@ -41,19 +41,22 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     return (794 / (794 + afterDiffence)) / (794 / (794 + parseFloat(baseDiffence))) * 100 - 100;
   }
   function computeG5AttrDmg() {
-    const beforeDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0)
-    + (selectedCharacter2?.buff?.damage || 0)
-    + (selectedCharacter3?.buff?.damage || 0)
-    + (selectedDisc2?.fourEffects?.damageBonus || 0)
-    + (selectedDisc3?.fourEffects?.damageBonus || 0);
+    // 28 属性ダメージ
+    const beforeDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0) // 自己バフ
+    + (selectedCharacter2?.buff?.damage || 0) // 撃破バフ
+    + (selectedCharacter3?.buff?.damage || 0) // 支援バフ
+    + (selectedDisc2?.fourEffects?.damageBonus || 0) // 撃破ディスク4セット効果
+    + (selectedDisc3?.fourEffects?.damageBonus || 0) // 支援ディスク4セット効果
+    + (selectedEngineEquipment?.effects?.damageBonus || 0); // 音動機効果
     const afterDmgBonus = 100 + (selectedCharacter?.buff?.damage || 0)
     + (selectedCharacter2?.buff?.damage || 0)
     + (selectedCharacter3?.buff?.damage || 0)
     + (selectedDisc2?.fourEffects?.damageBonus || 0)
     + (selectedDisc3?.fourEffects?.damageBonus || 0)
+    + (selectedEngineEquipment?.effects?.damageBonus || 0)
     + 30; // 5番メイン 固定 30%
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
-  } // 28 属性ダメージ
+  }
   function computeG5HP() {
     if (selectedCharacter?.role !== Role.Rupture) {
       return 0;
@@ -91,12 +94,13 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const beforeAtk = (baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
     const afterAtk = (baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + eeAdvancedAttackRate) / 100) + bonusAttackNumMain + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
     if (selectedCharacter?.role === Role.Rupture) {
-      const hp = (selectedCharacter?.baseHp ?? 0);
+      const bonusHpNumMain = 2200;
+      const hp = (selectedCharacter?.baseHp ?? 0) * (1 + (selectedEngineEquipment?.advancedStats?.hp ?? 0) / 100) + bonusHpNumMain;
       const beforeSheerForce = hp * 0.1 + beforeAtk * 0.3;
       const afterSheerForce = hp * 0.1 + afterAtk * 0.3;
-      return Math.round(afterSheerForce/beforeSheerForce * 100 - 100);
+      return afterSheerForce/beforeSheerForce * 100 - 100;
     } else {
-      return Math.round(afterAtk/beforeAtk * 100 - 100);
+      return afterAtk/beforeAtk * 100 - 100;
     }
   }
   function computeG5Def() { return 0; } // 15 防御力%

@@ -29,7 +29,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Rupture,
     effects: {
       critRate: 20,
-      damage: 8*2,
+      damageBonus: 8*2,
       sheerForce: 20,
     },
     note: "儀玄のモチーフ音動機。",
@@ -58,7 +58,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Support,
     effects: {
-      damage: 25,
+      damageBonus: 25,
       hpPercent: 15,
     },
     note: "リュシアのモチーフ音動機。",
