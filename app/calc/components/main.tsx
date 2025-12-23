@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import PullDown from "../../components/PullDown";
 import characters from "../../data/characters";
 import discEffect from "../../data/discEffect";
@@ -15,7 +15,7 @@ export default function Main() {
   const supportAgentOptions = characters.filter((ch) => Role.Support === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const stunAgentOptions = characters.filter((ch) => Role.Stun === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const [a, setA] = useState(searchParams.get("agent") ?? agentOptions[0]?.value ?? "");
-  const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Anomaly].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Rupture].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const supportEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Support).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const stunEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Stun).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const [b, setB] = useState(attackEquipmentOptions[0]?.value ?? "");
@@ -56,13 +56,20 @@ export default function Main() {
   const [g5, setG5] = useState(g5Options[0].value);
   const [g6, setG6] = useState(g6Options[0].value);
 
+  function selectAgent(agentName: string) {
+    setA(agentName);
+    const agent = characters.find((ch) => ch.name === agentName);
+    const motif = engineEquipments.find((eq) => eq.id === agent?.motif);
+    setB(motif?.id || "");
+  };
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">タイトル</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">アタッカー</span></div>
-        <PullDown label="エージェント" value={a} onChange={setA} options={agentOptions} />
+        <PullDown label="エージェント" value={a} onChange={selectAgent} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
         <PullDown label="4セット" value={c} onChange={setC} options={genericOptions} />
       </div>
