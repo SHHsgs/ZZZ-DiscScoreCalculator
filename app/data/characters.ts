@@ -3,6 +3,78 @@ import { Attribute, Character, Role } from "../../types/character";
 // サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
+    name: "猫又",
+    role: Role.Attack,
+    attribute: Attribute.Physical,
+    motif: "ee-neko",
+    baseHp: 7560,
+    baseAtk: 835+75,
+    baseDef: 587,
+    baseImpact: 92,
+    baseAbnormalControl: 97,
+    baseAbnormalMastery: 96,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 60, // 強撃のあと強化特殊の35×2%のバフは一旦無視
+      critRate: 25,
+      critDamage: 30,
+    },
+  },
+  {
+    name: "ビリー",
+    role: Role.Attack,
+    attribute: Attribute.Physical,
+    motif: "ee-billy",
+    baseHp: 6907,
+    baseAtk: 712+25*3,
+    baseDef: 606,
+    baseImpact: 91,
+    baseAbnormalControl: 92,
+    baseAbnormalMastery: 91,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 50+50+6*5, // 終結は50*2だが一旦1重で、2凸の回避反撃+25%を一旦除外、6*5は完凸効果
+      critRate: 32, // 4凸効果
+    },
+  },
+  {
+    name: "カリン",
+    role: Role.Attack,
+    attribute: Attribute.Physical,
+    motif: "ee-calin",
+    baseHp: 6976,
+    baseAtk: 732+25*3,
+    baseDef: 604,
+    baseImpact: 93,
+    baseAbnormalControl: 93,
+    baseAbnormalMastery: 96,
+    baseCritRate: 5,
+    baseCritDamage: 50+9.6*3,
+    buff: {
+      damageBonus: 37.5+35+12, // 35%はブレイク中のみ、12%は1凸
+      resistanceIgnore: 0.5*20, // 2凸効果
+    },
+  },
+  {
+    name: "11号",
+    role: Role.Attack,
+    attribute: Attribute.Fire,
+    motif: "ee-soldier11",
+    baseHp: 7673,
+    baseAtk: 813+25*3,
+    baseDef: 612,
+    baseImpact: 93,
+    baseAbnormalControl: 94,
+    baseAbnormalMastery: 93,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 70+22.5,
+    },
+  },
+  {
     name: "イヴリン",
     role: Role.Attack,
     attribute: Attribute.Fire,
@@ -21,6 +93,67 @@ export const characters: Character[] = [
     },
   },
   {
+    name: "オルペウス＆「鬼火」",
+    role: Role.Attack,
+    attribute: Attribute.Fire,
+    motif: "ee-orpheus",
+    baseHp: 7788,
+    baseAtk: 854+25*3,
+    baseDef: 612,
+    baseImpact: 93,
+    baseAbnormalControl: 92,
+    baseAbnormalMastery: 90,
+    baseCritRate: 5,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 85,
+      atkValue: 700,
+      critRate: 25,
+      registerDeffence: 25
+    },
+  },
+  {
+    name: "盤岳",
+    role: Role.Rupture,
+    attribute: Attribute.Fire,
+    motif: "ee-bangaku",
+    baseHp: 8497,
+    baseAtk: 784+25*3,
+    baseDef: 445,
+    baseImpact: 95,
+    baseAbnormalControl: 90,
+    baseAbnormalMastery: 89,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 36,
+      critDamage: 36,
+      sheerForcePowerNum: 300,
+    },
+  },
+  {
+    name: "狛野",
+    role: Role.Rupture,
+    attribute: Attribute.Fire,
+    motif: "ee-komano",
+    baseHp: 7724,
+    baseAtk: 680+25*3,
+    baseDef: 443,
+    baseImpact: 95,
+    baseAbnormalControl: 87,
+    baseAbnormalMastery: 90,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      hpPercent: 6*3,
+      critRate: 10,
+      critDamage: 50, // 通常と支援突撃にしか乗らない
+      damageBonus: 20+20+3*5, // +20は1凸効果、3*5は完凸効果
+      resistanceIgnore: 8, // 2凸効果
+      hpPercentInBattle: 8, // 4凸効果、戦闘中のみ
+    },
+  },
+  {
     name: "儀玄",
     role: Role.Rupture,
     attribute: Attribute.Ether,
@@ -35,7 +168,7 @@ export const characters: Character[] = [
     baseCritDamage: 50,
     buff: {
       critDamage: 40, // 終結後のみを含むため要考慮
-      damage: 60, // ブレイク中のみ強化特殊が+30%だが一旦除外
+      damageBonus: 60, // ブレイク中のみ強化特殊が+30%だが一旦除外
     },
   },
   {
@@ -54,7 +187,7 @@ export const characters: Character[] = [
     buff: {
       atkValue: 1200,
       critDamage: 25,
-      damage: 20,
+      damageBonus: 20,
     },
   },
   {
@@ -73,8 +206,8 @@ export const characters: Character[] = [
     buff: {
       sheerForcePowerNum: 900,
       critDamage: 30,
-      damage: 20,
-      // HPバフは最終HPに対して5%増加なのでディスクステの割合には影響しない
+      damageBonus: 20,
+      hpPercentInBattle: 20,
     },
   },
   {
@@ -92,7 +225,7 @@ export const characters: Character[] = [
     baseCritDamage: 0,
     buff: {
       critDamage: 30,
-      damage: 20, // 連携のみだが、終結は40、その他は無いため平均して20とする
+      damageBonus: 20, // 連携のみだが、終結は40、その他は無いため平均して20とする
     },
   },
 ];

@@ -23,7 +23,7 @@ export type Character = {
   baseAbnormalMastery: number; // 基礎異常マスタリー
   baseCritRate: number; // 基礎会心率（%で表すなら 5 -> 5%）
   baseCritDamage: number; // 基礎会心ダメージ（%で表すなら 50 -> 50%）
-  buff?: Buffs; // 自己バフ（コアパッシブやコアスキルの効果をここに記載）
+  buff: Buffs; // 自己バフ（コアパッシブやコアスキルの効果をここに記載）
 };
 
 // 属性の列挙型
@@ -49,12 +49,14 @@ export type Buffs = {
   // 効果値。%表記を使う場合は数値でそのまま格納（例: 5 -> 5%）。
   critRate?: number; // 会心率増加
   critDamage?: number; // 会心ダメージ増加
-  damage?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
+  damageBonus?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
   atkRate?: number; // 攻撃力増加（%）
   atkValue?: number; // 攻撃力増加（固定値）
   // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
   resistanceIgnore?: number;
   sheerForce?: number; // 透徹ダメージ（%）
   hpPercent?: number; // HP増加（%）
+  hpPercentInBattle?: number; // 戦闘中HP増加（%）
   sheerForcePowerNum?: number; // 透徹力増加（固定値）
+  registerDeffence?: number; // 防御無視（%）
 };

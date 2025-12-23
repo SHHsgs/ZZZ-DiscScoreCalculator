@@ -17,12 +17,13 @@ export type EngineEquipmentEffects = {
   // 効果値。%表記を使う場合は数値でそのまま格納（例: 10 -> 10%）。
   critRate?: number; // 会心率増加
   critDamage?: number; // 会心ダメージ増加
-  damage?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
+  damageBonus?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
   atk?: number; // 攻撃力増加（%）
   // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
   resistanceIgnore?: number;
   sheerForce?: number; // 透徹ダメージ（%）
   hpPercent?: number; // HP増加（%）
+  registerDeffence?: number; // 防御無視（%）
 };
 
 export type EngineEquipment = {
