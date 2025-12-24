@@ -150,6 +150,51 @@ export const engineEquipments: EngineEquipment[] = [
     note: "狛野のモチーフ音動機。",
   },
   {
+    id: "ee-eren",
+    name: "ディープシー・ビジター",
+    attributes: [Attribute.Ice],
+    baseAttack: 713,
+    advancedStats: {
+      critRate: 24,
+    },
+    role: Role.Attack,
+    effects: {
+      critRate: 10+10,
+      damageBonus: 25,
+    },
+    note: "エレンのモチーフ音動機。",
+  },
+  {
+    id: "ee-hugo",
+    name: "千面の落日 ",
+    attributes: [Attribute.Ice],
+    baseAttack: 713,
+    advancedStats: {
+      critRate: 24,
+    },
+    role: Role.Attack,
+    effects: {
+      critDamage: 45,
+      registerDeffence: 25,
+    },
+    note: "ヒューゴのモチーフ音動機。",
+  },
+  {
+    id: "ee-yid",
+    name: "セイレーンクレードル ",
+    attributes: [Attribute.Ice],
+    baseAttack: 713,
+    advancedStats: {
+      hp: 30,
+    },
+    role: Role.Rupture,
+    effects: {
+      sheerForce: 6*3,
+      critRate: 20,
+    },
+    note: "イドリーのモチーフ音動機。",
+  },
+  {
     id: "ee-yi",
     name: "青溟の鳥籠",
     attributes: [Attribute.Ether],
