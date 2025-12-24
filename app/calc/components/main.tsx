@@ -136,7 +136,7 @@ export default function Main() {
       </div>
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
       <div className="text-sm opacity-75">5番だけ実装済み</div>
-      <div className="text-sm opacity-75 mb-2">貫通率は2セットパファーを含みます</div>
+      <div className="text-sm opacity-75 mb-2">プルダウンの選択によって目盛りの刻み方が変わることがあります</div>
       {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
 
       {/* derive selected objects to pass into BarChart */}
