@@ -73,7 +73,7 @@ export default function Main() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">タイトル</h1>
+      <h1 className="text-2xl font-bold mb-4">ディスクの火力数値化ツール</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <div className="relative min-h-[2rem] sm:min-h-0">
@@ -113,11 +113,13 @@ export default function Main() {
         <InfoTooltip width={128}>
           ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
           ・プルダウンの選択によって目盛りの刻み方が変わることがあります。<br />
-          ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので
-          　気をつけてください。
+          ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので<br />
+          　気をつけてください。<br />
+          ・貫通率、属性ダメージはグラフの通りですがHP、攻撃、会心ダメ、<br />
+          　マスタリーはサブステがあるのでバランスに気をつけてください。<br />
+          　（サブステ込みで数値化できるようにしたい）
         </InfoTooltip>
       </h2>
-      <div className="text-sm opacity-75 mb-2">5番だけ実装済み</div>
 
       {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
 

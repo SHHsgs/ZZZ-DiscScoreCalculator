@@ -176,24 +176,24 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   const groups: Group[] = [
     { name: "4番", categories: [
-      { name: "会心率", value: computeG4A() },
-      { name: "会心ダメージ", value: computeG4B() },
-      { name: "異常マスタリー", value: computeG4M() },
-      { name: "HP%", value: computeG4C() },
-      { name: "攻撃力%", value: computeG4D() },
-      { name: "防御力%", value: computeG4E() },
+      { name: "会心率", value: computeG4A(), color: "#16875F" },
+      { name: "会心ダメージ", value: computeG4B(), color: "#57A0CA" },
+      { name: "異常マスタリー", value: computeG4M(), color: "#49A186" },
+      { name: "HP%", value: computeG4C(), color: "#1D1916" },
+      { name: "攻撃力%", value: computeG4D(), color: "#B9DE26" },
+      { name: "防御力%", value: computeG4E(), color: "#EAA113" },
     ]},
     { name: "5番", categories: [
-      { name: "貫通率", value: computeG5Pierce() },
-      { name: "属性ダメージ", value: computeG5AttrDmg() },
-      { name: "HP%", value: computeG5HP() },
-      { name: "攻撃力%", value: computeG5Atk() },
-      { name: "防御力%", value: computeG5Def() },
+      { name: "貫通率", value: computeG5Pierce(), color: "#131313" },
+      { name: "属性ダメージ", value: computeG5AttrDmg(), color: "#645BB0" },
+      { name: "HP%", value: computeG5HP(), color: "#1D1916" },
+      { name: "攻撃力%", value: computeG5Atk(), color: "#B9DE26" },
+      { name: "防御力%", value: computeG5Def(), color: "#EAA113" },
     ]},
     { name: "6番", categories: [
-      { name: "HP%", value: computeG6A() },
-      { name: "攻撃力%", value: computeG6B() },
-      { name: "防御力%", value: computeG6C() },
+      { name: "HP%", value: computeG6A(), color: "#1D1916" },
+      { name: "攻撃力%", value: computeG6B(), color: "#B9DE26" },
+      { name: "防御力%", value: computeG6C(), color: "#EAA113" },
     ]},
   ];
   const padding = { top: 12, right: 12, bottom: 48, left: 40 };
@@ -365,7 +365,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
                     <text
                       className="label text-sm"
                       x={bx + catWidth / 2}
-                      y={padding.top + innerH + 26}
+                      y={padding.top + innerH + 23}
                       textAnchor="start"
                       transform={`rotate(90 ${bx + catWidth / 2} ${padding.top + innerH + 18})`}
                     >
