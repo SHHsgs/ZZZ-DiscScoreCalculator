@@ -76,7 +76,11 @@ export default function Main() {
       <h1 className="text-2xl font-bold mb-4">タイトル</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">アタッカー</span></div>
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            アタッカー
+          </span>
+        </div>
         <PullDown label="エージェント" value={a} onChange={selectAgent} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
         <PullDown label="4セット" value={disc1st} onChange={setDisc1st} options={genericOptions} />
@@ -84,14 +88,22 @@ export default function Main() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">撃破</span></div>
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            撃破
+          </span>
+        </div>
         <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
         <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions} />
         <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">支援</span></div>
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            支援・防護
+          </span>
+        </div>
         <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
         <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
