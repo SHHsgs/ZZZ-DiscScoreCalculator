@@ -21,29 +21,30 @@ type Props = {
   selectedEngineEquipment: EngineEquipment;
   selectedEngineEquipment2: EngineEquipment;
   selectedEngineEquipment3: EngineEquipment;
-  selectedDisc: DiscEffect;
-  selectedDisc2: DiscEffect;
-  selectedDisc3: DiscEffect;
+  selectedDiscFour1: DiscEffect;
+  selectedDiscFour2: DiscEffect;
+  selectedDiscFour3: DiscEffect;
+  selectedDiscTwo1: DiscEffect;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDisc, selectedDisc2, selectedDisc3 }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
     // 会心率
-    const baseCritRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDisc.twoEffects.critRate || 0) + (selectedDisc.fourEffects.critRate || 0)
-    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
-    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
-    const cridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDisc.twoEffects.critDamage || 0) + (selectedDisc.fourEffects.critDamage || 0)
+    const baseCritRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDiscFour1.twoEffects.critRate || 0) + (selectedDiscFour1.fourEffects.critRate || 0) + (selectedDiscTwo1.twoEffects.critRate || 0)
+    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
+    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
+    const cridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDiscFour1.twoEffects.critDamage || 0) + (selectedDiscFour1.fourEffects.critDamage || 0)
     + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
     + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
     return (1 + ((baseCritRate + 24) / 100) * (cridDmg / 100)) / (1 + (baseCritRate / 100) * (cridDmg / 100)) * 100 - 100;
   }
   function computeG4B() {
     // 会心ダメ
-    const critRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDisc.twoEffects.critRate || 0) + (selectedDisc.fourEffects.critRate || 0)
+    const critRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDiscFour1.twoEffects.critRate || 0) + (selectedDiscFour1.fourEffects.critRate || 0)
     + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
     + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
-    const baseCridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDisc.twoEffects.critDamage || 0) + (selectedDisc.fourEffects.critDamage || 0)
+    const baseCridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDiscFour1.twoEffects.critDamage || 0) + (selectedDiscFour1.fourEffects.critDamage || 0)
     + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
     + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
     return (1 + (critRate / 100) * ((baseCridDmg + 48) / 100)) / (1 + (critRate / 100) * (baseCridDmg / 100)) * 100 - 100;
@@ -70,8 +71,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const beforeDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0) // 自己バフ
     + (selectedCharacter2.buff.damageBonus || 0) // 撃破バフ
     + (selectedCharacter3.buff.damageBonus || 0) // 支援バフ
-    + (selectedDisc2.fourEffects.damageBonus || 0) // 撃破ディスク4セット効果
-    + (selectedDisc3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
+    + (selectedDiscFour2.fourEffects.damageBonus || 0) // 撃破ディスク4セット効果
+    + (selectedDiscFour3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
     + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
       ? (selectedEngineEquipment.effects.damageBonus || 0)
       : 0) // アタッカーの音動機効果、属性が対応していれば加算
@@ -84,8 +85,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const afterDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0)
     + (selectedCharacter2.buff.damageBonus || 0)
     + (selectedCharacter3.buff.damageBonus || 0)
-    + (selectedDisc2.fourEffects.damageBonus || 0)
-    + (selectedDisc3.fourEffects.damageBonus || 0)
+    + (selectedDiscFour2.fourEffects.damageBonus || 0)
+    + (selectedDiscFour3.fourEffects.damageBonus || 0)
     + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
       ? (selectedEngineEquipment.effects.damageBonus || 0)
       : 0)
@@ -108,13 +109,13 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const bonusAttackNumMain = 316;
     const hpPercentInBattle = selectedCharacter.buff.hpPercentInBattle || 0 + (selectedCharacter2.buff.hpPercentInBattle || 0) + (selectedCharacter3.buff.hpPercentInBattle || 0);
 
-    const bonusHpRate = (selectedEngineEquipment?.advancedStats?.hp ?? 0) + ((selectedDisc.id === "df-ungaku") ? 10 : 0);
+    const bonusHpRate = (selectedEngineEquipment?.advancedStats?.hp ?? 0) + ((selectedDiscFour1.id === "df-ungaku") ? 10 : 0);
     const beforeHp = (baseHp * (1 + (bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
     const afterHp = (baseHp * (1 + (bosusHpRateMain + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
 
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
     + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
-    + (selectedDisc.fourEffects.atk || 0) + (selectedDisc2.fourEffects.atk || 0) + (selectedDisc3.fourEffects.atk || 0);
+    + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
     const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0) + bonusAttackNumMain))
     * (1 + atkPercentInBattle / 100)
     + (selectedCharacter2?.buff?.atkValue || 0)
@@ -139,7 +140,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
     + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
-    + (selectedDisc.fourEffects.atk || 0) + (selectedDisc2.fourEffects.atk || 0) + (selectedDisc3.fourEffects.atk || 0);
+    + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
 
     const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + eeAdvancedAttackRate / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)

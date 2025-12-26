@@ -24,7 +24,8 @@ export default function Main() {
     return ae.value == selectedAgent?.motif;
   })?.value
   ?? attackEquipmentOptions[0]?.value);
-  const [c, setC] = useState("opt1");
+  const [disc1st, setDisc1st] = useState("df-wood");
+  const [disc2nd, setDisc2nd] = useState("df-sword");
 
   const [supportAgent, setSupportAgent] = useState("アストラ");
   const [supportEngineEquipment, setSupportEngineEquipment] = useState("ee-lu");
@@ -74,21 +75,22 @@ export default function Main() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">タイトル</h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">アタッカー</span></div>
         <PullDown label="エージェント" value={a} onChange={selectAgent} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
-        <PullDown label="4セット" value={c} onChange={setC} options={genericOptions} />
+        <PullDown label="4セット" value={disc1st} onChange={setDisc1st} options={genericOptions} />
+        <PullDown label="2セット" value={disc2nd} onChange={setDisc2nd} options={genericOptions} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">撃破</span></div>
         <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
         <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions} />
         <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <div className="relative"><span className="absolute bottom-2 w-full text-center">支援</span></div>
         <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
         <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
@@ -155,9 +157,10 @@ export default function Main() {
         const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
         const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
         const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
-        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === c) ?? discEffects[0];
+        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
         const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
         const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
+        const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
         return (
           <BarChart
             // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
@@ -170,9 +173,10 @@ export default function Main() {
             selectedEngineEquipment={selectedEngineEquipment}
             selectedEngineEquipment2={selectedEngineEquipment2}
             selectedEngineEquipment3={selectedEngineEquipment3}
-            selectedDisc={selectedDiscFourSet}
-            selectedDisc2={selectedDiscFourSet2}
-            selectedDisc3={selectedDiscFourSet3}
+            selectedDiscFour1={selectedDiscFourSet}
+            selectedDiscFour2={selectedDiscFourSet2}
+            selectedDiscFour3={selectedDiscFourSet3}
+            selectedDiscTwo1={selectedDiscTwoSet}
           />
         );
       })()}
