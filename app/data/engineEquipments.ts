@@ -283,6 +283,19 @@ export const engineEquipments: EngineEquipment[] = [
     note: "クレタのモチーフ音動機。",
   },
   {
+    id: "ee-fufu",
+    name: "招福の虎炉",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+    },
+    role: Role.Stun,
+    effects: {
+      damageBonus: 10*2,
+    },
+    note: "クレタのモチーフ音動機。",
+  },
+  {
     id: "ee-dyarin",
     name: "昨夜からの着信",
     attributes: [],

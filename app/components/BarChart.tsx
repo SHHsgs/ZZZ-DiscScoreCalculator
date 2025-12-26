@@ -28,11 +28,21 @@ type Props = {
 
 export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDisc, selectedDisc2, selectedDisc3 }: Props) {
   // 各カテゴリ値はそれぞれ独立した関数で計算する
-  function computeG4A() { return 5 + 7; } // 12
-  function computeG4B() { return 10 + 8; } // 18
-  function computeG4C() { return 4 + 5; } // 9
-  function computeG4D() { return 7 + 7; } // 14
-  function computeG4E() { return 8 + 8; } // 16
+  function computeG4A() {
+    // 会心率
+    const baseCritRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDisc.twoEffects.critRate || 0) + (selectedDisc.fourEffects.critRate || 0)
+    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
+    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
+    const cridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDisc.twoEffects.critDamage || 0) + (selectedDisc.fourEffects.critDamage || 0)
+    + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
+    + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
+    return (1 + ((baseCritRate + 24) / 100) * (cridDmg / 100)) / (1 + (baseCritRate / 100) * (cridDmg / 100)) * 100 - 100;
+  }
+  function computeG4B() { return 0; } // 18
+  function computeG4M() { return 2; } // 異常マスタリー
+  function computeG4C() { return computeG5HP(); }
+  function computeG4D() { return computeG5Atk(); }
+  function computeG4E() { return computeG5Def(); }
 
   const [baseDiffence, setBaseDiffence] = useState("952.8");
   function computeG5Pierce(PENRetio: number) {
@@ -55,13 +65,13 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     + (selectedDisc3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
     + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
       ? (selectedEngineEquipment.effects.damageBonus || 0)
-      : 0); // アタッカーの音動機効果、属性が対応していれば加算
-    // + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
-    //   ? (selectedEngineEquipment2.effects.damageBonus || 0)
-    //   : 0); // 撃破の音動機効果、属性が対応していれば加算
-    // + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
-    //   ? (selectedEngineEquipment3.effects.damageBonus || 0)
-    //   : 0); // 支援の音動機効果、属性が対応していれば加算
+      : 0) // アタッカーの音動機効果、属性が対応していれば加算
+    + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
+      ? (selectedEngineEquipment2.effects.damageBonus || 0)
+      : 0) // 撃破の音動機効果、属性が対応していれば加算
+    + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
+      ? (selectedEngineEquipment3.effects.damageBonus || 0)
+      : 0); // 支援の音動機効果、属性が対応していれば加算
     const afterDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0)
     + (selectedCharacter2.buff.damageBonus || 0)
     + (selectedCharacter3.buff.damageBonus || 0)
@@ -70,12 +80,12 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
       ? (selectedEngineEquipment.effects.damageBonus || 0)
       : 0)
-    // + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
-    //   ? (selectedEngineEquipment2.effects.damageBonus || 0)
-    //   : 0);
-    // + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
-    //   ? (selectedEngineEquipment3.effects.damageBonus || 0)
-    //   : 0);
+    + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
+      ? (selectedEngineEquipment2.effects.damageBonus || 0)
+      : 0)
+    + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
+      ? (selectedEngineEquipment3.effects.damageBonus || 0)
+      : 0)
     + 30; // 5番メイン 固定 30%
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
@@ -146,11 +156,12 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   const groups: Group[] = [
     { name: "4番", categories: [
-      { name: "A", value: computeG4A() },
-      { name: "B", value: computeG4B() },
-      { name: "C", value: computeG4C() },
-      { name: "D", value: computeG4D() },
-      { name: "E", value: computeG4E() },
+      { name: "会心率", value: computeG4A() },
+      { name: "会心ダメージ", value: computeG4B() },
+      { name: "異常マスタリー", value: computeG4M() },
+      { name: "HP%", value: computeG4C() },
+      { name: "攻撃力%", value: computeG4D() },
+      { name: "防御力%", value: computeG4E() },
     ]},
     { name: "5番", categories: [
       { name: "貫通率(2セットあり)", value: computeG5Pierce(24 + 8) },
