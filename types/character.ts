@@ -59,4 +59,5 @@ export type Buffs = {
   hpPercentInBattle?: number; // 戦闘中HP増加（%）
   sheerForcePowerNum?: number; // 透徹力増加（固定値）
   registerDeffence?: number; // 防御無視（%）
+  PENRatio?: number; // 貫通率（%）
 };
