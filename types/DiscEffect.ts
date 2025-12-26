@@ -6,6 +6,7 @@ export type TwoEffects = {
   atk?: number;
   damageBonus?: number;
   hpPercent?: number;
+  PENRate?: number;
 }
 
 export type FourEffects = {

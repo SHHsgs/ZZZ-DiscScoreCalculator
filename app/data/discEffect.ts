@@ -15,6 +15,44 @@ export const discEffects: DiscEffect[] = [
     },
   },
   {
+    id: "df-sword",
+    name: "折枝の刀歌",
+    role: Role.Attack,
+    description: "異常掌握が115Pt以上の時、装備者の会心ダメージ+30%。任意のメンバーが敵に[凍結]効果を付与した時、または[砕氷]効果を発動した時、装備者の会心率+12%。継続時間15秒。",
+    fourEffects: {
+      critDamage: 30,
+      critRate: 12,
+    },
+    twoEffects: {
+      critDamage: 16,
+    },
+  },
+  {
+    id: "df-puff",
+    name: "パファー・エレクトロ",
+    role: Role.Attack,
+    description: "『終結スキル』の与ダメージ+20%。『終結スキル』発動時、装備者の攻撃力+15%、継続時間12秒。",
+    fourEffects: {
+      damageBonus: 20,
+      atk: 15,
+    },
+    twoEffects: {
+      PENRate: 8,
+    },
+  },
+  {
+    id: "df-hormon",
+    name: "ホルモン・パンク",
+    role: Role.Attack,
+    description: "接敵状態かつ操作中のメンバーになった時、装備者の攻撃力+25%、継続時間10秒。20秒に1回のみ発動可能。",
+    fourEffects: {
+      atk: 25,
+    },
+    twoEffects: {
+      atk: 10,
+    },
+  },
+  {
     id: "df-shun",
     name: "純白の行歌",
     role: Role.Attack,

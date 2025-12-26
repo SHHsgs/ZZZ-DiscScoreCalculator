@@ -11,6 +11,7 @@ export type EngineEquipmentAdvancedStats = {
   critRate?: number; // 会心率（%なら 5 -> 5%）
   critDamage?: number; // 会心ダメージ（%なら 50 -> 50%）
   energyRecharge?: number; // エネルギー回復（%）
+  PENRatio?: number; // 貫通率（%）
 };
 
 export type EngineEquipmentEffects = {
@@ -24,6 +25,7 @@ export type EngineEquipmentEffects = {
   sheerForce?: number; // 透徹ダメージ（%）
   hpPercent?: number; // HP増加（%）
   registerDeffence?: number; // 防御無視（%）
+  PENRatio?: number; // 貫通率（%）
 };
 
 export type EngineEquipment = {

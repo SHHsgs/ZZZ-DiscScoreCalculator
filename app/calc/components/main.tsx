@@ -8,6 +8,7 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
+import InfoTooltip from "@/app/components/InfoTooltip";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -23,7 +24,8 @@ export default function Main() {
     return ae.value == selectedAgent?.motif;
   })?.value
   ?? attackEquipmentOptions[0]?.value);
-  const [c, setC] = useState("opt1");
+  const [disc1st, setDisc1st] = useState("df-wood");
+  const [disc2nd, setDisc2nd] = useState("df-sword");
 
   const [supportAgent, setSupportAgent] = useState("アストラ");
   const [supportEngineEquipment, setSupportEngineEquipment] = useState("ee-lu");
@@ -71,28 +73,87 @@ export default function Main() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">タイトル</h1>
+      <h1 className="text-2xl font-bold mb-4">ディスクの火力数値化ツール</h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">アタッカー</span></div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            アタッカー
+          </span>
+        </div>
         <PullDown label="エージェント" value={a} onChange={selectAgent} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
-        <PullDown label="4セット" value={c} onChange={setC} options={genericOptions} />
+        <PullDown label="4セット" value={disc1st} onChange={setDisc1st} options={genericOptions} />
+        <PullDown label="2セット" value={disc2nd} onChange={setDisc2nd} options={genericOptions} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">撃破</span></div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            撃破
+          </span>
+        </div>
         <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
         <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions} />
         <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 mb-4">
-        <div className="relative"><span className="absolute bottom-2 w-full text-center">支援</span></div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
+        <div className="relative min-h-[2rem] sm:min-h-0">
+          <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
+            支援・防護
+          </span>
+        </div>
         <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
         <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
+
+      <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率
+        <InfoTooltip width={128}>
+          ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
+          ・プルダウンの選択によって目盛りの刻み方が変わることがあります。<br />
+          ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので<br />
+          　気をつけてください。<br />
+          ・貫通率、属性ダメージはグラフの通りですがHP、攻撃、会心ダメ、<br />
+          　マスタリーはサブステがあるのでバランスに気をつけてください。<br />
+          　（サブステ込みで数値化できるようにしたい）
+        </InfoTooltip>
+      </h2>
+
+      {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
+
+      {/* derive selected objects to pass into BarChart */}
+      {(() => {
+        const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
+        const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
+        const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
+        const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
+        const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
+        const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
+        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
+        const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
+        const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
+        const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
+        return (
+          <BarChart
+            // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
+            highlightIndices={[]}
+            width={700}
+            height={300}
+            selectedCharacter={selectedCharacter}
+            selectedCharacter2={selectedCharacter2}
+            selectedCharacter3={selectedCharacter3}
+            selectedEngineEquipment={selectedEngineEquipment}
+            selectedEngineEquipment2={selectedEngineEquipment2}
+            selectedEngineEquipment3={selectedEngineEquipment3}
+            selectedDiscFour1={selectedDiscFourSet}
+            selectedDiscFour2={selectedDiscFourSet2}
+            selectedDiscFour3={selectedDiscFourSet3}
+            selectedDiscTwo1={selectedDiscTwoSet}
+          />
+        );
+      })()}
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
       <span className="text-sm opacity-75">ここを変えても何も起きません</span>
@@ -134,40 +195,6 @@ export default function Main() {
           </div>
         </div>
       </div>
-      <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
-      <div className="text-sm opacity-75">5番だけ実装済み</div>
-      <div className="text-sm opacity-75 mb-2">プルダウンの選択によって目盛りの刻み方が変わることがあります</div>
-      {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
-
-      {/* derive selected objects to pass into BarChart */}
-      {(() => {
-        const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
-        const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
-        const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
-        const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
-        const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
-        const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
-        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === c) ?? discEffects[0];
-        const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
-        const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
-        return (
-          <BarChart
-            // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
-            highlightIndices={[]}
-            width={700}
-            height={300}
-            selectedCharacter={selectedCharacter}
-            selectedCharacter2={selectedCharacter2}
-            selectedCharacter3={selectedCharacter3}
-            selectedEngineEquipment={selectedEngineEquipment}
-            selectedEngineEquipment2={selectedEngineEquipment2}
-            selectedEngineEquipment3={selectedEngineEquipment3}
-            selectedDisc={selectedDiscFourSet}
-            selectedDisc2={selectedDiscFourSet2}
-            selectedDisc3={selectedDiscFourSet3}
-          />
-        );
-      })()}
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】サブステの火力上昇率</h2>
       <span className="text-sm opacity-75">個数が増えるほど１つあたりの効果は減少します。</span>
