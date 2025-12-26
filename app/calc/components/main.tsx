@@ -97,46 +97,6 @@ export default function Main() {
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
 
-      <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
-      <span className="text-sm opacity-75">ここを変えても何も起きません</span>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"1.HP"} value="2200" options={[{ value: "2200", label: "2200" }]} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"6."} value={g6} onChange={setG6} options={g6Options} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"2.攻撃"} value="316" options={[{ value: "316", label: "316" }]} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"5."} value={g5} onChange={setG5} options={g5Options} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"3.防御"} value="184" options={[{ value: "184", label: "184" }]} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <div className="flex-1">
-            <PullDown label={"4."} value={g4} onChange={setG4} options={g4Options} />
-          </div>
-        </div>
-      </div>
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率
         <InfoTooltip width={128}>
           ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
@@ -180,6 +140,47 @@ export default function Main() {
           />
         );
       })()}
+
+      <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
+      <span className="text-sm opacity-75">ここを変えても何も起きません</span>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"1.HP"} value="2200" options={[{ value: "2200", label: "2200" }]} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"6."} value={g6} onChange={setG6} options={g6Options} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"2.攻撃"} value="316" options={[{ value: "316", label: "316" }]} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"5."} value={g5} onChange={setG5} options={g5Options} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"3.防御"} value="184" options={[{ value: "184", label: "184" }]} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <PullDown label={"4."} value={g4} onChange={setG4} options={g4Options} />
+          </div>
+        </div>
+      </div>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】サブステの火力上昇率</h2>
       <span className="text-sm opacity-75">個数が増えるほど１つあたりの効果は減少します。</span>
