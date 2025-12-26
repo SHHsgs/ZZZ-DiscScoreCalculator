@@ -15,6 +15,19 @@ export const discEffects: DiscEffect[] = [
     },
   },
   {
+    id: "df-shun",
+    name: "純白の行歌",
+    role: Role.Attack,
+    description: "装備者が任意の『エーテルベール』効果を受けている時、自身の会心率+10%。『エーテルベール』終了後でも、この効果は15秒継続する。装備者が[強攻]メンバーの場合、『エーテルベール』を発動または『エーテルベール』の継続時間を延長した際、自身の会心率10%、攻撃力+10%、重複して発動すると継続時間が更新される。",
+    fourEffects: {
+      atk: 10,
+      critRate: 20,
+    },
+    twoEffects: {
+      damageBonus: 10,
+    },
+  },
+  {
     id: "df-ungaku",
     name: "雲嶽",
     role: Role.Rupture,

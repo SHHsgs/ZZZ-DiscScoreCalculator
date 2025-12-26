@@ -12,11 +12,11 @@ import { useSearchParams } from "next/navigation";
 export default function Main() {
   const searchParams = useSearchParams();
   const agentOptions = characters.filter((ch) => [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
-  const supportAgentOptions = characters.filter((ch) => Role.Support === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
+  const supportAgentOptions = characters.filter((ch) => [Role.Support, Role.Defense].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
   const stunAgentOptions = characters.filter((ch) => Role.Stun === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const [a, setA] = useState(searchParams.get("agent") ?? agentOptions[0]?.value ?? "");
   const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Rupture].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
-  const supportEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Support).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const supportEquipmentOptions = engineEquipments.filter((eq) => [Role.Support, Role.Defense].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const stunEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Stun).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const [b, setB] = useState(attackEquipmentOptions.find((ae) => {
     const selectedAgent = characters.find((agent) => agent.name === a);

@@ -4,6 +4,22 @@ import { EngineEquipment } from "../../types/engineEquipment";
 // EngineEquipment データ。画面表示はしない。
 export const engineEquipments: EngineEquipment[] = [
   {
+    id: "ee-shun",
+    name: "孤光彩雲",
+    attributes: [Attribute.Physical],
+    baseAttack: 743,
+    advancedStats: {
+      critDamage: 48,
+    },
+    role: Role.Attack,
+    effects: {
+      resistanceIgnore: 20,
+      damageBonus: 25,
+      critDamage: 25,
+    },
+    note: "瞬光のモチーフ音動機。",
+  },
+  {
     id: "ee-neko",
     name: "鋼の肉球",
     attributes: [Attribute.Physical],
@@ -240,6 +256,21 @@ export const engineEquipments: EngineEquipment[] = [
     note: "リュシアのモチーフ音動機。",
   },
   {
+    id: "ee-zhao",
+    name: "甘さ控えめ雪うさぎ",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+      hp: 30,
+    },
+    role: Role.Defense,
+    effects: {
+      critDamage: 30,
+      atk: 10
+    },
+    note: "リュシアのモチーフ音動機。",
+  },
+  {
     id: "ee-koleda",
     name: "燃獄ギア",
     attributes: [],
@@ -250,6 +281,19 @@ export const engineEquipments: EngineEquipment[] = [
     effects: {
     },
     note: "クレタのモチーフ音動機。",
+  },
+  {
+    id: "ee-dyarin",
+    name: "昨夜からの着信",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+    },
+    role: Role.Stun,
+    effects: {
+      critDamage: 30,
+    },
+    note: "ダイアリンのモチーフ音動機。",
   },
 ];
 
