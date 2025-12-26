@@ -3,6 +3,26 @@ import { Attribute, Character, Role } from "../../types/character";
 // サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
+    name: "瞬光（仮）",
+    role: Role.Attack,
+    attribute: Attribute.Physical,
+    motif: "ee-shun",
+    // 以下仮で儀玄のステ
+    baseHp: 7560,
+    baseAtk: 872+75,
+    baseDef: 441,
+    baseImpact: 93,
+    baseAbnormalControl: 92,
+    baseAbnormalMastery: 90,
+    // 以上
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      critRate: 30,
+      damageBonus: 25,
+    },
+  },
+  {
     name: "猫又",
     role: Role.Attack,
     attribute: Attribute.Physical,
@@ -267,6 +287,24 @@ export const characters: Character[] = [
     },
   },
   {
+    name: "照",
+    role: Role.Defense,
+    attribute: Attribute.Ice,
+    motif: "ee-zhao",
+    baseHp: 0,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      atkValue: 1000,
+      damageBonus: 40,
+    },
+  },
+  {
     name: "福福",
     role: Role.Stun,
     attribute: Attribute.Fire,
@@ -282,6 +320,23 @@ export const characters: Character[] = [
     buff: {
       critDamage: 30,
       damageBonus: 20, // 連携のみだが、終結は40、その他は無いため平均して20とする
+    },
+  },
+  {
+    name: "ダイアリン",
+    role: Role.Stun,
+    attribute: Attribute.Physical,
+    motif: "ee-dyarin",
+    baseHp: 0,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      damageBonus: 40,
     },
   },
 ];
