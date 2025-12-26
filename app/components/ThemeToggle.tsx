@@ -39,18 +39,18 @@ export default function ThemeToggle() {
   }
 
   return (
-    <div ref={ref} className="fixed top-4 right-4 z-50 text-sm">
+    <div ref={ref} className="fixed top-4 right-4 z-50 text-sm text-gray-800">
       <button
-        aria-haspopup="menu"
+        type="button"
         aria-expanded={open}
         onClick={() => setOpen((s) => !s)}
         className="px-3 py-2 bg-white border rounded shadow-sm hover:bg-gray-50"
       >
-        Theme
+        テーマ変更
       </button>
 
       {open && (
-        <div className="mt-2 w-40 rounded border bg-white shadow-md">
+        <div className="absolute right-0 mt-2 w-40 rounded border bg-white shadow-md">
           {(["light", "dark", "gray"] as ThemeKey[]).map((k) => (
             <button
               key={k}
@@ -58,7 +58,9 @@ export default function ThemeToggle() {
                 setTheme(k);
                 setOpen(false);
               }}
-              className={`w-full text-left px-3 py-2 hover:bg-gray-100 ${theme === k ? "font-semibold" : ""}`}
+              className={`w-full text-left px-3 py-2 hover:bg-gray-100 ${
+                theme === k ? "font-semibold" : ""
+              }`}
             >
               {THEMES[k].name}
             </button>
