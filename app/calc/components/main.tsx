@@ -9,7 +9,8 @@ import BarChart from "../../components/BarChart";
 import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
 import InfoTooltip from "@/app/components/InfoTooltip";
-import Tabs from "./Tabs";
+import Tabs from "../../components/Tabs";
+import StatSummary from "@/app/components/StatSummary";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -72,6 +73,17 @@ export default function Main() {
     setB(motif?.id || "ee-ive");
   };
 
+  const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
+  const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
+  const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
+  const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
+  const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
+  const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
+  const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
+  const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
+  const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
+  const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">ディスクの火力数値化ツール</h1>
@@ -125,38 +137,41 @@ export default function Main() {
               　マスタリーはサブステがあるのでバランスに気をつけてください。<br />
               　（サブステ込みで数値化できるようにしたい）
             </>,
-            content: (() => {
-              const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
-              const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
-              const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
-              const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
-              const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
-              const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
-              const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
-              const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
-              const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
-              const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
-              return (
-                <BarChart
-                  // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
-                  highlightIndices={[]}
-                  width={700}
-                  height={300}
-                  selectedCharacter={selectedCharacter}
-                  selectedCharacter2={selectedCharacter2}
-                  selectedCharacter3={selectedCharacter3}
-                  selectedEngineEquipment={selectedEngineEquipment}
-                  selectedEngineEquipment2={selectedEngineEquipment2}
-                  selectedEngineEquipment3={selectedEngineEquipment3}
-                  selectedDiscFour1={selectedDiscFourSet}
-                  selectedDiscFour2={selectedDiscFourSet2}
-                  selectedDiscFour3={selectedDiscFourSet3}
-                  selectedDiscTwo1={selectedDiscTwoSet}
-                />
-              );
-            })()
+            content: 
+              <BarChart
+                // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
+                highlightIndices={[]}
+                width={700}
+                height={300}
+                selectedCharacter={selectedCharacter}
+                selectedCharacter2={selectedCharacter2}
+                selectedCharacter3={selectedCharacter3}
+                selectedEngineEquipment={selectedEngineEquipment}
+                selectedEngineEquipment2={selectedEngineEquipment2}
+                selectedEngineEquipment3={selectedEngineEquipment3}
+                selectedDiscFour1={selectedDiscFourSet}
+                selectedDiscFour2={selectedDiscFourSet2}
+                selectedDiscFour3={selectedDiscFourSet3}
+                selectedDiscTwo1={selectedDiscTwoSet}
+              />
           } ,
-          { id: "tab2", label: "簡易まとめ", content: <div>詳細の内容</div> },
+          { id: "tab2", label: "5番について簡易まとめ", content: 
+            <>
+              <StatSummary
+                selectedCharacter={selectedCharacter}
+                // selectedCharacter2={selectedCharacter2}
+                // selectedCharacter3={selectedCharacter3}
+                selectedEngineEquipment={selectedEngineEquipment}
+                // selectedEngineEquipment2={selectedEngineEquipment2}
+                // selectedEngineEquipment3={selectedEngineEquipment3}
+                selectedDiscFour={selectedDiscFourSet}
+                // selectedDiscFour2={selectedDiscFourSet2}
+                // selectedDiscFour3={selectedDiscFourSet3}
+                // selectedDiscTwo1={selectedDiscTwoSet}
+              />
+              {/* <div className="opacity-50 text-sm m-1">※メイン貫通率＋２セットパファーとメイン攻撃％＋２セット折枝の比較</div> */}
+            </>
+          },
         ]}
       />
 
