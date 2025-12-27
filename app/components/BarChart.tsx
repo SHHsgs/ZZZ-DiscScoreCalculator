@@ -9,7 +9,6 @@ type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
 
 type Props = {
-  isSelected?: boolean;
   // highlightIndices[i] is the index of category within group i to highlight (optional)
   highlightIndices?: number[];
   width?: number;
@@ -28,7 +27,7 @@ type Props = {
   selectedDiscTwo1: DiscEffect;
 };
 
-export default function BarChart({ isSelected = true, highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
   const [isFixed6th, setIsFixed6th] = useState(true);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
@@ -269,7 +268,7 @@ export default function BarChart({ isSelected = true, highlightIndices = [], wid
   }
 
   return (
-    <div className={`w-full overflow-auto ${!isSelected ? "hidden" : ""}`}>
+    <div className="w-full overflow-auto">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }]} />
         <div className="relative w-4/3"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>

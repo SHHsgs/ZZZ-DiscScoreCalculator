@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import PullDown from "../../components/PullDown";
 import characters from "../../data/characters";
 import discEffect, { discEffects } from "../../data/discEffect";
@@ -8,7 +8,6 @@ import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
-import InfoTooltip from "@/app/components/InfoTooltip";
 import Tabs from "../../components/Tabs";
 import StatSummary from "@/app/components/StatSummary";
 
