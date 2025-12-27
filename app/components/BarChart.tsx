@@ -9,6 +9,7 @@ type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
 
 type Props = {
+  isSelected?: boolean;
   // highlightIndices[i] is the index of category within group i to highlight (optional)
   highlightIndices?: number[];
   width?: number;
@@ -27,7 +28,8 @@ type Props = {
   selectedDiscTwo1: DiscEffect;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
+export default function BarChart({ isSelected = true, highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
+  const [isFixed6th, setIsFixed6th] = useState(true);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
     // 会心率
@@ -109,7 +111,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     + 30; // 5番メイン 固定 30%
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
-  function computeG5HP() {
+  function computeG5HP(is6th?: boolean) {
     if (selectedCharacter?.role !== Role.Rupture) {
       return 0;
     }
@@ -123,10 +125,12 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const beforeHp = (baseHp * (1 + (bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
     const afterHp = (baseHp * (1 + (bosusHpRateMain + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
 
+    const atkPercentInStatus = (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0) + (selectedEngineEquipment.advancedStats.atk ?? 0)
+    + ((isFixed6th && !is6th) ? 30 : 0);
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
     + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
     + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
-    const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0) + (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0) + bonusAttackNumMain))
+    const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)
     + (selectedCharacter2?.buff?.atkValue || 0)
     + (selectedCharacter3?.buff?.atkValue || 0);
@@ -135,7 +139,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
     return (afterSheerForce / beforeSheerForce) * 100 - 100;
   } // 26 HP%
-  function computeG5Atk() {
+  function computeG5Atk(is6th?: boolean) {
     // 攻撃力% の計算:
     // baseAttack: 選択キャラの baseAtk
     // bonusAttackRate: 5番メイン 固定 30%
@@ -146,7 +150,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const bonusAttackRate = 30;
     const bonusAttackNumMain = 316;
     const eeBaseAttack = selectedEngineEquipment?.baseAttack ?? 0;
-    const attackRateInStatus = selectedEngineEquipment?.advancedStats?.atk ?? 0 + (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0);
+    const attackRateInStatus = selectedEngineEquipment?.advancedStats?.atk ?? 0 + (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0)
+    + ((isFixed6th && !is6th) ? bonusAttackRate : 0);
 
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
     + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
@@ -170,8 +175,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   }
   function computeG5Def() { return 0; } // 15 防御力%
 
-  function computeG6A() { return computeG5HP(); } // 32
-  function computeG6B() { return computeG5Atk(); } // 25
+  function computeG6A() { return computeG5HP(true); } // 32
+  function computeG6B() { return computeG5Atk(true); } // 25
   function computeG6C() { return computeG5Def(); } // 30
 
   const groups: Group[] = [
@@ -264,10 +269,34 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   }
 
   return (
-    <div className="w-full overflow-auto">
+    <div className={`w-full overflow-auto ${!isSelected ? "hidden" : ""}`}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }]} />
         <div className="relative w-4/3"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>
+      </div>
+      <div className="flex items-center mb-2">
+        <input
+          type="checkbox"
+          name="isFixed6th"
+          id="isFixed6th"
+          checked={isFixed6th}
+          onChange={(e) => setIsFixed6th(e.target.checked)}
+          className="
+            h-5 w-5
+            appearance-none
+            rounded
+            border border-slate-400
+            bg-white
+            transition
+            checked:bg-slate-600
+            checked:border-slate-600
+            focus:outline-none
+            focus:ring-2
+            focus:ring-slate-300
+            m-0.5
+          "
+        />
+        <label htmlFor="isFixed6th" className="pl-2 text-sm">6番を攻撃力/HPに固定</label>
       </div>
       <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} role="img" aria-label="Bar chart">
           <defs>
@@ -300,7 +329,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
           const groupInnerTotalWidth = catCount * catWidth + (catCount - 1) * catGap;
           const offset = Math.max(0, (groupWidth - groupInnerTotalWidth) / 2);
           return (
-            <g key={g.name}>
+            <g key={g.name} className={(isFixed6th && g.name == "6番") ? "opacity-25" : ""}>
               {/* group label: 下方向に余白を確保（全グループ共通） */}
               <text className="label" x={gx + groupWidth / 2} y={padding.top + 20} textAnchor="middle">
                 {g.name}
