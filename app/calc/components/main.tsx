@@ -9,6 +9,7 @@ import BarChart from "../../components/BarChart";
 import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
 import InfoTooltip from "@/app/components/InfoTooltip";
+import Tabs from "./Tabs";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -109,51 +110,55 @@ export default function Main() {
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
 
-      <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率
-        <InfoTooltip>
-          ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
-          ・プルダウンの選択によって目盛りの刻み方が変わることがあります。<br />
-          ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので<br />
-          　気をつけてください。<br />
-          ・貫通率、属性ダメージはグラフの通りですがHP、攻撃、会心ダメ、<br />
-          　マスタリーはサブステがあるのでバランスに気をつけてください。<br />
-          　（サブステ込みで数値化できるようにしたい）
-        </InfoTooltip>
-      </h2>
+      <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
 
-      {/* 課題：2セット効果含める？→2セット効果と重複する5番メインは他にない(使わない)ので含めるでOK */}
-
-      {/* derive selected objects to pass into BarChart */}
-      {(() => {
-        const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
-        const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
-        const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
-        const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
-        const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
-        const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
-        const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
-        const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
-        const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
-        const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
-        return (
-          <BarChart
-            // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
-            highlightIndices={[]}
-            width={700}
-            height={300}
-            selectedCharacter={selectedCharacter}
-            selectedCharacter2={selectedCharacter2}
-            selectedCharacter3={selectedCharacter3}
-            selectedEngineEquipment={selectedEngineEquipment}
-            selectedEngineEquipment2={selectedEngineEquipment2}
-            selectedEngineEquipment3={selectedEngineEquipment3}
-            selectedDiscFour1={selectedDiscFourSet}
-            selectedDiscFour2={selectedDiscFourSet2}
-            selectedDiscFour3={selectedDiscFourSet3}
-            selectedDiscTwo1={selectedDiscTwoSet}
-          />
-        );
-      })()}
+      <Tabs
+        tabs={[
+          {
+            id: "barChart", label: "グラフでの比較",
+            toolTipText: <>
+              ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
+              ・プルダウンの選択によって目盛りの刻み方が変わることがあります。<br />
+              ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので<br />
+              　気をつけてください。<br />
+              ・貫通率、属性ダメージはグラフの通りですがHP、攻撃、会心ダメ、<br />
+              　マスタリーはサブステがあるのでバランスに気をつけてください。<br />
+              　（サブステ込みで数値化できるようにしたい）
+            </>,
+            content: (() => {
+              const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
+              const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
+              const selectedCharacter3 = characters.find((ch) => ch.name === supportAgent) ?? characters[0];
+              const selectedEngineEquipment = engineEquipments.find((eq) => (eq.id ?? eq.name) === b) ?? engineEquipments[0];
+              const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
+              const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
+              const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
+              const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
+              const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
+              const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
+              return (
+                <BarChart
+                  // highlightIndices: index per group to emphasize (e.g. highlight B in group 4, C in group 5, A in group 6)
+                  highlightIndices={[]}
+                  width={700}
+                  height={300}
+                  selectedCharacter={selectedCharacter}
+                  selectedCharacter2={selectedCharacter2}
+                  selectedCharacter3={selectedCharacter3}
+                  selectedEngineEquipment={selectedEngineEquipment}
+                  selectedEngineEquipment2={selectedEngineEquipment2}
+                  selectedEngineEquipment3={selectedEngineEquipment3}
+                  selectedDiscFour1={selectedDiscFourSet}
+                  selectedDiscFour2={selectedDiscFourSet2}
+                  selectedDiscFour3={selectedDiscFourSet3}
+                  selectedDiscTwo1={selectedDiscTwoSet}
+                />
+              );
+            })()
+          } ,
+          { id: "tab2", label: "簡易まとめ", content: <div>詳細の内容</div> },
+        ]}
+      />
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
       <span className="text-sm opacity-75">ここを変えても何も起きません</span>

@@ -41,7 +41,7 @@ export default function InfoTooltip({ children: content }: Props) {
             absolute left-full bottom-0 z-50 ml-2 w-128
             rounded-md border border-slate-400
             bg-slate-200 p-3 text-sm text-slate-900
-            shadow-lg font-normal
+            shadow-lg font-normal text-left
           `}
         >
           {/* 縁付き三角（下端基準） */}
