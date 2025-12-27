@@ -110,7 +110,7 @@ export default function Main() {
       </div>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率
-        <InfoTooltip width={128}>
+        <InfoTooltip>
           ・サブステを含まず、ディスク２セット、４セット効果を含みます。<br />
           ・プルダウンの選択によって目盛りの刻み方が変わることがあります。<br />
           ・4番は会心率が高くなりがちですがサブステの率が腐るのが早くなるので<br />
