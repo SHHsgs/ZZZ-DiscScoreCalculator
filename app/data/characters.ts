@@ -9,7 +9,7 @@ export const characters: Character[] = [
     motif: "ee-shun",
     // 以下仮で儀玄のステ
     baseHp: 7560,
-    baseAtk: 872+75,
+    baseAtk: 886+75, // 先行から計算
     baseDef: 441,
     baseImpact: 93,
     baseAbnormalControl: 92,
