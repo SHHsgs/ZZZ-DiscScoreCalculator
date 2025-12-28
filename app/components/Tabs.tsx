@@ -15,19 +15,19 @@ export default function Tabs({ tabs }: { tabs: Tab[] }) {
   return (
     <div>
       {/* タブヘッダー */}
-      <div className="flex border-b border-slate-300">
+      <div className="flex border-b border-slate-400">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setActiveId(tab.id)}
             className={`
-              px-4 py-2 -mb-px text-sm font-medium
+              px-4 py-2 -mb-px text-sm
               border-b-2 transition
               ${
                 activeId === tab.id
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-slate-500 hover:text-slate-700"
+                  ? "border-blue-800 text-blue-800 font-bold"
+                  : "border-transparent text-slate-500 hover:text-slate-700 font-medium"
               }
             `}
           >

@@ -67,7 +67,7 @@ export const discEffects: DiscEffect[] = [
   },
   {
     id: "df-ungaku",
-    name: "雲嶽",
+    name: "雲嶽は我に似たり",
     role: Role.Rupture,
     description: "『強化特殊スキル』、『連携スキル』、『終結スキル』を発動時、会心率+4%。この効果は最大3重まで重ね掛け可能、継続時間15秒。重複して発動すると継続時間が更新される。重数が3重に達している場合、与える透徹ダメージ+10%。",
     fourEffects: {
@@ -80,7 +80,7 @@ export const discEffects: DiscEffect[] = [
   },
   {
     id: "df-taizan",
-    name: "大山",
+    name: "大山を統べる者",
     role: Role.Stun,
     description: "装備者が[撃破]メンバーの場合、『強化特殊スキル』または『連携スキル』発動時、メンバー全員の会心ダメージ+15%。装備者の会心率が50%以上の場合、会心ダメージがさらに+15%、継続時間15秒、重複して発動すると継続時間が更新される。同じパッシブ効果は重ね掛け不可。",
     fourEffects: {
@@ -91,11 +91,22 @@ export const discEffects: DiscEffect[] = [
   },
   {
     id: "df-gekko",
-    name: "月光",
+    name: "月光騎士の讃歌",
     role: Role.Support,
     description: "装備者が[支援]メンバーの場合、『強化特殊スキル』または『終結スキル』を発動すると、メンバー全員の与ダメージ+18%、継続時間25秒、重複して発動すると継続時間が更新される。同じパッシブ効果は重ね掛け不可。",
     fourEffects: {
       damageBonus: 18,
+    },
+    twoEffects: {
+    },
+  },
+  {
+    id: "df-swing",
+    name: "スイング・ジャズ",
+    role: null,
+    description: "『連携スキル』または『終結スキル』発動時、チーム全体の与ダメージ+15%、継続時間12秒。同じパッシブ効果は重ね掛け不可。",
+    fourEffects: {
+      damageBonus: 15,
     },
     twoEffects: {
     },

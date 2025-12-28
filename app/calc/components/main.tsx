@@ -17,12 +17,14 @@ import { BuffInput } from "./externalBuffs";
 export default function Main() {
   const searchParams = useSearchParams();
   const agentOptions = characters.filter((ch) => [Role.Attack, Role.Rupture].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
-  const supportAgentOptions = characters.filter((ch) => [Role.Support, Role.Defense].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
+  const supportAgentOptions = characters.filter((ch) => [Role.Support].includes(ch.role)).map((ch) => ({ value: ch.name, label: ch.name }));
   const stunAgentOptions = characters.filter((ch) => Role.Stun === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
+  const deffenceAgentOptions = characters.filter((ch) => Role.Defense === ch.role).map((ch) => ({ value: ch.name, label: ch.name }));
   const [a, setA] = useState(searchParams.get("agent") ?? agentOptions[0]?.value ?? "");
   const attackEquipmentOptions = engineEquipments.filter((eq) => [Role.Attack, Role.Rupture].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
-  const supportEquipmentOptions = engineEquipments.filter((eq) => [Role.Support, Role.Defense].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const supportEquipmentOptions = engineEquipments.filter((eq) => [Role.Support].includes(eq.role)).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const stunEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Stun).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
+  const deffenceEquipmentOptions = engineEquipments.filter((eq) => eq.role == Role.Defense).map((eq) => ({ value: eq.id ?? eq.name, label: eq.name }));
   const [b, setB] = useState(attackEquipmentOptions.find((ae) => {
     const selectedAgent = characters.find((agent) => agent.name === a);
     return ae.value == selectedAgent?.motif;
@@ -31,12 +33,17 @@ export default function Main() {
   const [disc1st, setDisc1st] = useState("df-wood");
   const [disc2nd, setDisc2nd] = useState("df-sword");
 
+  const [stunDiscFourSet, setStunDiscFourSet] = useState("df-taizan");
+  const [supportDiscFourSet, setSupportDiscFourSet] = useState("df-taizan");
+
   const [supportAgent, setSupportAgent] = useState("アストラ");
   const [supportEngineEquipment, setSupportEngineEquipment] = useState("ee-lu");
-  const [stunAgent, setStunAgent] = useState("福福");
-  const [stunEngineEquipment, setStunEngineEquipment] = useState("ee-fufu");
+  const [stunAgent, setStunAgent] = useState("ダイアリン");
+  const [stunEngineEquipment, setStunEngineEquipment] = useState("ee-dyarin");
 
-  const genericOptions = discEffect.filter((de) => [Role.Attack, Role.Rupture].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
+  const attackerDiscSets = discEffect.filter((de) => de.role != null && [Role.Attack, Role.Rupture].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
+  const stunDiscSets = discEffect.filter((de) => [Role.Stun, Role.Defense, null].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
+  const supportDiscSets = discEffect.filter((de) => [Role.Support, Role.Defense, null].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
 
   const g4Options = [
     { value: "critRate", label: "会心率(24%)" },
@@ -74,6 +81,13 @@ export default function Main() {
     const motif = engineEquipments.find((eq) => eq.id === agent?.motif);
     setB(motif?.id || "ee-ive");
   };
+  
+  function selectStunAgent(agentName: string) {
+    setStunAgent(agentName);
+    const agent = characters.find((ch) => ch.name === agentName);
+    const motif = engineEquipments.find((eq) => eq.id === agent?.motif);
+    setStunEngineEquipment(motif?.id || "ee-dyarin");
+  };
 
   const selectedCharacter = characters.find((ch) => ch.name === a) ?? characters[0];
   const selectedCharacter2 = characters.find((ch) => ch.name === stunAgent) ?? characters[0];
@@ -82,8 +96,8 @@ export default function Main() {
   const selectedEngineEquipment2 = engineEquipments.find((eq) => (eq.id ?? eq.name) === stunEngineEquipment) ?? engineEquipments[0];
   const selectedEngineEquipment3 = engineEquipments.find((eq) => (eq.id ?? eq.name) === supportEngineEquipment) ?? engineEquipments[0];
   const selectedDiscFourSet = discEffects.find((de) => (de.id ?? de.name) === disc1st) ?? discEffects[0];
-  const selectedDiscFourSet2 = discEffects.find((de) => de.id === "df-taizan") ?? discEffects[0];
-  const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
+  const selectedDiscFourSet2 = discEffects.find((de) => de.id === stunDiscFourSet) ?? discEffects[0];
+  const selectedDiscFourSet3 = discEffects.find((de) => de.id === supportDiscFourSet) ?? discEffects[0];
   const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
 
   const [externalBuffs, setExternalBuffs] = useState<Buff>({
@@ -112,19 +126,19 @@ export default function Main() {
         </div>
         <PullDown label="エージェント" value={a} onChange={selectAgent} options={agentOptions} />
         <PullDown label="音動機" value={b} onChange={setB} options={attackEquipmentOptions} />
-        <PullDown label="4セット" value={disc1st} onChange={setDisc1st} options={genericOptions} />
-        <PullDown label="2セット" value={disc2nd} onChange={setDisc2nd} options={genericOptions} />
+        <PullDown label="4セット" value={disc1st} onChange={setDisc1st} options={attackerDiscSets} />
+        <PullDown label="2セット" value={disc2nd} onChange={setDisc2nd} options={attackerDiscSets} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <div className="relative min-h-[2rem] sm:min-h-0">
           <span className="block text-center sm:absolute sm:bottom-2 sm:left-0 sm:w-full">
-            撃破
+            撃破・防護
           </span>
         </div>
-        <PullDown value={stunAgent} onChange={setStunAgent} options={stunAgentOptions} />
-        <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions} />
-        <PullDown value="大山" options={[{ value: "df-taizan", label: "大山" }]} />
+        <PullDown value={stunAgent} onChange={selectStunAgent} options={stunAgentOptions.concat(deffenceAgentOptions)} />
+        <PullDown value={stunEngineEquipment} onChange={setStunEngineEquipment} options={stunEquipmentOptions.concat(deffenceEquipmentOptions)} />
+        <PullDown value={stunDiscFourSet} onChange={setStunDiscFourSet} options={stunDiscSets} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
@@ -133,9 +147,9 @@ export default function Main() {
             支援・防護
           </span>
         </div>
-        <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions} />
-        <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
-        <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
+        <PullDown value={supportAgent} onChange={setSupportAgent} options={supportAgentOptions.concat(deffenceAgentOptions)} />
+        <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions.concat(deffenceEquipmentOptions)} />
+        <PullDown value={supportDiscFourSet} onChange={setSupportDiscFourSet} options={supportDiscSets} />
       </div>
 
       <Accordion title="その他バフ">

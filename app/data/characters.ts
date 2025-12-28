@@ -325,7 +325,7 @@ export const characters: Character[] = [
     name: "福福",
     role: Role.Stun,
     attribute: Attribute.Fire,
-    motif: "ee-fu",
+    motif: "ee-fufu",
     baseHp: 0,
     baseAtk: 3400,
     baseDef: 0,
