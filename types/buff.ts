@@ -22,7 +22,7 @@ export const BUFF_FIELDS: { key: keyof Buff; label: string }[] = [
   { key: "damageBonus", label: "与ダメージ(%)" },
   { key: "atkRate", label: "戦闘中攻撃力(%)" },
   { key: "atkValue", label: "攻撃力固定値(実数値)" },
-  { key: "resistanceIgnore", label: "耐性無視" },
+  { key: "resistanceIgnore", label: "属性耐性無視" },
   { key: "sheerForce", label: "透徹ダメージ(%)" },
   { key: "hpPercent", label: "戦闘前HP(%)" },
   { key: "hpPercentInBattle", label: "戦闘中HP(%)" },
