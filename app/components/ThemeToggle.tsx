@@ -14,6 +14,14 @@ export default function ThemeToggle() {
   const [theme, setTheme] = useState<ThemeKey>((typeof window !== "undefined" && (localStorage.getItem("theme") as ThemeKey)) || "light");
   const ref = useRef<HTMLDivElement | null>(null);
 
+  function applyTheme(t: ThemeKey) {
+    const data = THEMES[t];
+    const root = document.documentElement;
+    root.style.setProperty("--background", data.background);
+    root.style.setProperty("--foreground", data.foreground);
+    root.style.setProperty("--accent", data.accent);
+  }
+
   useEffect(() => {
     applyTheme(theme);
     try {
@@ -30,14 +38,6 @@ export default function ThemeToggle() {
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, [open]);
-
-  function applyTheme(t: ThemeKey) {
-    const data = THEMES[t];
-    const root = document.documentElement;
-    root.style.setProperty("--background", data.background);
-    root.style.setProperty("--foreground", data.foreground);
-    root.style.setProperty("--accent", data.accent);
-  }
 
   return (
     <div ref={ref} className="fixed top-4 right-4 z-50 text-sm text-gray-800">
