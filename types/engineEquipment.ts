@@ -1,3 +1,4 @@
+import { Buff } from "./buff";
 import { Attribute, Role } from "./character";
 
 // EngineEquipment（旧: Ondouki）データの型定義
@@ -14,19 +15,6 @@ export type EngineEquipmentAdvancedStats = {
   PENRatio?: number; // 貫通率（%）
 };
 
-export type EngineEquipmentEffects = {
-  // 効果値。%表記を使う場合は数値でそのまま格納（例: 10 -> 10%）。
-  critRate?: number; // 会心率増加
-  critDamage?: number; // 会心ダメージ増加
-  damageBonus?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
-  atk?: number; // 攻撃力増加（%）
-  // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
-  resistanceIgnore?: number;
-  sheerForce?: number; // 透徹ダメージ（%）
-  hpPercent?: number; // HP増加（%）
-  registerDeffence?: number; // 防御無視（%）
-  PENRatio?: number; // 貫通率（%）
-};
 
 export type EngineEquipment = {
   id?: string; // 任意の識別子
@@ -39,7 +27,7 @@ export type EngineEquipment = {
   // 適合特性
   role: Role;
   // 装備固有の効果
-  effects: EngineEquipmentEffects;
+  effects: Buff;
   // 補足メモ（任意）
   note?: string;
 };

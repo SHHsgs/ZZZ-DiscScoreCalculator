@@ -87,7 +87,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atk: 3.5*3,
+      atkRate: 3.5*3,
     },
     note: "11号のモチーフ音動機。",
   },
@@ -101,7 +101,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atk: 7*3,
+      atkRate: 7*3,
     },
     note: "11号のモチーフ音動機。（完凸）",
   },
