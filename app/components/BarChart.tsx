@@ -92,25 +92,10 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
       : 0) // 撃破の音動機効果、属性が対応していれば加算
     + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
       ? (selectedEngineEquipment3.effects.damageBonus || 0)
-      : 0); // 支援の音動機効果、属性が対応していれば加算
-    const afterDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0)
-    + (selectedCharacter2.buff.damageBonus || 0)
-    + (selectedCharacter3.buff.damageBonus || 0)
-    + (selectedDiscTwo1.twoEffects.damageBonus || 0)
-    + (selectedDiscFour1.twoEffects.damageBonus || 0)
-    + (selectedDiscFour1.fourEffects.damageBonus || 0)
-    + (selectedDiscFour2.fourEffects.damageBonus || 0)
-    + (selectedDiscFour3.fourEffects.damageBonus || 0)
-    + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
-      ? (selectedEngineEquipment.effects.damageBonus || 0)
-      : 0)
-    + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
-      ? (selectedEngineEquipment2.effects.damageBonus || 0)
-      : 0)
-    + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
-      ? (selectedEngineEquipment3.effects.damageBonus || 0)
-      : 0)
-    + 30; // 5番メイン 固定 30%
+      : 0) // 支援の音動機効果、属性が対応していれば加算
+    + (externalBuffs.damageBonus || 0) // 外部バフ
+    ;
+    const afterDmgBonus = beforeDmgBonus + 30; // 5番メイン 固定 30%
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
   function computeG5HP(is6th?: boolean) {

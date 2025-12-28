@@ -141,7 +141,7 @@ export default function Main() {
       <Accordion title="その他バフ">
         <>
           <div className="text-gray-700">凸効果など上記で選択できないものを入力してください。</div>
-          <div className="text-gray-700">※一旦防御無視だけ対応</div>
+          <div className="text-gray-700">※一旦防御無視と与ダメだけ対応</div>
           <BuffInput value={externalBuffs} onChange={setExternalBuffs} />;
         </>
       </Accordion>
