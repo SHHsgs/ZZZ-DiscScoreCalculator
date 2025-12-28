@@ -287,7 +287,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
       </div>
       <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} role="img" aria-label="Bar chart">
           <defs>
-            <style>{`.axis{stroke:#9ca3af;stroke-width:1}.label{fill:#6b7280;font-size:12px;font-family:Inter,Arial,sans-serif}`}</style>
+            <style>{`.axis{stroke:#9ca3af;stroke-width:1}.label{fill:var(--foreground);opacity:70%;font-size:12px;font-family:Inter,Arial,sans-serif}`}</style>
           </defs>
 
         {/* y grid and labels */}
