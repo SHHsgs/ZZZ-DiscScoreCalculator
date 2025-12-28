@@ -15,3 +15,18 @@ export type Buff = {
   registerDeffence?: number; // 防御無視（%）
   PENRatio?: number; // 貫通率（%）
 };
+
+export const BUFF_FIELDS: { key: keyof Buff; label: string }[] = [
+  { key: "critRate", label: "会心率(%)" },
+  { key: "critDamage", label: "会心ダメージ(%)" },
+  { key: "damageBonus", label: "与ダメージ(%)" },
+  { key: "atkRate", label: "戦闘中攻撃力(%)" },
+  { key: "atkValue", label: "攻撃力固定値(実数値)" },
+  { key: "resistanceIgnore", label: "耐性無視" },
+  { key: "sheerForce", label: "透徹ダメージ(%)" },
+  { key: "hpPercent", label: "戦闘前HP(%)" },
+  { key: "hpPercentInBattle", label: "戦闘中HP(%)" },
+  { key: "sheerForcePowerNum", label: "透徹力固定値(実数値)" },
+  { key: "registerDeffence", label: "防御無視(%)" },
+  { key: "PENRatio", label: "貫通率(%)" },
+];

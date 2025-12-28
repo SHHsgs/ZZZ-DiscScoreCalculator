@@ -4,6 +4,7 @@ import { Character, Role } from "../../types/character";
 import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
+import { Buff } from "@/types/buff";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -25,9 +26,10 @@ type Props = {
   selectedDiscFour2: DiscEffect;
   selectedDiscFour3: DiscEffect;
   selectedDiscTwo1: DiscEffect;
+  externalBuffs: Buff;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1 }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1, externalBuffs }: Props) {
   const [isFixed6th, setIsFixed6th] = useState(true);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
@@ -66,7 +68,8 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     + (selectedCharacter2.buff.PENRatio || 0)
     + (selectedCharacter3.buff.PENRatio || 0)
     const registerDeffence = selectedCharacter.buff.registerDeffence || 0 + (selectedCharacter2.buff.registerDeffence || 0) + (selectedCharacter3.buff.registerDeffence || 0)
-    + (selectedEngineEquipment.effects.registerDeffence || 0) + (selectedEngineEquipment2.effects.registerDeffence || 0) + (selectedEngineEquipment3.effects.registerDeffence || 0);
+    + (selectedEngineEquipment.effects.registerDeffence || 0) + (selectedEngineEquipment2.effects.registerDeffence || 0) + (selectedEngineEquipment3.effects.registerDeffence || 0)
+    + (externalBuffs.registerDeffence || 0);
     const beforeDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - PENRetio / 100);
     const afterDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - (PENRetio + 24) / 100); // ここで貫通値は扱わない
     return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
