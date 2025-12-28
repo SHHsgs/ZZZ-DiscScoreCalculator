@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PullDown from "../../components/PullDown";
 import characters from "../../data/characters";
-import discEffect, { discEffects } from "../../data/discEffect";
+import discEffect, { discEffects } from "../../data/discEffects";
 import engineEquipments from "../../data/engineEquipments";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";

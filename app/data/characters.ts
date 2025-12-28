@@ -89,7 +89,8 @@ export const characters: Character[] = [
     baseCritRate: 5+4.8*3,
     baseCritDamage: 50,
     buff: {
-      damageBonus: 70+22.5,
+      damageBonus: 70,
+      fireDamageBonus: 10+22.5,
     },
   },
   {
@@ -144,7 +145,7 @@ export const characters: Character[] = [
     baseCritRate: 5+4.8*3,
     baseCritDamage: 50,
     buff: {
-      damageBonus: 36,
+      fireDamageBonus: 36, // 怒髪天の強化特殊で5*3を追加可能（発動時間8秒、更新あり）
       critDamage: 36,
       sheerForcePowerNum: 300,
     },
@@ -166,7 +167,7 @@ export const characters: Character[] = [
       hpPercent: 6*3,
       critRate: 10,
       critDamage: 50, // 通常と支援突撃にしか乗らない
-      damageBonus: 20+20+3*5, // +20は1凸効果、3*5は完凸効果
+      fireDamageBonus: 20+20+3*5, // +20は1凸効果、3*5は完凸効果
       resistanceIgnore: 8, // 2凸効果
       hpPercentInBattle: 8, // 4凸効果、戦闘中のみ
     },
@@ -186,7 +187,7 @@ export const characters: Character[] = [
     baseCritDamage: 50,
     buff: {
       critDamage: 100,
-      damageBonus: 3*10,
+      iceDamageBonus: 3*10,
     },
   },
   {
@@ -300,7 +301,7 @@ export const characters: Character[] = [
     buff: {
       registerDeffence: 40,
       critRate: 1.5*10,
-      // damageBonus: 25, // エーテルのみに作用するよう修正してから有効に
+      etherDamageBonus: 25,
     },
   },
   {

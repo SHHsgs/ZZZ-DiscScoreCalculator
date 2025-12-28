@@ -29,7 +29,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      damageBonus: 20,
+      physicalDamageBonus: 20,
       critDamage: 25,
     },
     note: "猫又のモチーフ音動機。",
@@ -44,7 +44,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      damageBonus: 40,
+      physicalDamageBonus: 40,
       critDamage: 50,
     },
     note: "猫又のモチーフ音動機。（完凸）",
@@ -59,7 +59,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      damageBonus: 57.5,
+      physicalDamageBonus: 57.5,
     },
     note: "ビリーのモチーフ音動機。（完凸）",
   },
@@ -73,7 +73,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      damageBonus: 4.8*15,
+      physicalDamageBonus: 4.8*15,
     },
     note: "カリンのモチーフ音動機。（完凸）",
   },
@@ -152,7 +152,7 @@ export const engineEquipments: EngineEquipment[] = [
   },
   {
     id: "ee-komano",
-    name: "燔火の朧夜",
+    name: "燔火の朧夜（完凸）",
     attributes: [Attribute.Fire],
     baseAttack: 624,
     advancedStats: {
@@ -161,9 +161,9 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Rupture,
     effects: {
       critRate: 24,
-      damageBonus: 24,
+      fireDamageBonus: 24,
     },
-    note: "狛野のモチーフ音動機。",
+    note: "狛野のモチーフ音動機。（完凸）",
   },
   {
     id: "ee-eren",
@@ -176,7 +176,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Attack,
     effects: {
       critRate: 10+10,
-      damageBonus: 25,
+      iceDamageBonus: 25,
     },
     note: "エレンのモチーフ音動機。",
   },
@@ -221,7 +221,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Rupture,
     effects: {
       critRate: 20,
-      damageBonus: 8*2,
+      etherDamageBonus: 8*2,
       sheerForce: 20,
     },
     note: "儀玄のモチーフ音動機。",

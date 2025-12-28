@@ -4,6 +4,11 @@ export type Buff = {
   critRate?: number; // 会心率増加
   critDamage?: number; // 会心ダメージ増加
   damageBonus?: number; // 与ダメージ倍率/加算（%なら 10 -> +10%）
+  physicalDamageBonus?: number; // 物理属性ダメージボーナス
+  fireDamageBonus?: number; // 炎属性ダメージボーナス
+  iceDamageBonus?: number; // 氷属性ダメージボーナス
+  electricalDamageBonus?: number; // 電気属性ダメージボーナス
+  etherDamageBonus?: number; // エーテル属性ダメージボーナス
   atkRate?: number; // 攻撃力増加（%）
   atkValue?: number; // 攻撃力増加（固定値）
   // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
