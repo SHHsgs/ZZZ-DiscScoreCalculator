@@ -10,6 +10,7 @@ import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
 import Tabs from "../../components/Tabs";
 import StatSummary from "@/app/components/StatSummary";
+import Accordion from "@/app/components/Accordion";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -120,6 +121,10 @@ export default function Main() {
         <PullDown value={supportEngineEquipment} onChange={setSupportEngineEquipment} options={supportEquipmentOptions} />
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
+
+      <Accordion title="その他バフ">
+        <div>test</div>
+      </Accordion>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
 
