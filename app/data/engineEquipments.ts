@@ -279,7 +279,7 @@ export const engineEquipments: EngineEquipment[] = [
     effects: {
       damageBonus: 24,
     },
-    note: "リュシアのモチーフ音動機。",
+    note: "ニコのモチーフ音動機。",
   },
   {
     id: "ee-zhao",
