@@ -115,7 +115,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     const atkPercentInStatus = (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0) + (selectedEngineEquipment.advancedStats.atk ?? 0)
     + ((isFixed6th && !is6th) ? 30 : 0);
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-    + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
+    + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
     + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
     const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)
@@ -141,7 +141,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     + ((isFixed6th && !is6th) ? bonusAttackRate : 0);
 
     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-    + (selectedEngineEquipment.effects.atk || 0) + (selectedEngineEquipment2.effects.atk || 0) + (selectedEngineEquipment3.effects.atk || 0)
+    + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
     + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
 
     const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + attackRateInStatus / 100) + bonusAttackNumMain)
