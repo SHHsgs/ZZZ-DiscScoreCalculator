@@ -3,18 +3,16 @@ import { Attribute, Character, Role } from "../../types/character";
 // サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
-    name: "瞬光（仮）",
+    name: "瞬光（仮）", // 先行体験での数値
     role: Role.Attack,
     attribute: Attribute.Physical,
     motif: "ee-shun",
-    // 以下仮で儀玄のステ
     baseHp: 7560,
-    baseAtk: 886+75, // 先行から計算
-    baseDef: 441,
-    baseImpact: 93,
-    baseAbnormalControl: 92,
-    baseAbnormalMastery: 90,
-    // 以上
+    baseAtk: 863+75,
+    baseDef: 606,
+    baseImpact: 83,
+    baseAbnormalControl: 94,
+    baseAbnormalMastery: 93,
     baseCritRate: 5+4.8*3,
     baseCritDamage: 50,
     buff: {
