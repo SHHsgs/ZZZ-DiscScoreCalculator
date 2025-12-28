@@ -3,11 +3,13 @@
 :root {
   --background: #e0e0e0;
   --foreground: #171717;
+  --accent: #4169e1;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -19,4 +21,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, "Source Han Sans JP", "Noto Sans JP", sans-serif;
+}
+
+.text-accent,.border-accent {
+  color: var(--accent);
 }

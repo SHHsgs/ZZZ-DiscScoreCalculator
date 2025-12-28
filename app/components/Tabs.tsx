@@ -26,7 +26,7 @@ export default function Tabs({ tabs }: { tabs: Tab[] }) {
               border-b-2 transition
               ${
                 activeId === tab.id
-                  ? "border-blue-500 text-blue-500 font-bold opacity-80"
+                  ? "border-accent text-accent font-bold"
                   : "border-transparent font-medium opacity-50 hover:opacity-80"
               }
             `}

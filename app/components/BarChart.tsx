@@ -296,7 +296,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
           const y = yForValue(v);
           return (
             <g key={i}>
-              <line x1={padding.left} x2={width - padding.right} y1={y} y2={y} stroke="#333333" strokeWidth={0.5} />
+              <line x1={padding.left} x2={width - padding.right} y1={y} y2={y} stroke="#777777ff" strokeWidth={0.5} className="opacity-80"/>
               <text className="label" x={padding.left - 8} y={y + 4} textAnchor="end">
                 {v}
               </text>

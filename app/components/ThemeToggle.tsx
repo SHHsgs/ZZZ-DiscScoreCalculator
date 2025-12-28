@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 
 type ThemeKey = "light" | "dark" | "gray";
 
-const THEMES: Record<ThemeKey, { name: string; background: string; foreground: string }> = {
-  light: { name: "Light", background: "#e0e0e0ff", foreground: "#171717" },
-  dark: { name: "Dark", background: "#0a0a0a", foreground: "#ededed" },
-  gray: { name: "Gray", background: "#3d3d3d", foreground: "#ededed" },
+const THEMES: Record<ThemeKey, { name: string; background: string; foreground: string; accent: string }> = {
+  light: { name: "Light", background: "#e0e0e0ff", foreground: "#171717", accent: "#4169e1" },
+  dark: { name: "Dark", background: "#0a0a0a", foreground: "#ededed", accent: "#4169e1" },
+  gray: { name: "Gray", background: "#3d3d3d", foreground: "#ededed", accent: "#6495ed" },
 };
 
 export default function ThemeToggle() {
@@ -36,6 +36,7 @@ export default function ThemeToggle() {
     const root = document.documentElement;
     root.style.setProperty("--background", data.background);
     root.style.setProperty("--foreground", data.foreground);
+    root.style.setProperty("--accent", data.accent);
   }
 
   return (
