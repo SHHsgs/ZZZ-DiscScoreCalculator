@@ -236,7 +236,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Support,
     effects: {
-      atk: 12, // 完凸3重を想定
+      atkRate: 12, // 完凸3重を想定
     },
     note: "ルーシーのモチーフ音動機。",
   },
@@ -266,7 +266,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Defense,
     effects: {
       critDamage: 30,
-      atk: 10
+      atkRate: 10
     },
     note: "リュシアのモチーフ音動機。",
   },
