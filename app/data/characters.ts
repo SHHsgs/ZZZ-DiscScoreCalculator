@@ -285,6 +285,25 @@ export const characters: Character[] = [
     },
   },
   {
+    name: "ニコ(完凸)",
+    role: Role.Support,
+    attribute: Attribute.Ether,
+    motif: "ee-nico",
+    baseHp: 24000,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      registerDeffence: 40,
+      critRate: 1.5*10,
+      // damageBonus: 25, // エーテルのみに作用するよう修正してから有効に
+    },
+  },
+  {
     name: "照",
     role: Role.Defense,
     attribute: Attribute.Ice,

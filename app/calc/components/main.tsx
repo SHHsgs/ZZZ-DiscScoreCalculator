@@ -10,6 +10,9 @@ import { Role } from "@/types/character";
 import { useSearchParams } from "next/navigation";
 import Tabs from "../../components/Tabs";
 import StatSummary from "@/app/components/StatSummary";
+import Accordion from "@/app/components/Accordion";
+import { Buff } from "@/types/buff";
+import { BuffInput } from "./externalBuffs";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -83,6 +86,20 @@ export default function Main() {
   const selectedDiscFourSet3 = discEffects.find((de) => de.id === "df-gekko") ?? discEffects[0];
   const selectedDiscTwoSet = discEffects.find((de) => (de.id ?? de.name) === disc2nd) ?? discEffects[0];
 
+  const [externalBuffs, setExternalBuffs] = useState<Buff>({
+    critRate: 0, // 会心率増加
+    critDamage: 0, // 会心ダメージ増加
+    damageBonus: 0, // 与ダメージ倍率/加算（%なら 10 -> +10%）
+    atkRate: 0, // 攻撃力増加（%）
+    atkValue: 0, // 攻撃力増加（固定値）
+    resistanceIgnore: 0, // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
+    sheerForce: 0, // 透徹ダメージ（%）
+    hpPercent: 0, // HP増加（%）
+    hpPercentInBattle: 0, // 戦闘中HP増加（%）
+    sheerForcePowerNum: 0, // 透徹力増加（固定値）
+    registerDeffence: 0, // 防御無視（%）
+    PENRatio: 0, // 貫通率（%）
+  });
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">ディスクの火力数値化ツール</h1>
@@ -121,6 +138,14 @@ export default function Main() {
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
 
+      <Accordion title="その他バフ">
+        <>
+          <div className="text-gray-700">凸効果など上記で選択できないものを入力してください。</div>
+          <div className="text-gray-700">※一旦防御無視だけ対応</div>
+          <BuffInput value={externalBuffs} onChange={setExternalBuffs} />;
+        </>
+      </Accordion>
+
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
 
       <Tabs
@@ -152,6 +177,7 @@ export default function Main() {
                 selectedDiscFour2={selectedDiscFourSet2}
                 selectedDiscFour3={selectedDiscFourSet3}
                 selectedDiscTwo1={selectedDiscTwoSet}
+                externalBuffs={externalBuffs}
               />
           } ,
           { id: "tab2", label: "5番について簡易まとめ", content: 

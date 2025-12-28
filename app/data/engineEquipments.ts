@@ -87,7 +87,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atk: 3.5*3,
+      atkRate: 3.5*3,
     },
     note: "11号のモチーフ音動機。",
   },
@@ -101,7 +101,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atk: 7*3,
+      atkRate: 7*3,
     },
     note: "11号のモチーフ音動機。（完凸）",
   },
@@ -227,6 +227,19 @@ export const engineEquipments: EngineEquipment[] = [
     note: "儀玄のモチーフ音動機。",
   },
   {
+    id: "ee-astra",
+    name: "優美のヴァニティ",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+    },
+    role: Role.Support,
+    effects: {
+      damageBonus: 10,
+    },
+    note: "ルーシーのモチーフ音動機。",
+  },
+  {
     id: "ee-lu",
     name: "喧嘩腰のボンバルダム",
     attributes: [],
@@ -236,7 +249,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Support,
     effects: {
-      atk: 12, // 完凸3重を想定
+      atkRate: 12, // 完凸3重を想定
     },
     note: "ルーシーのモチーフ音動機。",
   },
@@ -256,6 +269,19 @@ export const engineEquipments: EngineEquipment[] = [
     note: "リュシアのモチーフ音動機。",
   },
   {
+    id: "ee-nico",
+    name: "ザ・ボールト(完凸)",
+    attributes: [],
+    baseAttack: 624,
+    advancedStats: {
+    },
+    role: Role.Support,
+    effects: {
+      damageBonus: 24,
+    },
+    note: "リュシアのモチーフ音動機。",
+  },
+  {
     id: "ee-zhao",
     name: "甘さ控えめ雪うさぎ",
     attributes: [],
@@ -266,7 +292,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Defense,
     effects: {
       critDamage: 30,
-      atk: 10
+      atkRate: 10
     },
     note: "リュシアのモチーフ音動機。",
   },
