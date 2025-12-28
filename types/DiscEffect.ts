@@ -20,7 +20,7 @@ export type FourEffects = {
 export type DiscEffect = {
   id: string;
   name: string;
-  role: Role;
+  role: Role | null;
   description: string;
   fourEffects: FourEffects;
   twoEffects: TwoEffects;
