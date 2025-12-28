@@ -14,7 +14,7 @@ export const BuffInput = ({ value, onChange }: BuffInputProps) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+    <div className="grid grid-cols-3 gap-3 sm:grid-cols-6 mt-2">
       {BUFF_FIELDS.map(({ key, label }) => (
         <div key={key} className="flex flex-col">
           <label

@@ -138,8 +138,12 @@ export default function Main() {
         <PullDown value="月光騎士" options={[{ value: "df-gekko", label: "月光" }]} />
       </div>
 
-      <Accordion title="その他バフ ※一旦防御無視だけ有効">
-        <BuffInput value={externalBuffs} onChange={setExternalBuffs} />;
+      <Accordion title="その他バフ">
+        <>
+          <div className="text-gray-700">凸効果など上記で選択できないものを入力してください。</div>
+          <div className="text-gray-700">※一旦防御無視だけ対応</div>
+          <BuffInput value={externalBuffs} onChange={setExternalBuffs} />;
+        </>
       </Accordion>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
