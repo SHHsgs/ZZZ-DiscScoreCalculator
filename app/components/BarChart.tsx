@@ -5,7 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
+import { calculateAtkBuffPercent, calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -90,37 +90,10 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   } // 26 HP%
   function computeG5Atk(is6th?: boolean) {
     // 攻撃力% の計算:
-    // baseAttack: 選択キャラの baseAtk
-    // bonusAttackRate: 5番メイン 固定 30%
-    // bonusAttackNumMain: 2番メイン 固定 316
-    // eeBaseAttack: 選択した音動機の基礎ステ
-    // eeAdvancedAttackRate: 選択 EngineEquipment の advancedStats?.atk（% として扱う）
-    const baseAttack = selectedCharacter?.baseAtk ?? 0;
-    const bonusAttackRate = 30;
-    const bonusAttackNumMain = 316;
-    const eeBaseAttack = selectedEngineEquipment?.baseAttack ?? 0;
-    const attackRateInStatus = selectedEngineEquipment?.advancedStats?.atk ?? 0 + (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0)
-    + ((isFixed6th && !is6th) ? bonusAttackRate : 0);
-
-    const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-    + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
-    + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
-
-    const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + attackRateInStatus / 100) + bonusAttackNumMain)
-    * (1 + atkPercentInBattle / 100)
-    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
-    const afterAtk = ((baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + attackRateInStatus) / 100) + bonusAttackNumMain)
-    * (1 + atkPercentInBattle / 100)
-    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
-    if (selectedCharacter?.role === Role.Rupture) {
-      const bonusHpNumMain = 2200;
-      const hp = (selectedCharacter?.baseHp ?? 0) * (1 + (selectedEngineEquipment?.advancedStats?.hp ?? 0) / 100) + bonusHpNumMain;
-      const beforeSheerForce = hp * 0.1 + beforeAtk * 0.3;
-      const afterSheerForce = hp * 0.1 + afterAtk * 0.3;
-      return afterSheerForce/beforeSheerForce * 100 - 100;
-    } else {
-      return afterAtk/beforeAtk * 100 - 100;
-    }
+    const baseAtkPercent = (is6th || !isFixed6th) ? 0 : 30;
+    return calculateAtkBuffPercent(
+      selectedItems, baseAtkPercent, baseAtkPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    );
   }
   function computeG5Def() { return 0; } // 15 防御力%
 

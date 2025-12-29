@@ -132,3 +132,36 @@ export function calculateDmgBonusBuffPercent(selectedItems: SelectedItems, befor
     const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedItems.selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedItems.selectedCharacter3?.buff?.sheerForcePowerNum || 0);
     return (afterSheerForce / beforeSheerForce) * 100 - 100;
   }
+
+  export function calculateAtkBuffPercent(selectedItems: SelectedItems, beforeBuffRate: number, afterBuffRate: number) {
+    // 攻撃力% の計算:
+    // baseAttack: 選択キャラの baseAtk
+    // bonusAttackRate: 5番メイン 固定 30%
+    // bonusAttackNumMain: 2番メイン 固定 316
+    // eeBaseAttack: 選択した音動機の基礎ステ
+    // eeAdvancedAttackRate: 選択 EngineEquipment の advancedStats?.atk（% として扱う）
+    const baseAttack = selectedItems.selectedCharacter?.baseAtk ?? 0;
+    const bonusAttackNumMain = 316;
+    const eeBaseAttack = selectedItems.selectedEngineEquipment?.baseAttack ?? 0;
+    const attackRateInStatus = selectedItems.selectedEngineEquipment?.advancedStats?.atk ?? 0 + (selectedItems.selectedDiscFour1.twoEffects.atk ?? 0) + (selectedItems.selectedDiscTwo1.twoEffects.atk ?? 0);
+
+    const atkPercentInBattle = selectedItems.selectedCharacter.buff.atkRate || 0 + (selectedItems.selectedCharacter2.buff.atkRate || 0) + (selectedItems.selectedCharacter3.buff.atkRate || 0)
+    + (selectedItems.selectedEngineEquipment.effects.atkRate || 0) + (selectedItems.selectedEngineEquipment2.effects.atkRate || 0) + (selectedItems.selectedEngineEquipment3.effects.atkRate || 0)
+    + (selectedItems.selectedDiscFour1.fourEffects.atk || 0) + (selectedItems.selectedDiscFour2.fourEffects.atk || 0) + (selectedItems.selectedDiscFour3.fourEffects.atk || 0);
+
+    const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + (beforeBuffRate + attackRateInStatus) / 100) + bonusAttackNumMain)
+    * (1 + atkPercentInBattle / 100)
+    + (selectedItems.selectedCharacter2?.buff?.atkValue || 0) + (selectedItems.selectedCharacter3?.buff?.atkValue || 0);
+    const afterAtk = ((baseAttack + eeBaseAttack) * (1 + (afterBuffRate + attackRateInStatus) / 100) + bonusAttackNumMain)
+    * (1 + atkPercentInBattle / 100)
+    + (selectedItems.selectedCharacter2?.buff?.atkValue || 0) + (selectedItems.selectedCharacter3?.buff?.atkValue || 0);
+    if (selectedItems.selectedCharacter?.role === Role.Rupture) {
+      const bonusHpNumMain = 2200;
+      const hp = (selectedItems.selectedCharacter?.baseHp ?? 0) * (1 + (selectedItems.selectedEngineEquipment?.advancedStats?.hp ?? 0) / 100) + bonusHpNumMain;
+      const beforeSheerForce = hp * 0.1 + beforeAtk * 0.3;
+      const afterSheerForce = hp * 0.1 + afterAtk * 0.3;
+      return afterSheerForce/beforeSheerForce * 100 - 100;
+    } else {
+      return afterAtk/beforeAtk * 100 - 100;
+    }
+  }
