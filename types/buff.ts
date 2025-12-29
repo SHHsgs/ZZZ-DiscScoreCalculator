@@ -7,7 +7,7 @@ export type Buff = {
   physicalDamageBonus?: number; // 物理属性ダメージボーナス
   fireDamageBonus?: number; // 炎属性ダメージボーナス
   iceDamageBonus?: number; // 氷属性ダメージボーナス
-  electricalDamageBonus?: number; // 電気属性ダメージボーナス
+  electricDamageBonus?: number; // 電気属性ダメージボーナス
   etherDamageBonus?: number; // エーテル属性ダメージボーナス
   atkRate?: number; // 攻撃力増加（%）
   atkValue?: number; // 攻撃力増加（固定値）

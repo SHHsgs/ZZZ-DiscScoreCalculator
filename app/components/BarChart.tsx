@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Character, Role } from "../../types/character";
+import { Attribute, Character, Role } from "../../types/character";
 import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
@@ -77,22 +77,66 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG5AttrDmg() {
     // 28 属性ダメージ
     const beforeDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0) // 自己バフ
-    + (selectedCharacter2.buff.damageBonus || 0) // 撃破バフ
-    + (selectedCharacter3.buff.damageBonus || 0) // 支援バフ
+    + (() => {
+      switch(selectedCharacter.attribute) {
+        // 撃破のバフ、属性が対応していれば加算
+        case Attribute.Physical: return selectedCharacter2.buff.physicalDamageBonus || 0
+        case Attribute.Fire: return selectedCharacter2.buff.fireDamageBonus || 0
+        case Attribute.Ice: return selectedCharacter2.buff.iceDamageBonus || 0
+        case Attribute.Electric: return selectedCharacter2.buff.electricDamageBonus || 0
+        case Attribute.Ether: return selectedCharacter2.buff.etherDamageBonus || 0
+        default: return 0;
+      }
+    })()
+    + (() => {
+      switch(selectedCharacter.attribute) {
+        // 支援のバフ、属性が対応していれば加算
+        case Attribute.Physical: return selectedCharacter3.buff.physicalDamageBonus || 0
+        case Attribute.Fire: return selectedCharacter3.buff.fireDamageBonus || 0
+        case Attribute.Ice: return selectedCharacter3.buff.iceDamageBonus || 0
+        case Attribute.Electric: return selectedCharacter3.buff.electricDamageBonus || 0
+        case Attribute.Ether: return selectedCharacter3.buff.etherDamageBonus || 0
+        default: return 0;
+      }
+    })()
     + (selectedDiscTwo1.twoEffects.damageBonus || 0) // 2セットディスク効果
     + (selectedDiscFour1.twoEffects.damageBonus || 0) // 4セットディスク2セット効果
     + (selectedDiscFour1.fourEffects.damageBonus || 0) // 4セットディスク4セット効果
     + (selectedDiscFour2.fourEffects.damageBonus || 0) // 撃破ディスク4セット効果
     + (selectedDiscFour3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
-    + ((selectedEngineEquipment.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment.attributes.length === 0)
-      ? (selectedEngineEquipment.effects.damageBonus || 0)
-      : 0) // アタッカーの音動機効果、属性が対応していれば加算
-    + ((selectedEngineEquipment2.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment2.attributes.length === 0)
-      ? (selectedEngineEquipment2.effects.damageBonus || 0)
-      : 0) // 撃破の音動機効果、属性が対応していれば加算
-    + ((selectedEngineEquipment3.attributes.includes(selectedCharacter.attribute) || selectedEngineEquipment3.attributes.length === 0)
-      ? (selectedEngineEquipment3.effects.damageBonus || 0)
-      : 0) // 支援の音動機効果、属性が対応していれば加算
+    + (selectedEngineEquipment.effects.damageBonus || 0) // アタッカーの音動機効果、属性が対応していれば加算
+    + (() => {
+      switch(selectedCharacter.attribute) {
+        case Attribute.Physical: return selectedEngineEquipment.effects.physicalDamageBonus || 0
+        case Attribute.Fire: return selectedEngineEquipment.effects.fireDamageBonus || 0
+        case Attribute.Ice: return selectedEngineEquipment.effects.iceDamageBonus || 0
+        case Attribute.Electric: return selectedEngineEquipment.effects.electricDamageBonus || 0
+        case Attribute.Ether: return selectedEngineEquipment.effects.etherDamageBonus || 0
+        default: return 0;
+      }
+    })()
+    + (selectedEngineEquipment2.effects.damageBonus || 0) // 撃破の音動機効果、属性が対応していれば加算
+    + (() => {
+      switch(selectedCharacter.attribute) {
+        case Attribute.Physical: return selectedEngineEquipment2.effects.physicalDamageBonus || 0
+        case Attribute.Fire: return selectedEngineEquipment2.effects.fireDamageBonus || 0
+        case Attribute.Ice: return selectedEngineEquipment2.effects.iceDamageBonus || 0
+        case Attribute.Electric: return selectedEngineEquipment2.effects.electricDamageBonus || 0
+        case Attribute.Ether: return selectedEngineEquipment2.effects.etherDamageBonus || 0
+        default: return 0;
+      }
+    })()
+    + (selectedEngineEquipment3.effects.damageBonus || 0) // 支援の音動機効果、属性が対応していれば加算
+    + (() => {
+      switch(selectedCharacter.attribute) {
+        case Attribute.Physical: return selectedEngineEquipment3.effects.physicalDamageBonus || 0
+        case Attribute.Fire: return selectedEngineEquipment3.effects.fireDamageBonus || 0
+        case Attribute.Ice: return selectedEngineEquipment3.effects.iceDamageBonus || 0
+        case Attribute.Electric: return selectedEngineEquipment3.effects.electricDamageBonus || 0
+        case Attribute.Ether: return selectedEngineEquipment3.effects.etherDamageBonus || 0
+        default: return 0;
+      }
+    })()
     + (externalBuffs.damageBonus || 0) // 外部バフ
     ;
     const afterDmgBonus = beforeDmgBonus + 30; // 5番メイン 固定 30%
