@@ -17,6 +17,19 @@ export type SelectedItems = {
   externalBuffs: Buff;
 }
 
+export function calculateCritRateBuffPercent (selectedItems: SelectedItems, beforeBuffRate: number, afterBuffRate: number) {
+    // 会心率
+    const baseCritRate = selectedItems.selectedCharacter.baseCritRate + (selectedItems.selectedCharacter.buff.critRate || 0) + (selectedItems.selectedEngineEquipment.advancedStats.critRate || 0) + (selectedItems.selectedEngineEquipment.effects.critRate || 0) + (selectedItems.selectedDiscTwo1.twoEffects.critRate || 0) + (selectedItems.selectedDiscFour1.twoEffects.critRate || 0) + (selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
+    + (selectedItems.selectedCharacter2.buff.critRate || 0) + (selectedItems.selectedCharacter2.buff.critRate || 0) + (selectedItems.selectedEngineEquipment2.effects.critRate || 0)
+    + (selectedItems.selectedCharacter3.buff.critRate || 0) + (selectedItems.selectedCharacter3.buff.critRate || 0) + (selectedItems.selectedEngineEquipment3.effects.critRate || 0)
+    const beforeCritRate = Math.min(baseCritRate + beforeBuffRate, 100);
+    const afterCritRate = Math.min(baseCritRate + afterBuffRate, 100);
+    const cridDmg = selectedItems.selectedCharacter.baseCritDamage + (selectedItems.selectedCharacter.buff.critDamage || 0) + (selectedItems.selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (selectedItems.selectedDiscTwo1.twoEffects.critDamage || 0) + (selectedItems.selectedDiscFour1.twoEffects.critDamage || 0) + (selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
+    + (selectedItems.selectedCharacter2.buff.critDamage || 0) + (selectedItems.selectedCharacter2.buff.critDamage || 0) + (selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
+    + (selectedItems.selectedCharacter3.buff.critDamage || 0) + (selectedItems.selectedCharacter3.buff.critDamage || 0) + (selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
+    return (1 + (afterCritRate / 100) * (cridDmg / 100)) / (1 + (beforeCritRate / 100) * (cridDmg / 100)) * 100 - 100;
+}
+
 export function calculatePENRatioBuffPercent(selectedItems: SelectedItems, baseDiffence: number, beforeBuffRate: number, afterBuffRate: number) {
       // 22 貫通率
     if (selectedItems.selectedCharacter.role === Role.Rupture) {
