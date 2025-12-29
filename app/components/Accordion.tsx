@@ -32,7 +32,7 @@ export default function Accordion({
       </button>
 
       {open && (
-        <div className="pb-4 pl-1 text-sm text-slate-700">
+        <div className="pb-4 pl-1">
           {children}
         </div>
       )}

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
-  width?: number;
 };
 
 export default function InfoTooltip({ children: content }: Props) {
@@ -40,7 +39,7 @@ export default function InfoTooltip({ children: content }: Props) {
           className={`
             absolute left-full bottom-0 z-50 ml-2 w-128
             rounded-md border border-slate-400
-            bg-slate-200 p-3 text-sm text-slate-900
+            bg-slate-200 p-3 text-sm text-slate-800
             shadow-lg font-normal text-left
           `}
         >

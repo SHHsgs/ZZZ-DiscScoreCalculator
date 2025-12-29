@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PullDown from "../../components/PullDown";
 import characters from "../../data/characters";
-import discEffect, { discEffects } from "../../data/discEffect";
+import discEffect, { discEffects } from "../../data/discEffects";
 import engineEquipments from "../../data/engineEquipments";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
@@ -154,9 +154,9 @@ export default function Main() {
 
       <Accordion title="その他バフ">
         <>
-          <div className="text-gray-700">凸効果など上記で選択できないものを入力してください。</div>
-          <div className="text-gray-700">※一旦防御無視と与ダメだけ対応</div>
-          <BuffInput value={externalBuffs} onChange={setExternalBuffs} />;
+          <div className="text-sm opacity-80">凸効果など上記で選択できないものを入力してください。</div>
+          <div className="text-sm opacity-80">※一旦防御無視と与ダメだけ対応</div>
+          <BuffInput value={externalBuffs} onChange={setExternalBuffs} />
         </>
       </Accordion>
 
