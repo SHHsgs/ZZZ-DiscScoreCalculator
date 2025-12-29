@@ -5,6 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
+import { calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -31,6 +32,19 @@ type Props = {
 
 export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1, externalBuffs }: Props) {
   const [isFixed6th, setIsFixed6th] = useState(true);
+  const selectedItems: SelectedItems = {
+    selectedCharacter,
+    selectedCharacter2,
+    selectedCharacter3,
+    selectedEngineEquipment,
+    selectedEngineEquipment2,
+    selectedEngineEquipment3,
+    selectedDiscFour1,
+    selectedDiscFour2,
+    selectedDiscFour3,
+    selectedDiscTwo1,
+    externalBuffs,
+  }
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
     // 会心率
@@ -57,22 +71,11 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG4D() { return computeG5Atk(); }
   function computeG4E() { return computeG5Def(); }
 
-  const [baseDiffence, setBaseDiffence] = useState("952.8");
+  const [baseDiffence, setBaseDiffence] = useState<number>(952.8);
   function computeG5Pierce() {
-    // 22 貫通率
-    if (selectedCharacter.role === Role.Rupture) {
-      return 0;
-    }
-    const PENRetio = (selectedCharacter.buff.PENRatio || 0) + (selectedEngineEquipment.advancedStats.PENRatio || 0) + (selectedEngineEquipment.effects.PENRatio || 0)
-    + (selectedDiscFour1.twoEffects.PENRate || selectedDiscTwo1.twoEffects.PENRate || 0)
-    + (selectedCharacter2.buff.PENRatio || 0)
-    + (selectedCharacter3.buff.PENRatio || 0)
-    const registerDeffence = selectedCharacter.buff.registerDeffence || 0 + (selectedCharacter2.buff.registerDeffence || 0) + (selectedCharacter3.buff.registerDeffence || 0)
-    + (selectedEngineEquipment.effects.registerDeffence || 0) + (selectedEngineEquipment2.effects.registerDeffence || 0) + (selectedEngineEquipment3.effects.registerDeffence || 0)
-    + (externalBuffs.registerDeffence || 0);
-    const beforeDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - PENRetio / 100);
-    const afterDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - (PENRetio + 24) / 100); // ここで貫通値は扱わない
-    return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
+    return calculatePENRatioBuffPercent(
+      selectedItems, baseDiffence, 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
+    );
   }
   function computeG5AttrDmg() {
     // 28 属性ダメージ
