@@ -5,7 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { calculateAtkBuffPercent, calculateCritRateBuffPercent, calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
+import { calculateAtkBuffPercent, calculateCritDamageBuffPercent, calculateCritRateBuffPercent, calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -52,13 +52,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   }
   function computeG4B() {
     // 会心ダメ
-    const critRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDiscTwo1.twoEffects.critRate || 0) + (selectedDiscFour1.twoEffects.critRate || 0) + (selectedDiscFour1.fourEffects.critRate || 0)
-    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
-    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
-    const baseCridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDiscTwo1.twoEffects.critDamage || 0) + (selectedDiscFour1.twoEffects.critDamage || 0) + (selectedDiscFour1.fourEffects.critDamage || 0)
-    + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
-    + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
-    return (1 + (critRate / 100) * ((baseCridDmg + 48) / 100)) / (1 + (critRate / 100) * (baseCridDmg / 100)) * 100 - 100;
+    return calculateCritDamageBuffPercent(selectedItems, 0, 48)
   }
   function computeG4M() { return 0; } // 異常マスタリー
   function computeG4C() { return computeG5HP(); }
