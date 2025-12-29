@@ -5,7 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { calculateAtkBuffPercent, calculateCritDamageBuffPercent, calculateCritRateBuffPercent, calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
+import { Calculator } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -45,14 +45,15 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     selectedDiscTwo1,
     externalBuffs,
   }
+  const calculator = new Calculator(selectedItems);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
     // 会心率
-    return calculateCritRateBuffPercent(selectedItems, 0, 24);
+    return calculator.calculateCritRateBuffPercent(0, 24);
   }
   function computeG4B() {
     // 会心ダメ
-    return calculateCritDamageBuffPercent(selectedItems, 0, 48)
+    return calculator.calculateCritDamageBuffPercent(0, 48)
   }
   function computeG4M() { return 0; } // 異常マスタリー
   function computeG4C() { return computeG5HP(); }
@@ -61,26 +62,26 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   const [baseDiffence, setBaseDiffence] = useState<number>(952.8);
   function computeG5Pierce() {
-    return calculatePENRatioBuffPercent(
-      selectedItems, baseDiffence, 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
+    return calculator.calculatePENRatioBuffPercent(
+      baseDiffence, 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
     );
   }
   function computeG5AttrDmg() {
-    return calculateDmgBonusBuffPercent(
-      selectedItems, 0, 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    return calculator.calculateDmgBonusBuffPercent(
+      0, 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
     );
   }
   function computeG5HP(is6th?: boolean) {
     const baseHpPercent = (is6th || !isFixed6th) ? 0 : 30;
-    return calculateHPBuffPercent(
-      selectedItems, baseHpPercent, baseHpPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    return calculator.calculateHPBuffPercent(
+      baseHpPercent, baseHpPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
     );
   } // 26 HP%
   function computeG5Atk(is6th?: boolean) {
     // 攻撃力% の計算:
     const baseAtkPercent = (is6th || !isFixed6th) ? 0 : 30;
-    return calculateAtkBuffPercent(
-      selectedItems, baseAtkPercent, baseAtkPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    return calculator.calculateAtkBuffPercent(
+      baseAtkPercent, baseAtkPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
     );
   }
   function computeG5Def() { return 0; } // 15 防御力%
