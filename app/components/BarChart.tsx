@@ -5,7 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { calculateDmgBonusBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
+import { calculateDmgBonusBuffPercent, calculateHPBuffPercent, calculatePENRatioBuffPercent, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -83,6 +83,10 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     );
   }
   function computeG5HP(is6th?: boolean) {
+    const baseHpPercent = (is6th || !isFixed6th) ? 0 : 30;
+    return calculateHPBuffPercent(
+      selectedItems, baseHpPercent, baseHpPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    );
     if (selectedCharacter?.role !== Role.Rupture) {
       return 0;
     }

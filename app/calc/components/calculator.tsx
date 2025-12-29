@@ -104,33 +104,31 @@ export function calculateDmgBonusBuffPercent(selectedItems: SelectedItems, befor
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
 
-//   function computeG5HP(is6th?: boolean) {
-//     // is6thをBarChart側に実装
-//     // 26 HP%
-//     if (selectedCharacter?.role !== Role.Rupture) {
-//       return 0;
-//     }
-//     const baseHp = selectedCharacter?.baseHp ?? 0;
-//     const bonusHpNumMain = 2200;
-//     const bosusHpRateMain = 30; // 5番メイン 固定 30%
-//     const bonusAttackNumMain = 316;
-//     const hpPercentInBattle = selectedCharacter.buff.hpPercentInBattle || 0 + (selectedCharacter2.buff.hpPercentInBattle || 0) + (selectedCharacter3.buff.hpPercentInBattle || 0);
+  export function calculateHPBuffPercent(selectedItems: SelectedItems, beforeBuffRate: number, afterBuffRate: number) {
+    // is6thをBarChart側に実装
+    // 26 HP%
+    if (selectedItems.selectedCharacter?.role !== Role.Rupture) {
+      return 0;
+    }
+    const baseHp = selectedItems.selectedCharacter?.baseHp ?? 0;
+    const bonusHpNumMain = 2200;
+    const bonusAttackNumMain = 316;
+    const hpPercentInBattle = selectedItems.selectedCharacter.buff.hpPercentInBattle || 0 + (selectedItems.selectedCharacter2.buff.hpPercentInBattle || 0) + (selectedItems.selectedCharacter3.buff.hpPercentInBattle || 0);
 
-//     const bonusHpRate = (selectedEngineEquipment?.advancedStats?.hp ?? 0) + ((selectedDiscFour1.id === "df-ungaku" || selectedDiscTwo1.id === "df-ungaku") ? 10 : 0);
-//     const beforeHp = (baseHp * (1 + (bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
-//     const afterHp = (baseHp * (1 + (bosusHpRateMain + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
+    const bonusHpRate = (selectedItems.selectedEngineEquipment?.advancedStats?.hp ?? 0) + (selectedItems.selectedDiscFour1.twoEffects.hpPercent || 0) + (selectedItems.selectedDiscTwo1.twoEffects.hpPercent || 0);
+    const beforeHp = (baseHp * (1 + (beforeBuffRate + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
+    const afterHp = (baseHp * (1 + (afterBuffRate + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
 
-//     const atkPercentInStatus = (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0) + (selectedEngineEquipment.advancedStats.atk ?? 0)
-//     + ((isFixed6th && !is6th) ? 30 : 0);
-//     const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-//     + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
-//     + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
-//     const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
-//     * (1 + atkPercentInBattle / 100)
-//     + (selectedCharacter2?.buff?.atkValue || 0)
-//     + (selectedCharacter3?.buff?.atkValue || 0);
+    const atkPercentInStatus = (selectedItems.selectedDiscFour1.twoEffects.atk ?? 0) + (selectedItems.selectedDiscTwo1.twoEffects.atk ?? 0) + (selectedItems.selectedEngineEquipment.advancedStats.atk ?? 0);
+    const atkPercentInBattle = selectedItems.selectedCharacter.buff.atkRate || 0 + (selectedItems.selectedCharacter2.buff.atkRate || 0) + (selectedItems.selectedCharacter3.buff.atkRate || 0)
+    + (selectedItems.selectedEngineEquipment.effects.atkRate || 0) + (selectedItems.selectedEngineEquipment2.effects.atkRate || 0) + (selectedItems.selectedEngineEquipment3.effects.atkRate || 0)
+    + (selectedItems.selectedDiscFour1.fourEffects.atk || 0) + (selectedItems.selectedDiscFour2.fourEffects.atk || 0) + (selectedItems.selectedDiscFour3.fourEffects.atk || 0);
+    const atk = (((selectedItems.selectedCharacter?.baseAtk ?? 0) + (selectedItems.selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
+    * (1 + atkPercentInBattle / 100)
+    + (selectedItems.selectedCharacter2?.buff?.atkValue || 0)
+    + (selectedItems.selectedCharacter3?.buff?.atkValue || 0);
 
-//     const beforeSheerForce = beforeHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
-//     const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
-//     return (afterSheerForce / beforeSheerForce) * 100 - 100;
-//   }
+    const beforeSheerForce = beforeHp * 0.1 + atk * 0.3 + (selectedItems.selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedItems.selectedCharacter3?.buff?.sheerForcePowerNum || 0);
+    const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedItems.selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedItems.selectedCharacter3?.buff?.sheerForcePowerNum || 0);
+    return (afterSheerForce / beforeSheerForce) * 100 - 100;
+  }
