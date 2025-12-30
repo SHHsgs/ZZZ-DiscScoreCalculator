@@ -66,9 +66,9 @@ export default function IdealStatus(props: Props) {
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }]} />
-        <div className="relative w-4/3"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>
+        <div className="relative min-h-[2rem] sm:min-h-0"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>
       </div>
-      <div className="grid grid-cols-[2fr_1fr_2fr]">
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-[2fr_1fr_2fr]">
         <div className="rounded-md border border-gray-300 p-2">
           <h3 className="text-base font-medium mb-2">理想ステ</h3>
           <div className="mx-2 text-xs">
