@@ -1,5 +1,5 @@
 import { Buff } from "@/types/buff";
-import { Attribute, Character, Role } from "@/types/character";
+import { Character, Role, CharacterStatus } from "@/types/character";
 import { DiscEffect } from "@/types/DiscEffect";
 import { EngineEquipment } from "@/types/engineEquipment";
 import { Calculator } from "./calculator";
@@ -18,7 +18,7 @@ export type SelectedItems = {
   externalBuffs: Buff;
 }
 
-enum StatusType {
+export enum StatusType {
   HpValue = "HP固定値(112)",
   HpRate = "HP%(3%)",
   AtkValue = "攻撃力固定値(19)",
@@ -39,8 +39,8 @@ type SubStatusAssign = {
 
 export class DiscSubStatusOptimizer {
   private selectedItems: SelectedItems;
-  private subStatusArray: SubStatusAssign[]; // 5番属性ダメ/貫通率の場合の分配(6番HP/攻撃力前提)
-  public atkHitCount;
+  public subStatusArray: SubStatusAssign[]; // 5番属性ダメ/貫通率の場合の分配(6番HP/攻撃力前提)
+  private atkHitCount;
   private critRateHitCount;
   private critDamageHitCount;
   private hpHitCount;
@@ -88,16 +88,23 @@ export class DiscSubStatusOptimizer {
   }
 
   getStatusWithoutBattle(effectiveSubStatusCount: number) {
-    // const effectiveSubStatusArray5thAttackHP = this.subStatusArray.slice(0, effectiveSubStatusCount);
-    // const character = this.selectedItems.selectedCharacter;
-    // const engineEquipment = this.selectedItems.selectedEngineEquipment
-    // // const atkRate = (engineEquipment.advancedStats.atk || 0)
-    // const atkHitCount = effectiveSubStatusArray5thAttackHP.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
-    return {
-      atkHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.AtkRate).length,
-      critRateHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.CritRate).length,
-      critDamageHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.CritDmg).length,
-      hpHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.HpRate).length,
+    const effectiveSubStatusArray = this.subStatusArray.slice(0, effectiveSubStatusCount);
+    const character = this.selectedItems.selectedCharacter;
+    const engineEquipment = this.selectedItems.selectedEngineEquipment
+    const atkHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
+    const critRateHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritRate).length;
+    const critDamageHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
+    const hpHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
+
+    const hpInStatus = (character.baseHp) * (1 + (3 * hpHitCount) / 100) + 2200;
+    const atkInStatus = (character.baseAtk + engineEquipment.baseAttack) * (1 + ((engineEquipment.advancedStats.atk || 0) + 3 * atkHitCount) / 100 );
+    const characterStatus: CharacterStatus = {
+      hp: hpInStatus,
+      atk: atkInStatus,
+      critRate: (character.baseCritRate + ((engineEquipment.advancedStats.critRate || 0) + 2.4 * critRateHitCount)),
+      critDmg: (character.baseCritDamage + ((engineEquipment.advancedStats.critDamage || 0) + 4.8 + critDamageHitCount)),
+      sheerForce: (character.role === Role.Rupture) ? (hpInStatus + 0.1 + atkInStatus * 0.3) : 0,
     }
+    return characterStatus;
   }
 }

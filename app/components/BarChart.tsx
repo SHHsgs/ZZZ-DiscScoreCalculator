@@ -5,7 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { Calculator } from "../calc/components/calculator";
+import { Calculator, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -60,10 +60,10 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG4D() { return computeG5Atk(); }
   function computeG4E() { return computeG5Def(); }
 
-  const [baseDiffence, setBaseDiffence] = useState<number>(952.8);
+  const [baseDiffence, setBaseDiffence] = useState("952.8");
   function computeG5Pierce() {
     return calculator.calculatePENRatioBuffPercent(
-      baseDiffence, 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
+      parseFloat(baseDiffence), 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
     );
   }
   function computeG5AttrDmg() {

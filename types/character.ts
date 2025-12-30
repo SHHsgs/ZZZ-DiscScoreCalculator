@@ -46,3 +46,12 @@ export enum Role {
   Support = "支援",
   Defense = "防護",
 }
+
+// 装備込みのステータスを表す型定義
+export type CharacterStatus = {
+  hp: number;
+  atk: number;
+  critRate: number;
+  critDmg: number;
+  sheerForce: number;
+}
