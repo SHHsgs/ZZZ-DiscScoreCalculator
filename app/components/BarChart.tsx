@@ -5,6 +5,7 @@ import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
+import { Calculator, SelectedItems } from "../calc/components/calculator";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };
@@ -31,26 +32,28 @@ type Props = {
 
 export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1, externalBuffs }: Props) {
   const [isFixed6th, setIsFixed6th] = useState(true);
+  const selectedItems: SelectedItems = {
+    selectedCharacter,
+    selectedCharacter2,
+    selectedCharacter3,
+    selectedEngineEquipment,
+    selectedEngineEquipment2,
+    selectedEngineEquipment3,
+    selectedDiscFour1,
+    selectedDiscFour2,
+    selectedDiscFour3,
+    selectedDiscTwo1,
+    externalBuffs,
+  }
+  const calculator = new Calculator(selectedItems);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
   function computeG4A() {
     // 会心率
-    const baseCritRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDiscTwo1.twoEffects.critRate || 0) + (selectedDiscFour1.twoEffects.critRate || 0) + (selectedDiscFour1.fourEffects.critRate || 0)
-    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
-    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
-    const cridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDiscTwo1.twoEffects.critDamage || 0) + (selectedDiscFour1.twoEffects.critDamage || 0) + (selectedDiscFour1.fourEffects.critDamage || 0)
-    + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
-    + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
-    return (1 + ((baseCritRate + 24) / 100) * (cridDmg / 100)) / (1 + (baseCritRate / 100) * (cridDmg / 100)) * 100 - 100;
+    return calculator.calculateCritRateBuffPercent(0, 24);
   }
   function computeG4B() {
     // 会心ダメ
-    const critRate = selectedCharacter.baseCritRate + (selectedCharacter.buff.critRate || 0) + (selectedEngineEquipment.advancedStats.critRate || 0) + (selectedEngineEquipment.effects.critRate || 0) + (selectedDiscTwo1.twoEffects.critRate || 0) + (selectedDiscFour1.twoEffects.critRate || 0) + (selectedDiscFour1.fourEffects.critRate || 0)
-    + (selectedCharacter2.buff.critRate || 0) + (selectedCharacter2.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment2.effects.critRate || 0)
-    + (selectedCharacter3.buff.critRate || 0) + (selectedCharacter3.buff.critRate || 0) + (selectedEngineEquipment2.advancedStats.critRate || 0) + (selectedEngineEquipment3.effects.critRate || 0)
-    const baseCridDmg = selectedCharacter.baseCritDamage + (selectedCharacter.buff.critDamage || 0) + (selectedEngineEquipment.advancedStats.critDamage || 0) + (selectedEngineEquipment.effects.critDamage || 0) + (selectedDiscTwo1.twoEffects.critDamage || 0) + (selectedDiscFour1.twoEffects.critDamage || 0) + (selectedDiscFour1.fourEffects.critDamage || 0)
-    + (selectedCharacter2.buff.critDamage || 0) + (selectedCharacter2.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment2.effects.critDamage || 0)
-    + (selectedCharacter3.buff.critDamage || 0) + (selectedCharacter3.buff.critDamage || 0) + (selectedEngineEquipment2.advancedStats.critDamage || 0) + (selectedEngineEquipment3.effects.critDamage || 0)
-    return (1 + (critRate / 100) * ((baseCridDmg + 48) / 100)) / (1 + (critRate / 100) * (baseCridDmg / 100)) * 100 - 100;
+    return calculator.calculateCritDamageBuffPercent(0, 48)
   }
   function computeG4M() { return 0; } // 異常マスタリー
   function computeG4C() { return computeG5HP(); }
@@ -59,150 +62,27 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   const [baseDiffence, setBaseDiffence] = useState("952.8");
   function computeG5Pierce() {
-    // 22 貫通率
-    if (selectedCharacter.role === Role.Rupture) {
-      return 0;
-    }
-    const PENRetio = (selectedCharacter.buff.PENRatio || 0) + (selectedEngineEquipment.advancedStats.PENRatio || 0) + (selectedEngineEquipment.effects.PENRatio || 0)
-    + (selectedDiscFour1.twoEffects.PENRate || selectedDiscTwo1.twoEffects.PENRate || 0)
-    + (selectedCharacter2.buff.PENRatio || 0)
-    + (selectedCharacter3.buff.PENRatio || 0)
-    const registerDeffence = selectedCharacter.buff.registerDeffence || 0 + (selectedCharacter2.buff.registerDeffence || 0) + (selectedCharacter3.buff.registerDeffence || 0)
-    + (selectedEngineEquipment.effects.registerDeffence || 0) + (selectedEngineEquipment2.effects.registerDeffence || 0) + (selectedEngineEquipment3.effects.registerDeffence || 0)
-    + (externalBuffs.registerDeffence || 0);
-    const beforeDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - PENRetio / 100);
-    const afterDiffence = parseFloat(baseDiffence) * (1 - registerDeffence / 100) * (1 - (PENRetio + 24) / 100); // ここで貫通値は扱わない
-    return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
+    return calculator.calculatePENRatioBuffPercent(
+      parseFloat(baseDiffence), 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
+    );
   }
   function computeG5AttrDmg() {
-    // 28 属性ダメージ
-    const beforeDmgBonus = 100 + (selectedCharacter.buff.damageBonus || 0) // 自己バフ
-    + (() => {
-      switch(selectedCharacter.attribute) {
-        // 撃破のバフ、属性が対応していれば加算
-        case Attribute.Physical: return selectedCharacter2.buff.physicalDamageBonus || 0
-        case Attribute.Fire: return selectedCharacter2.buff.fireDamageBonus || 0
-        case Attribute.Ice: return selectedCharacter2.buff.iceDamageBonus || 0
-        case Attribute.Electric: return selectedCharacter2.buff.electricDamageBonus || 0
-        case Attribute.Ether: return selectedCharacter2.buff.etherDamageBonus || 0
-        default: return 0;
-      }
-    })()
-    + (() => {
-      switch(selectedCharacter.attribute) {
-        // 支援のバフ、属性が対応していれば加算
-        case Attribute.Physical: return selectedCharacter3.buff.physicalDamageBonus || 0
-        case Attribute.Fire: return selectedCharacter3.buff.fireDamageBonus || 0
-        case Attribute.Ice: return selectedCharacter3.buff.iceDamageBonus || 0
-        case Attribute.Electric: return selectedCharacter3.buff.electricDamageBonus || 0
-        case Attribute.Ether: return selectedCharacter3.buff.etherDamageBonus || 0
-        default: return 0;
-      }
-    })()
-    + (selectedDiscTwo1.twoEffects.damageBonus || 0) // 2セットディスク効果
-    + (selectedDiscFour1.twoEffects.damageBonus || 0) // 4セットディスク2セット効果
-    + (selectedDiscFour1.fourEffects.damageBonus || 0) // 4セットディスク4セット効果
-    + (selectedDiscFour2.fourEffects.damageBonus || 0) // 撃破ディスク4セット効果
-    + (selectedDiscFour3.fourEffects.damageBonus || 0) // 支援ディスク4セット効果
-    + (selectedEngineEquipment.effects.damageBonus || 0) // アタッカーの音動機効果、属性が対応していれば加算
-    + (() => {
-      switch(selectedCharacter.attribute) {
-        case Attribute.Physical: return selectedEngineEquipment.effects.physicalDamageBonus || 0
-        case Attribute.Fire: return selectedEngineEquipment.effects.fireDamageBonus || 0
-        case Attribute.Ice: return selectedEngineEquipment.effects.iceDamageBonus || 0
-        case Attribute.Electric: return selectedEngineEquipment.effects.electricDamageBonus || 0
-        case Attribute.Ether: return selectedEngineEquipment.effects.etherDamageBonus || 0
-        default: return 0;
-      }
-    })()
-    + (selectedEngineEquipment2.effects.damageBonus || 0) // 撃破の音動機効果、属性が対応していれば加算
-    + (() => {
-      switch(selectedCharacter.attribute) {
-        case Attribute.Physical: return selectedEngineEquipment2.effects.physicalDamageBonus || 0
-        case Attribute.Fire: return selectedEngineEquipment2.effects.fireDamageBonus || 0
-        case Attribute.Ice: return selectedEngineEquipment2.effects.iceDamageBonus || 0
-        case Attribute.Electric: return selectedEngineEquipment2.effects.electricDamageBonus || 0
-        case Attribute.Ether: return selectedEngineEquipment2.effects.etherDamageBonus || 0
-        default: return 0;
-      }
-    })()
-    + (selectedEngineEquipment3.effects.damageBonus || 0) // 支援の音動機効果、属性が対応していれば加算
-    + (() => {
-      switch(selectedCharacter.attribute) {
-        case Attribute.Physical: return selectedEngineEquipment3.effects.physicalDamageBonus || 0
-        case Attribute.Fire: return selectedEngineEquipment3.effects.fireDamageBonus || 0
-        case Attribute.Ice: return selectedEngineEquipment3.effects.iceDamageBonus || 0
-        case Attribute.Electric: return selectedEngineEquipment3.effects.electricDamageBonus || 0
-        case Attribute.Ether: return selectedEngineEquipment3.effects.etherDamageBonus || 0
-        default: return 0;
-      }
-    })()
-    + (externalBuffs.damageBonus || 0) // 外部バフ
-    ;
-    const afterDmgBonus = beforeDmgBonus + 30; // 5番メイン 固定 30%
-    return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
+    return calculator.calculateDmgBonusBuffPercent(
+      0, 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    );
   }
   function computeG5HP(is6th?: boolean) {
-    if (selectedCharacter?.role !== Role.Rupture) {
-      return 0;
-    }
-    const baseHp = selectedCharacter?.baseHp ?? 0;
-    const bonusHpNumMain = 2200;
-    const bosusHpRateMain = 30; // 5番メイン 固定 30%
-    const bonusAttackNumMain = 316;
-    const hpPercentInBattle = selectedCharacter.buff.hpPercentInBattle || 0 + (selectedCharacter2.buff.hpPercentInBattle || 0) + (selectedCharacter3.buff.hpPercentInBattle || 0);
-
-    const bonusHpRate = (selectedEngineEquipment?.advancedStats?.hp ?? 0) + ((selectedDiscFour1.id === "df-ungaku" || selectedDiscTwo1.id === "df-ungaku") ? 10 : 0);
-    const beforeHp = (baseHp * (1 + (bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
-    const afterHp = (baseHp * (1 + (bosusHpRateMain + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
-
-    const atkPercentInStatus = (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0) + (selectedEngineEquipment.advancedStats.atk ?? 0)
-    + ((isFixed6th && !is6th) ? 30 : 0);
-    const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-    + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
-    + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
-    const atk = (((selectedCharacter?.baseAtk ?? 0) + (selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
-    * (1 + atkPercentInBattle / 100)
-    + (selectedCharacter2?.buff?.atkValue || 0)
-    + (selectedCharacter3?.buff?.atkValue || 0);
-
-    const beforeSheerForce = beforeHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
-    const afterSheerForce = afterHp * 0.1 + atk * 0.3 + (selectedCharacter2?.buff?.sheerForcePowerNum || 0) + (selectedCharacter3?.buff?.sheerForcePowerNum || 0);
-    return (afterSheerForce / beforeSheerForce) * 100 - 100;
+    const baseHpPercent = (is6th || !isFixed6th) ? 0 : 30;
+    return calculator.calculateHPBuffPercent(
+      baseHpPercent, baseHpPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    );
   } // 26 HP%
   function computeG5Atk(is6th?: boolean) {
     // 攻撃力% の計算:
-    // baseAttack: 選択キャラの baseAtk
-    // bonusAttackRate: 5番メイン 固定 30%
-    // bonusAttackNumMain: 2番メイン 固定 316
-    // eeBaseAttack: 選択した音動機の基礎ステ
-    // eeAdvancedAttackRate: 選択 EngineEquipment の advancedStats?.atk（% として扱う）
-    const baseAttack = selectedCharacter?.baseAtk ?? 0;
-    const bonusAttackRate = 30;
-    const bonusAttackNumMain = 316;
-    const eeBaseAttack = selectedEngineEquipment?.baseAttack ?? 0;
-    const attackRateInStatus = selectedEngineEquipment?.advancedStats?.atk ?? 0 + (selectedDiscFour1.twoEffects.atk ?? 0) + (selectedDiscTwo1.twoEffects.atk ?? 0)
-    + ((isFixed6th && !is6th) ? bonusAttackRate : 0);
-
-    const atkPercentInBattle = selectedCharacter.buff.atkRate || 0 + (selectedCharacter2.buff.atkRate || 0) + (selectedCharacter3.buff.atkRate || 0)
-    + (selectedEngineEquipment.effects.atkRate || 0) + (selectedEngineEquipment2.effects.atkRate || 0) + (selectedEngineEquipment3.effects.atkRate || 0)
-    + (selectedDiscFour1.fourEffects.atk || 0) + (selectedDiscFour2.fourEffects.atk || 0) + (selectedDiscFour3.fourEffects.atk || 0);
-
-    const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + attackRateInStatus / 100) + bonusAttackNumMain)
-    * (1 + atkPercentInBattle / 100)
-    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
-    const afterAtk = ((baseAttack + eeBaseAttack) * (1 + (bonusAttackRate + attackRateInStatus) / 100) + bonusAttackNumMain)
-    * (1 + atkPercentInBattle / 100)
-    + (selectedCharacter2?.buff?.atkValue || 0) + (selectedCharacter3?.buff?.atkValue || 0);
-    if (selectedCharacter?.role === Role.Rupture) {
-      const bonusHpNumMain = 2200;
-      const hp = (selectedCharacter?.baseHp ?? 0) * (1 + (selectedEngineEquipment?.advancedStats?.hp ?? 0) / 100) + bonusHpNumMain;
-      const beforeSheerForce = hp * 0.1 + beforeAtk * 0.3;
-      const afterSheerForce = hp * 0.1 + afterAtk * 0.3;
-      return afterSheerForce/beforeSheerForce * 100 - 100;
-    } else {
-      return afterAtk/beforeAtk * 100 - 100;
-    }
+    const baseAtkPercent = (is6th || !isFixed6th || selectedCharacter.role == Role.Rupture) ? 0 : 30;
+    return calculator.calculateAtkBuffPercent(
+      baseAtkPercent, baseAtkPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
+    );
   }
   function computeG5Def() { return 0; } // 15 防御力%
 

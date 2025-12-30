@@ -1,12 +1,21 @@
+import { Buff } from "@/types/buff";
 import { Character } from "@/types/character";
 import { DiscEffect } from "@/types/DiscEffect";
 import { EngineEquipment } from "@/types/engineEquipment";
+import { DiscSubStatusOptimizer } from "../calc/components/discSubStatusOptimizer";
 
 type Props = {
   selectedCharacter: Character;
+  selectedCharacter2: Character;
+  selectedCharacter3: Character;
   selectedEngineEquipment: EngineEquipment;
-  selectedDiscFour: DiscEffect;
-  // 必要な最小限の入力だけ
+  selectedEngineEquipment2: EngineEquipment;
+  selectedEngineEquipment3: EngineEquipment;
+  selectedDiscFour1: DiscEffect;
+  selectedDiscFour2: DiscEffect;
+  selectedDiscFour3: DiscEffect;
+  selectedDiscTwo1: DiscEffect;
+  externalBuffs: Buff;
 };
 
 function calculateSummary(props: Props) {
@@ -31,7 +40,7 @@ export default function StatSummary(props: Props) {
         ・そんなに変わらないか大きく変わるかで考える
     ・サブが雑魚の属性ダメかサブの強いHPか（命破）
     ・防御力の高い敵に関しては貫通率一択
-  */
+   */
   return (
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4 text-xl text-slate-800">
       <ul className="space-y-2">

@@ -13,6 +13,7 @@ import StatSummary from "@/app/components/StatSummary";
 import Accordion from "@/app/components/Accordion";
 import { Buff } from "@/types/buff";
 import { BuffInput } from "./externalBuffs";
+import IdealStatus from "./idealStatus";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -30,7 +31,7 @@ export default function Main() {
     return ae.value == selectedAgent?.motif;
   })?.value
   ?? attackEquipmentOptions[0]?.value);
-  const [disc1st, setDisc1st] = useState("df-wood");
+  const [disc1st, setDisc1st] = useState("df-shun");
   const [disc2nd, setDisc2nd] = useState("df-sword");
 
   const [stunDiscFourSet, setStunDiscFourSet] = useState("df-taizan");
@@ -198,19 +199,38 @@ export default function Main() {
             <>
               <StatSummary
                 selectedCharacter={selectedCharacter}
-                // selectedCharacter2={selectedCharacter2}
-                // selectedCharacter3={selectedCharacter3}
+                selectedCharacter2={selectedCharacter2}
+                selectedCharacter3={selectedCharacter3}
                 selectedEngineEquipment={selectedEngineEquipment}
-                // selectedEngineEquipment2={selectedEngineEquipment2}
-                // selectedEngineEquipment3={selectedEngineEquipment3}
-                selectedDiscFour={selectedDiscFourSet}
-                // selectedDiscFour2={selectedDiscFourSet2}
-                // selectedDiscFour3={selectedDiscFourSet3}
-                // selectedDiscTwo1={selectedDiscTwoSet}
+                selectedEngineEquipment2={selectedEngineEquipment2}
+                selectedEngineEquipment3={selectedEngineEquipment3}
+                selectedDiscFour1={selectedDiscFourSet}
+                selectedDiscFour2={selectedDiscFourSet2}
+                selectedDiscFour3={selectedDiscFourSet3}
+                selectedDiscTwo1={selectedDiscTwoSet}
+                externalBuffs={externalBuffs}
               />
               {/* <div className="opacity-50 text-sm m-1">※メイン貫通率＋２セットパファーとメイン攻撃％＋２セット折枝の比較</div> */}
             </>
           },
+          {
+            id: "tab3", label: "理想ステータス計算", content:
+            <>
+              <IdealStatus
+                selectedCharacter={selectedCharacter}
+                selectedCharacter2={selectedCharacter2}
+                selectedCharacter3={selectedCharacter3}
+                selectedEngineEquipment={selectedEngineEquipment}
+                selectedEngineEquipment2={selectedEngineEquipment2}
+                selectedEngineEquipment3={selectedEngineEquipment3}
+                selectedDiscFour1={selectedDiscFourSet}
+                selectedDiscFour2={selectedDiscFourSet2}
+                selectedDiscFour3={selectedDiscFourSet3}
+                selectedDiscTwo1={selectedDiscTwoSet}
+                externalBuffs={externalBuffs}
+              />
+            </>
+          }
         ]}
       />
 
@@ -250,6 +270,7 @@ export default function Main() {
 
         <div className="flex items-center gap-2">
           <div className="flex-1">
+          
             <PullDown label={"4."} value={g4} onChange={setG4} options={g4Options} />
           </div>
         </div>

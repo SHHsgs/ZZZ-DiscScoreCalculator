@@ -282,6 +282,19 @@ export const engineEquipments: EngineEquipment[] = [
     note: "ニコのモチーフ音動機。",
   },
   {
+    id: "ee-caesar",
+    name: "猛進するキバ",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+    },
+    role: Role.Defense,
+    effects: {
+      damageBonus: 10
+    },
+    note: "シーザーのモチーフ音動機。",
+  },
+  {
     id: "ee-zhao",
     name: "甘さ控えめ雪うさぎ",
     attributes: [],
@@ -294,7 +307,20 @@ export const engineEquipments: EngineEquipment[] = [
       critDamage: 30,
       atkRate: 10
     },
-    note: "リュシアのモチーフ音動機。",
+    note: "照のモチーフ音動機。",
+  },
+  {
+    id: "ee-henshin",
+    name: "正規版変身装置(完凸)",
+    attributes: [],
+    baseAttack: 594,
+    advancedStats: {
+      hp: 25,
+    },
+    role: Role.Defense,
+    effects: {
+    },
+    note: "完凸",
   },
   {
     id: "ee-koleda",
