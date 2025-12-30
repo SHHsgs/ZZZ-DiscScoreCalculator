@@ -31,7 +31,7 @@ export default function Main() {
     return ae.value == selectedAgent?.motif;
   })?.value
   ?? attackEquipmentOptions[0]?.value);
-  const [disc1st, setDisc1st] = useState("df-wood");
+  const [disc1st, setDisc1st] = useState("df-shun");
   const [disc2nd, setDisc2nd] = useState("df-sword");
 
   const [stunDiscFourSet, setStunDiscFourSet] = useState("df-taizan");
