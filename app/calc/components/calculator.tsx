@@ -67,7 +67,7 @@ export class Calculator {
 
   calculateDmgBonusBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
     // 28 属性ダメージ
-    const beforeDmgBonus = 100 + (this.selectedItems.selectedCharacter.buff.damageBonus || 0) // 自己バフ
+    const baseDmgBonus = 100 + (this.selectedItems.selectedCharacter.buff.damageBonus || 0) // 自己バフ
     + (this.selectedItems.selectedCharacter2.buff.damageBonus || 0) // 撃破の与ダメバフ
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
@@ -136,7 +136,8 @@ export class Calculator {
     + (this.selectedItems.externalBuffs.damageBonus || 0) // 外部バフ
     + beforeBuffRate
     ;
-    const afterDmgBonus = beforeDmgBonus - beforeBuffRate + afterBuffRate;
+    const beforeDmgBonus = baseDmgBonus + beforeBuffRate;
+    const afterDmgBonus = baseDmgBonus + afterBuffRate;
     return (afterDmgBonus / beforeDmgBonus) * 100 - 100;
   }
 
