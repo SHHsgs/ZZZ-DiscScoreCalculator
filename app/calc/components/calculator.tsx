@@ -60,7 +60,7 @@ export class Calculator {
     const registerDeffence = this.selectedItems.selectedCharacter.buff.registerDeffence || 0 + (this.selectedItems.selectedCharacter2.buff.registerDeffence || 0) + (this.selectedItems.selectedCharacter3.buff.registerDeffence || 0)
     + (this.selectedItems.selectedEngineEquipment.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment2.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment3.effects.registerDeffence || 0)
     + (this.selectedItems.externalBuffs.registerDeffence || 0);
-    const beforeDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - PENRetio + beforeBuffRate / 100);
+    const beforeDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + beforeBuffRate) / 100);
     const afterDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + afterBuffRate) / 100); // ここで貫通値は扱わない
     return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
   }

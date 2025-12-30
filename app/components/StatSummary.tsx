@@ -41,8 +41,6 @@ export default function StatSummary(props: Props) {
     ・サブが雑魚の属性ダメかサブの強いHPか（命破）
     ・防御力の高い敵に関しては貫通率一択
    */
-  const optimizer = new DiscSubStatusOptimizer(props);
-  const statusInBattle = optimizer.getStatusWithoutBattle(78);
   return (
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4 text-xl text-slate-800">
       <ul className="space-y-2">

@@ -24,13 +24,14 @@ type Props = {
 export default function IdealStatus(props: Props) {
   const calculator = new Calculator(props);
   const [baseDiffence, setBaseDiffence] = useState("952.8");
+  const [subStatusCount, setSubStatusCount] = useState(30);
 
-  const optimizer = new DiscSubStatusOptimizer(props);
-  const statusInBattle = optimizer.getStatusWithoutBattle(78);
-  const atkHitCount = optimizer.subStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
-  const critRateHitCount = optimizer.subStatusArray.filter((x) => x.maxStatusType == StatusType.CritRate).length;
-  const critDamageHitCount = optimizer.subStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
-  const hpHitCount = optimizer.subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
+  const optimizer = new DiscSubStatusOptimizer(props, parseFloat(baseDiffence));
+  const statusInBattle = optimizer.getStatusWithoutBattle(subStatusCount + 30);
+  const atkHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.AtkRate).length;
+  const critRateHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritRate).length;
+  const critDamageHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritDmg).length;
+  const hpHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
   const atkHitCountWithout6th = atkHitCount - 10;
   const atkHitCountWithout5th = atkHitCountWithout6th - 10;
@@ -53,7 +54,7 @@ export default function IdealStatus(props: Props) {
   const is5thPEN = is5thAtk ? false : (PEN5thBuffPercent > atk5thBuffPercent);
   const is5thDmgBuff = is5thAtk ? false : (PEN5thBuffPercent <= atk5thBuffPercent);
   // 5番攻撃の場合のヒット数と5,6番攻撃の場合のヒット数
-  const atkHitCountWithoutMain = is5thAtk ? atkHitCount - 20 : atkHitCount - 10;
+  const atkHitCountWithoutMain = props.selectedCharacter.role === Role.Rupture ? 0 : (is5thAtk ? atkHitCount - 20 : atkHitCount - 10);
   const maxEffectiveSubStatusType = (() => {
     if (atkHitCountWithoutMain >= critRateHitCount && atkHitCountWithoutMain >= critDamageHitCount && atkHitCountWithoutMain >= hpHitCount){
       return StatusType.AtkRate;
@@ -65,9 +66,9 @@ export default function IdealStatus(props: Props) {
       return StatusType.HpRate;
     }
   })();
-  const is4thCritDmg = critDamageHitCount > atkHitCountWithoutMain;
+  const is4thCritDmg = critDamageHitCount > atkHitCountWithoutMain && critDamageHitCount > critRateHitCount;
   const critDamageHitCountWithout4th = critDamageHitCount - (is4thCritDmg ? 10 : 0);
-  const is4thCritRate = critRateHitCount > atkHitCountWithoutMain;
+  const is4thCritRate = critRateHitCount > atkHitCountWithoutMain && critRateHitCount > critDamageHitCount;
   const critRateHitCountWithout4th = critRateHitCount - (is4thCritRate ? 10 : 0);
 
   const hpHitCountWithoutMain = Math.max(((!is4thCritDmg && !is4thCritRate) ? hpHitCount - 10 : hpHitCount)
@@ -94,11 +95,11 @@ export default function IdealStatus(props: Props) {
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>会心率</div>
-                <div className="text-right">{Math.ceil(statusInBattle.critRate)}%</div>
+                <div className="text-right">{Math.round(statusInBattle.critRate * 10) / 10}%</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>会心ダメ</div>
-                <div className="text-right">{Math.ceil(statusInBattle.critDmg)}%</div>
+                <div className="text-right">{Math.round(statusInBattle.critDmg * 10) / 10}%</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>貫通率</div>
@@ -114,6 +115,18 @@ export default function IdealStatus(props: Props) {
         <div></div>
         <div className="rounded-md border border-gray-300 p-2">
           <h3 className="text-base font-medium">ステータス理想振り分け</h3>
+          <label htmlFor="subStatusCount" className="flex flex-col gap-1 text-sm">
+            有効サブステ数：{subStatusCount}
+            <input
+              type="range"
+              id="subStatusCount"
+              min={0}
+              max={48}
+              step={1}
+              value={subStatusCount}
+              onChange={(e) => setSubStatusCount(Number(e.target.value))}
+            />
+          </label>
           <div className="text-sm mb-0.5">
             メインステ
             <div className="grid grid-cols-3 gap-x-1 gap-y-1 text-xs text-center">
