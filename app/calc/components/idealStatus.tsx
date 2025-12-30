@@ -38,21 +38,9 @@ export default function IdealStatus(props: Props) {
   const atk5thBuffPercent = calculator.calculateAtkBuffPercent(atkHitCountWithout5th, atkHitCountWithout6th);
   const PEN5thBuffPercent = calculator.calculatePENRatioBuffPercent(parseFloat(baseDiffence), 0, 24);
   const dmgBonus5thBuffPercent = calculator.calculateDmgBonusBuffPercent(atkHitCountWithout5th, atkHitCountWithout6th);
-  const is5thAtk = (() => {
-    if (props.selectedCharacter.role === Role.Rupture) {
-      return atkHitCount;
-    } else {
-      if (atk5thBuffPercent > PEN5thBuffPercent && atk5thBuffPercent > dmgBonus5thBuffPercent) {
-        // 5番に攻撃を指定した時が最も優位であればtrue
-        return true;
-      } else {
-        // 5番に攻撃以外を指定した時が優位であればfalse
-        return false;
-      }
-    }
-  })();
-  const is5thPEN = is5thAtk ? false : (PEN5thBuffPercent > atk5thBuffPercent);
-  const is5thDmgBuff = is5thAtk ? false : (PEN5thBuffPercent <= atk5thBuffPercent);
+  const is5thAtk = optimizer.subStatusArray[10].maxStatusType === StatusType.AtkRate;
+  const is5thPEN = optimizer.subStatusArray[10].maxStatusType === StatusType.PENRate;
+  const is5thDmgBuff = optimizer.subStatusArray[10].maxStatusType === StatusType.DmgBonus;
   // 5番攻撃の場合のヒット数と5,6番攻撃の場合のヒット数
   const atkHitCountWithoutMain = props.selectedCharacter.role === Role.Rupture ? 0 : (is5thAtk ? atkHitCount - 20 : atkHitCount - 10);
   const maxEffectiveSubStatusType = (() => {
