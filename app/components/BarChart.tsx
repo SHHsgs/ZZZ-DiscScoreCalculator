@@ -79,7 +79,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   } // 26 HP%
   function computeG5Atk(is6th?: boolean) {
     // 攻撃力% の計算:
-    const baseAtkPercent = (is6th || !isFixed6th) ? 0 : 30;
+    const baseAtkPercent = (is6th || !isFixed6th || selectedCharacter.role == Role.Rupture) ? 0 : 30;
     return calculator.calculateAtkBuffPercent(
       baseAtkPercent, baseAtkPercent + 30 // 5番に属性ダメージボーナスを選んでない→選んでいる場合の火力上昇率
     );
