@@ -142,7 +142,6 @@ export class Calculator {
   }
 
   calculateHPBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
-    // is6thをBarChart側に実装
     // 26 HP%
     if (this.selectedItems.selectedCharacter?.role !== Role.Rupture) {
       return 0;
