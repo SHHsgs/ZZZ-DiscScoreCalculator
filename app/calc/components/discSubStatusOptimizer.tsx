@@ -40,7 +40,7 @@ type SubStatusAssign = {
 export class DiscSubStatusOptimizer {
   private selectedItems: SelectedItems;
   private subStatusArray: SubStatusAssign[]; // 5番属性ダメ/貫通率の場合の分配(6番HP/攻撃力前提)
-  private atkHitCount;
+  public atkHitCount;
   private critRateHitCount;
   private critDamageHitCount;
   private hpHitCount;
@@ -58,7 +58,7 @@ export class DiscSubStatusOptimizer {
       const critDamageHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
       const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
   
-      const atkBuffPercent5thElemtntalPEN = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 1)));
+      const atkBuffPercent = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 1)));
       const critRateBuffPercent = calculator.calculateCritRateBuffPercent(2.4 * critRateHitCount, 2.4 * (critRateHitCount + 1));
       const critDamageBuffPercent = calculator.calculateCritDamageBuffPercent(4.8 * critDamageHitCount, 4.8 * (critDamageHitCount + 1));
       const hpBuffPercent = (() => {
@@ -70,11 +70,11 @@ export class DiscSubStatusOptimizer {
       })();
 
       // サブステを一つ伸ばした際の伸び率が良いものを配列にpush
-      if (atkBuffPercent5thElemtntalPEN >= critRateBuffPercent && atkBuffPercent5thElemtntalPEN >= critDamageBuffPercent && atkBuffPercent5thElemtntalPEN >= hpBuffPercent){
-        subStatusArray.push({ idx: index, maxStatusType: StatusType.AtkRate, buffRate: atkBuffPercent5thElemtntalPEN });
-      } else if (critRateBuffPercent >= atkBuffPercent5thElemtntalPEN && critRateBuffPercent >= critDamageBuffPercent && critRateBuffPercent >= hpBuffPercent) {
+      if (atkBuffPercent >= critRateBuffPercent && atkBuffPercent >= critDamageBuffPercent && atkBuffPercent >= hpBuffPercent){
+        subStatusArray.push({ idx: index, maxStatusType: StatusType.AtkRate, buffRate: atkBuffPercent });
+      } else if (critRateBuffPercent >= atkBuffPercent && critRateBuffPercent >= critDamageBuffPercent && critRateBuffPercent >= hpBuffPercent) {
         subStatusArray.push({ idx: index, maxStatusType: StatusType.CritRate, buffRate: critRateBuffPercent });
-      } else if (critDamageBuffPercent >= atkBuffPercent5thElemtntalPEN && critDamageBuffPercent >= critRateBuffPercent && critDamageBuffPercent >= hpBuffPercent) {
+      } else if (critDamageBuffPercent >= atkBuffPercent && critDamageBuffPercent >= critRateBuffPercent && critDamageBuffPercent >= hpBuffPercent) {
         subStatusArray.push({ idx: index, maxStatusType: StatusType.CritDmg, buffRate: critDamageBuffPercent });
       } else {
         subStatusArray.push({ idx: index, maxStatusType: StatusType.HpRate, buffRate: hpBuffPercent });
@@ -93,6 +93,11 @@ export class DiscSubStatusOptimizer {
     // const engineEquipment = this.selectedItems.selectedEngineEquipment
     // // const atkRate = (engineEquipment.advancedStats.atk || 0)
     // const atkHitCount = effectiveSubStatusArray5thAttackHP.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
-    return effectiveSubStatusCount;
+    return {
+      atkHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.AtkRate).length,
+      critRateHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.CritRate).length,
+      critDamageHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.CritDmg).length,
+      hpHitCount: this.subStatusArray.slice(0, effectiveSubStatusCount).filter((x) => x.maxStatusType == StatusType.HpRate).length,
+    }
   }
 }

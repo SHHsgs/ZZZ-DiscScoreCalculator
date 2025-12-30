@@ -198,15 +198,16 @@ export default function Main() {
             <>
               <StatSummary
                 selectedCharacter={selectedCharacter}
-                // selectedCharacter2={selectedCharacter2}
-                // selectedCharacter3={selectedCharacter3}
+                selectedCharacter2={selectedCharacter2}
+                selectedCharacter3={selectedCharacter3}
                 selectedEngineEquipment={selectedEngineEquipment}
-                // selectedEngineEquipment2={selectedEngineEquipment2}
-                // selectedEngineEquipment3={selectedEngineEquipment3}
-                selectedDiscFour={selectedDiscFourSet}
-                // selectedDiscFour2={selectedDiscFourSet2}
-                // selectedDiscFour3={selectedDiscFourSet3}
-                // selectedDiscTwo1={selectedDiscTwoSet}
+                selectedEngineEquipment2={selectedEngineEquipment2}
+                selectedEngineEquipment3={selectedEngineEquipment3}
+                selectedDiscFour1={selectedDiscFourSet}
+                selectedDiscFour2={selectedDiscFourSet2}
+                selectedDiscFour3={selectedDiscFourSet3}
+                selectedDiscTwo1={selectedDiscTwoSet}
+                externalBuffs={externalBuffs}
               />
               {/* <div className="opacity-50 text-sm m-1">※メイン貫通率＋２セットパファーとメイン攻撃％＋２セット折枝の比較</div> */}
             </>

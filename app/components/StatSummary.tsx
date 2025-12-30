@@ -1,12 +1,21 @@
+import { Buff } from "@/types/buff";
 import { Character } from "@/types/character";
 import { DiscEffect } from "@/types/DiscEffect";
 import { EngineEquipment } from "@/types/engineEquipment";
+import { DiscSubStatusOptimizer } from "../calc/components/discSubStatusOptimizer";
 
 type Props = {
   selectedCharacter: Character;
+  selectedCharacter2: Character;
+  selectedCharacter3: Character;
   selectedEngineEquipment: EngineEquipment;
-  selectedDiscFour: DiscEffect;
-  // 必要な最小限の入力だけ
+  selectedEngineEquipment2: EngineEquipment;
+  selectedEngineEquipment3: EngineEquipment;
+  selectedDiscFour1: DiscEffect;
+  selectedDiscFour2: DiscEffect;
+  selectedDiscFour3: DiscEffect;
+  selectedDiscTwo1: DiscEffect;
+  externalBuffs: Buff;
 };
 
 function calculateSummary(props: Props) {
@@ -31,12 +40,13 @@ export default function StatSummary(props: Props) {
         ・そんなに変わらないか大きく変わるかで考える
     ・サブが雑魚の属性ダメかサブの強いHPか（命破）
     ・防御力の高い敵に関しては貫通率一択
-  */
+   */
+  const optimizer = new DiscSubStatusOptimizer(props);
   return (
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4 text-xl text-slate-800">
-      <ul className="space-y-2">
+      {/* <ul className="space-y-2">
         準備中
-        {/* <li className="relative pl-4">
+        <li className="relative pl-4">
           <span className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rounded-full bg-slate-500" />
           攻撃％のサブステ
           <strong>{attackSubstatCount}</strong>
@@ -51,8 +61,13 @@ export default function StatSummary(props: Props) {
           の差はサブステおよそ
           <strong>{equivalentSubstatCount}</strong>
           個相当
-        </li> */}
-      </ul>
+        </li>
+      </ul> */}
+      <div>理想ステ</div>
+      <div>攻撃%：{optimizer.getStatusWithoutBattle(78).atkHitCount}</div>
+      <div>会心率：{optimizer.getStatusWithoutBattle(78).critRateHitCount}</div>
+      <div>会心ダメ：{optimizer.getStatusWithoutBattle(78).critDamageHitCount}</div>
+      <div>HP%：{optimizer.getStatusWithoutBattle(78).hpHitCount}</div>
     </div>
   );
 }
