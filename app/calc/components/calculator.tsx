@@ -68,6 +68,7 @@ export class Calculator {
   calculateDmgBonusBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
     // 28 属性ダメージ
     const beforeDmgBonus = 100 + (this.selectedItems.selectedCharacter.buff.damageBonus || 0) // 自己バフ
+    + (this.selectedItems.selectedCharacter2.buff.damageBonus || 0) // 撃破の与ダメバフ
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
         // 撃破のバフ、属性が対応していれば加算
@@ -79,6 +80,7 @@ export class Calculator {
         default: return 0;
       }
     })()
+    + (this.selectedItems.selectedCharacter3.buff.damageBonus || 0) // 支援の与ダメバフ
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
         // 支援のバフ、属性が対応していれば加算
@@ -98,6 +100,7 @@ export class Calculator {
     + (this.selectedItems.selectedEngineEquipment.effects.damageBonus || 0) // アタッカーの音動機効果、属性が対応していれば加算
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
+        // 属性指定ありのダメージボーナス
         case Attribute.Physical: return this.selectedItems.selectedEngineEquipment.effects.physicalDamageBonus || 0
         case Attribute.Fire: return this.selectedItems.selectedEngineEquipment.effects.fireDamageBonus || 0
         case Attribute.Ice: return this.selectedItems.selectedEngineEquipment.effects.iceDamageBonus || 0
@@ -106,9 +109,10 @@ export class Calculator {
         default: return 0;
       }
     })()
-    + (this.selectedItems.selectedEngineEquipment2.effects.damageBonus || 0) // 撃破の音動機効果、属性が対応していれば加算
+    + (this.selectedItems.selectedEngineEquipment2.effects.damageBonus || 0) // 撃破の音動機効果
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
+        // 属性指定ありのダメージボーナス
         case Attribute.Physical: return this.selectedItems.selectedEngineEquipment2.effects.physicalDamageBonus || 0
         case Attribute.Fire: return this.selectedItems.selectedEngineEquipment2.effects.fireDamageBonus || 0
         case Attribute.Ice: return this.selectedItems.selectedEngineEquipment2.effects.iceDamageBonus || 0
@@ -120,6 +124,7 @@ export class Calculator {
     + (this.selectedItems.selectedEngineEquipment3.effects.damageBonus || 0) // 支援の音動機効果、属性が対応していれば加算
     + (() => {
       switch(this.selectedItems.selectedCharacter.attribute) {
+        // 属性指定ありのダメージボーナス
         case Attribute.Physical: return this.selectedItems.selectedEngineEquipment3.effects.physicalDamageBonus || 0
         case Attribute.Fire: return this.selectedItems.selectedEngineEquipment3.effects.fireDamageBonus || 0
         case Attribute.Ice: return this.selectedItems.selectedEngineEquipment3.effects.iceDamageBonus || 0
