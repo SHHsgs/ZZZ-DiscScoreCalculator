@@ -111,6 +111,17 @@ export const discEffects: DiscEffect[] = [
     twoEffects: {
     },
   },
+  {
+    id: "df-astra",
+    name: "静寂のアストラ(２層)",
+    role: null,
+    description: "任意のメンバーが『クイック支援』で出場した時、チーム全体が「天籟」を獲得する、最大3重まで重ね掛け可能、継続時間15秒、重複して発動すると継続時間が更新される。「天籟」1重につき、『クイック支援』で出場したメンバーの与ダメージ+8%、該当効果はチーム内でひとつしか有効にならない。",
+    fourEffects: {
+      damageBonus: 16,
+    },
+    twoEffects: {
+    },
+  },
 ];
 
 export default discEffects;
