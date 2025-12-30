@@ -45,7 +45,7 @@ export class Calculator {
     const baseCridDmg = this.selectedItems.selectedCharacter.baseCritDamage + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
     + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
     + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
-    return (1 + (critRate / 100) * ((baseCridDmg + afterBuffRate) / 100)) / (1 + ((critRate + beforeBuffRate) / 100) * (baseCridDmg / 100)) * 100 - 100;
+    return (1 + (critRate / 100) * ((baseCridDmg + afterBuffRate) / 100)) / (1 + (critRate / 100) * ((baseCridDmg + beforeBuffRate) / 100)) * 100 - 100;
   }
 
   calculatePENRatioBuffPercent(baseDiffence: number, beforeBuffRate: number, afterBuffRate: number) {
