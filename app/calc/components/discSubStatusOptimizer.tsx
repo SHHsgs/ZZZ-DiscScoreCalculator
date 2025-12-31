@@ -38,6 +38,7 @@ export class DiscSubStatusOptimizer {
     const AtkRate5th6th = (this.selectedItems.selectedCharacter.role == Role.Rupture) ? 0 : 30;
 
     const idealCount = 78; // サブステヒット数: 有効3つ、+5、4,5,6で+10で78が理論値
+    // FIXME: 4,5番メインステ後から計算したほうがよい。6番は先でいい
     (() => {
       // 4番メインステ
       // FIXME: 冗長
@@ -185,7 +186,7 @@ export class DiscSubStatusOptimizer {
     const hpHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
     const hpInStatus = (character.baseHp) * (1 + (3 * hpHitCount) / 100) + 2200;
-    const atkInStatus = (character.baseAtk + engineEquipment.baseAttack) * (1 + ((engineEquipment.advancedStats.atk || 0) + 3 * atkHitCount) / 100);
+    const atkInStatus = (character.baseAtk + engineEquipment.baseAttack) * (1 + ((engineEquipment.advancedStats.atk || 0) + 3 * atkHitCount) / 100) + 316;
     const characterStatus: CharacterStatus = {
       hp: hpInStatus,
       atk: atkInStatus,
