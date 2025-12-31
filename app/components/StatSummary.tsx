@@ -9,7 +9,7 @@ function calculateSummary(props: SelectedItems) {
   };
 }
 
-export default function StatSummary(props: Props) {
+export default function StatSummary(props: SelectedItems) {
   // 👇 ここで X,Y,Z を計算
   const { attackSubstatCount, betterStat, equivalentSubstatCount } = calculateSummary(props);
 
