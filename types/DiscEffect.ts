@@ -3,7 +3,7 @@ import { Role } from "./character";
 export type TwoEffects = {
   critRate?: number;
   critDamage?: number;
-  atk?: number;
+  atkRateInStatus?: number;
   damageBonus?: number;
   hpPercent?: number;
   PENRate?: number;
@@ -12,7 +12,7 @@ export type TwoEffects = {
 export type FourEffects = {
   critRate?: number;
   critDamage?: number;
-  atk?: number;
+  atkRateInBattle?: number;
   damageBonus?: number;
   sheerForce?: number;
 }

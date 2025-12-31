@@ -1,24 +1,6 @@
-import { Buff } from "@/types/buff";
-import { Character } from "@/types/character";
-import { DiscEffect } from "@/types/DiscEffect";
-import { EngineEquipment } from "@/types/engineEquipment";
-import { DiscSubStatusOptimizer } from "../calc/components/discSubStatusOptimizer";
+import { SelectedItems } from "@/types/selectedItems";
 
-type Props = {
-  selectedCharacter: Character;
-  selectedCharacter2: Character;
-  selectedCharacter3: Character;
-  selectedEngineEquipment: EngineEquipment;
-  selectedEngineEquipment2: EngineEquipment;
-  selectedEngineEquipment3: EngineEquipment;
-  selectedDiscFour1: DiscEffect;
-  selectedDiscFour2: DiscEffect;
-  selectedDiscFour3: DiscEffect;
-  selectedDiscTwo1: DiscEffect;
-  externalBuffs: Buff;
-};
-
-function calculateSummary(props: Props) {
+function calculateSummary(props: SelectedItems) {
   // サマリー専用計算
   return {
     attackSubstatCount: 1,

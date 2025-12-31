@@ -8,7 +8,7 @@ export const discEffects: DiscEffect[] = [
     role: Role.Attack,
     description: "『通常攻撃』、『回避反撃』または『強化特殊スキル』が敵に命中し、なおかつ会心が出た時、それぞれ装備者にバフ効果を1重与える。バフ効果1重につき、装備者の攻撃力+9%、継続時間6秒。バフ効果の継続時間はスキルごとに計算される。",
     fourEffects: {
-      atk: 9*3,
+      atkRateInBattle: 9*3,
     },
     twoEffects: {
       critRate: 8,
@@ -34,7 +34,7 @@ export const discEffects: DiscEffect[] = [
     description: "『終結スキル』の与ダメージ+20%。『終結スキル』発動時、装備者の攻撃力+15%、継続時間12秒。",
     fourEffects: {
       damageBonus: 20,
-      atk: 15,
+      atkRateInBattle: 15,
     },
     twoEffects: {
       PENRate: 8,
@@ -46,10 +46,10 @@ export const discEffects: DiscEffect[] = [
     role: Role.Attack,
     description: "接敵状態かつ操作中のメンバーになった時、装備者の攻撃力+25%、継続時間10秒。20秒に1回のみ発動可能。",
     fourEffects: {
-      atk: 25,
+      atkRateInBattle: 25,
     },
     twoEffects: {
-      atk: 10,
+      atkRateInStatus: 10,
     },
   },
   {
@@ -58,7 +58,7 @@ export const discEffects: DiscEffect[] = [
     role: Role.Attack,
     description: "装備者が任意の『エーテルベール』効果を受けている時、自身の会心率+10%。『エーテルベール』終了後でも、この効果は15秒継続する。装備者が[強攻]メンバーの場合、『エーテルベール』を発動または『エーテルベール』の継続時間を延長した際、自身の会心率10%、攻撃力+10%、重複して発動すると継続時間が更新される。",
     fourEffects: {
-      atk: 10,
+      atkRateInBattle: 10,
       critRate: 20,
     },
     twoEffects: {

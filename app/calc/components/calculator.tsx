@@ -1,21 +1,5 @@
-import { Buff } from "@/types/buff";
-import { Attribute, Character, Role } from "@/types/character";
-import { DiscEffect } from "@/types/DiscEffect";
-import { EngineEquipment } from "@/types/engineEquipment";
-
-export type SelectedItems = {
-  selectedCharacter: Character;
-  selectedCharacter2: Character;
-  selectedCharacter3: Character;
-  selectedEngineEquipment: EngineEquipment;
-  selectedEngineEquipment2: EngineEquipment;
-  selectedEngineEquipment3: EngineEquipment;
-  selectedDiscFour1: DiscEffect;
-  selectedDiscFour2: DiscEffect;
-  selectedDiscFour3: DiscEffect;
-  selectedDiscTwo1: DiscEffect;
-  externalBuffs: Buff;
-}
+import { Attribute, Role } from "@/types/character";
+import { SelectedItems } from "@/types/selectedItems";
 
 export class Calculator {
   private selectedItems: SelectedItems;
@@ -155,10 +139,10 @@ export class Calculator {
     const beforeHp = (baseHp * (1 + (beforeBuffRate + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100);
     const afterHp = (baseHp * (1 + (afterBuffRate + bonusHpRate) / 100) + bonusHpNumMain) * (1 + hpPercentInBattle / 100); // メイン30%追加
 
-    const atkPercentInStatus = (this.selectedItems.selectedDiscFour1.twoEffects.atk ?? 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.atk ?? 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.atk ?? 0);
-    const atkPercentInBattle = this.selectedItems.selectedCharacter.buff.atkRate || 0 + (this.selectedItems.selectedCharacter2.buff.atkRate || 0) + (this.selectedItems.selectedCharacter3.buff.atkRate || 0)
-    + (this.selectedItems.selectedEngineEquipment.effects.atkRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.atkRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.atkRate || 0)
-    + (this.selectedItems.selectedDiscFour1.fourEffects.atk || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atk || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atk || 0);
+    const atkPercentInStatus = (this.selectedItems.selectedDiscFour1.twoEffects.atkRateInStatus ?? 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.atkRateInStatus ?? 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.atk ?? 0);
+    const atkPercentInBattle = this.selectedItems.selectedCharacter.buff.atkRateInBattle || 0 + (this.selectedItems.selectedCharacter2.buff.atkRateInBattle || 0) + (this.selectedItems.selectedCharacter3.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment2.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment3.effects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atkRateInBattle || 0);
     const atk = (((this.selectedItems.selectedCharacter?.baseAtk ?? 0) + (this.selectedItems.selectedEngineEquipment?.baseAttack ?? 0)) * (1 + atkPercentInStatus / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)
     + (this.selectedItems.selectedCharacter2?.buff?.atkValue || 0)
@@ -179,11 +163,11 @@ export class Calculator {
     const baseAttack = this.selectedItems.selectedCharacter?.baseAtk ?? 0;
     const bonusAttackNumMain = 316;
     const eeBaseAttack = this.selectedItems.selectedEngineEquipment?.baseAttack ?? 0;
-    const attackRateInStatus = this.selectedItems.selectedEngineEquipment?.advancedStats?.atk ?? 0 + (this.selectedItems.selectedDiscFour1.twoEffects.atk ?? 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.atk ?? 0);
+    const attackRateInStatus = this.selectedItems.selectedEngineEquipment?.advancedStats?.atk ?? 0 + (this.selectedItems.selectedDiscFour1.twoEffects.atkRateInStatus ?? 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.atkRateInStatus ?? 0);
 
-    const atkPercentInBattle = this.selectedItems.selectedCharacter.buff.atkRate || 0 + (this.selectedItems.selectedCharacter2.buff.atkRate || 0) + (this.selectedItems.selectedCharacter3.buff.atkRate || 0)
-    + (this.selectedItems.selectedEngineEquipment.effects.atkRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.atkRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.atkRate || 0)
-    + (this.selectedItems.selectedDiscFour1.fourEffects.atk || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atk || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atk || 0);
+    const atkPercentInBattle = this.selectedItems.selectedCharacter.buff.atkRateInBattle || 0 + (this.selectedItems.selectedCharacter2.buff.atkRateInBattle || 0) + (this.selectedItems.selectedCharacter3.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment2.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment3.effects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atkRateInBattle || 0);
 
     const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + (beforeBuffRate + attackRateInStatus) / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)

@@ -15,7 +15,7 @@ export default function Accordion({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-slate-400">
+    <div className="border-b border-slate-400 mb-2">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -23,7 +23,7 @@ export default function Accordion({
       >
         <Heading className="text-base font-medium">{title}</Heading>
         <span
-          className={`ml-2 transition-transform ${
+          className={`ml-2 transition-transform text-slate-400 ${
             open ? "rotate-180" : ""
           }`}
         >
