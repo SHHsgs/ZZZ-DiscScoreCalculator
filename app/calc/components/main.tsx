@@ -154,11 +154,9 @@ export default function Main() {
       </div>
 
       <Accordion title="その他バフ">
-        <>
-          <div className="text-sm opacity-80">凸効果など上記で選択できないものを入力してください。</div>
-          <div className="text-sm opacity-80">※一旦防御無視と与ダメだけ対応</div>
-          <BuffInput value={externalBuffs} onChange={setExternalBuffs} />
-        </>
+        <div className="text-sm opacity-80">凸効果など上記で選択できないものを入力してください。</div>
+        <div className="text-sm opacity-80">※一旦防御無視と与ダメだけ対応</div>
+        <BuffInput value={externalBuffs} onChange={setExternalBuffs} />
       </Accordion>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>

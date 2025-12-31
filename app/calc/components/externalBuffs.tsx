@@ -30,6 +30,7 @@ export const BuffInput = ({ value, onChange }: BuffInputProps) => {
             value={value[key]}
             onChange={(e) => handleChange(key, Number(e.target.value))}
             className="
+              mt-auto
               rounded-md border opacity-70
               px-2 py-1 text-sm
               focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-300
