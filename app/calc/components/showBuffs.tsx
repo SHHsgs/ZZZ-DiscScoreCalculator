@@ -1,4 +1,4 @@
-import { Attribute } from "@/types/character";
+import { Attribute, Role } from "@/types/character";
 import { SelectedItems } from "@/types/selectedItems";
 
 // 列（ステータス）
@@ -50,7 +50,13 @@ export default function ShowBuffs(props: SelectedItems) {
       registerDeffence: "-",
       PENRatio: "-",
       hpRate: "-",
-      sheerForce: "-",
+      sheerForce: (() => {
+        if (props.selectedCharacter.role === Role.Rupture) {
+          return String(props.selectedCharacter.baseHp * 0.1 + props.selectedCharacter.baseAtk * 0.3);
+        } else {
+          return "-"
+        }
+      })(),
     },
     "音動機(上級ステ+音動機効果)": {
       atkValue: String(props.selectedEngineEquipment.baseAttack),
@@ -65,7 +71,7 @@ export default function ShowBuffs(props: SelectedItems) {
         const effectCritDmg = props.selectedEngineEquipment.effects.critDamage || 0;
         return String(advanceCritDmg) + "+" + String(effectCritDmg);
       })(),
-      damageBonus: String(props.selectedEngineEquipment.effects.damageBonus) +
+      damageBonus: String(props.selectedEngineEquipment.effects.damageBonus || 0) +
       (() => {
         const attributeDmgBonus = (() => {
           switch(props.selectedCharacter.attribute) {
@@ -255,7 +261,7 @@ export default function ShowBuffs(props: SelectedItems) {
       <table className="border-collapse text-xs w-full">
         <thead>
           <tr className="border-b-2 border-slate-400 border-t-0">
-            <th className="px-2 py-1 text-left border-r border-slate-400">
+            <th className="px-2 py-1 text-left border-r border-slate-400 max-w-32">
               項目
             </th>
             {COLUMNS.map((col) => (
@@ -272,7 +278,7 @@ export default function ShowBuffs(props: SelectedItems) {
         <tbody>
           {ROWS.map((row) => (
             <tr key={row} className="last:border-b-0">
-              <th className="border-r border-t border-slate-400 px-2 py-1 text-left font-medium whitespace-nowrap">
+              <th className="border-r border-t border-slate-400 px-2 py-1 text-left font-medium max-w-32 break-keep">
                 {row}
               </th>
 
