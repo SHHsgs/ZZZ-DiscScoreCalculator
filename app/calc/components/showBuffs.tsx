@@ -118,7 +118,7 @@ export default function ShowBuffs(props: SelectedItems) {
       hpRate: String(props.selectedCharacter.buff.hpPercent || 0),
       sheerForce: String(props.selectedCharacter.buff.sheerForcePowerNum || 0),
     },
-    "4セット効果(コアパッシブ等)": {
+    "4セット効果(2セット効果除く)": {
       atkRate: String(props.selectedDiscFour1.fourEffects.atkRateInBattle || 0),
       critRate: String(props.selectedDiscFour1.fourEffects.critRate || 0),
       critDmg: String(props.selectedDiscFour1.fourEffects.critDamage || 0),
