@@ -1,27 +1,11 @@
-import { Buff } from "@/types/buff";
-import { Character, Role } from "@/types/character";
-import { DiscEffect } from "@/types/DiscEffect";
-import { EngineEquipment } from "@/types/engineEquipment";
+import { Role } from "@/types/character";
 import { DiscSubStatusOptimizer, StatusType } from "./discSubStatusOptimizer";
 import { Calculator } from "./calculator";
 import PullDown from "@/app/components/PullDown";
 import { useState } from "react";
+import { SelectedItems } from "@/types/selectedItems";
 
-type Props = {
-  selectedCharacter: Character;
-  selectedCharacter2: Character;
-  selectedCharacter3: Character;
-  selectedEngineEquipment: EngineEquipment;
-  selectedEngineEquipment2: EngineEquipment;
-  selectedEngineEquipment3: EngineEquipment;
-  selectedDiscFour1: DiscEffect;
-  selectedDiscFour2: DiscEffect;
-  selectedDiscFour3: DiscEffect;
-  selectedDiscTwo1: DiscEffect;
-  externalBuffs: Buff;
-};
-
-export default function IdealStatus(props: Props) {
+export default function IdealStatus(props: SelectedItems) {
   const calculator = new Calculator(props);
   const [baseDiffence, setBaseDiffence] = useState("952.8");
   const [subStatusCount, setSubStatusCount] = useState(30);

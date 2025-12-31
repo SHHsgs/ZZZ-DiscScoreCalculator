@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { Attribute, Character, Role } from "../../types/character";
+import { Character, Role } from "../../types/character";
 import { EngineEquipment } from "../../types/engineEquipment";
 import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
-import { Calculator, SelectedItems } from "../calc/components/calculator";
+import { Calculator } from "../calc/components/calculator";
+import { SelectedItems } from "@/types/selectedItems";
 
 type Category = { name: string; value: number; color?: string };
 type Group = { name: string; categories: Category[] };

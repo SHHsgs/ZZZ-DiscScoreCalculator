@@ -87,7 +87,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atkRate: 3.5*3,
+      atkRateInBattle: 3.5*3,
     },
     note: "11号のモチーフ音動機。",
   },
@@ -101,7 +101,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Attack,
     effects: {
-      atkRate: 7*3,
+      atkRateInBattle: 7*3,
     },
     note: "11号のモチーフ音動機。（完凸）",
   },
@@ -249,7 +249,7 @@ export const engineEquipments: EngineEquipment[] = [
     },
     role: Role.Support,
     effects: {
-      atkRate: 12, // 完凸3重を想定
+      atkRateInBattle: 12, // 完凸3重を想定
     },
     note: "ルーシーのモチーフ音動機。",
   },
@@ -305,7 +305,7 @@ export const engineEquipments: EngineEquipment[] = [
     role: Role.Defense,
     effects: {
       critDamage: 30,
-      atkRate: 10
+      atkRateInBattle: 10
     },
     note: "照のモチーフ音動機。",
   },

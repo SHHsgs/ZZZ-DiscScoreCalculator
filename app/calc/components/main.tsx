@@ -14,6 +14,7 @@ import Accordion from "@/app/components/Accordion";
 import { Buff } from "@/types/buff";
 import { BuffInput } from "./externalBuffs";
 import IdealStatus from "./idealStatus";
+import ShowBuffs from "./showBuffs";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -105,7 +106,7 @@ export default function Main() {
     critRate: 0, // 会心率増加
     critDamage: 0, // 会心ダメージ増加
     damageBonus: 0, // 与ダメージ倍率/加算（%なら 10 -> +10%）
-    atkRate: 0, // 攻撃力増加（%）
+    atkRateInBattle: 0, // 攻撃力増加（%）
     atkValue: 0, // 攻撃力増加（固定値）
     resistanceIgnore: 0, // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
     sheerForce: 0, // 透徹ダメージ（%）
@@ -157,6 +158,22 @@ export default function Main() {
         <div className="text-sm opacity-80">凸効果など上記で選択できないものを入力してください。</div>
         <div className="text-sm opacity-80">※一旦防御無視と与ダメだけ対応</div>
         <BuffInput value={externalBuffs} onChange={setExternalBuffs} />
+      </Accordion>
+      <Accordion title="現在のバフ">
+        <div className="text-sm opacity-80 mb-2">選択したエージェント、装備で与えられるバフ</div>
+        <ShowBuffs
+          selectedCharacter={selectedCharacter}
+          selectedCharacter2={selectedCharacter2}
+          selectedCharacter3={selectedCharacter3}
+          selectedEngineEquipment={selectedEngineEquipment}
+          selectedEngineEquipment2={selectedEngineEquipment2}
+          selectedEngineEquipment3={selectedEngineEquipment3}
+          selectedDiscFour1={selectedDiscFourSet}
+          selectedDiscFour2={selectedDiscFourSet2}
+          selectedDiscFour3={selectedDiscFourSet3}
+          selectedDiscTwo1={selectedDiscTwoSet}
+          externalBuffs={externalBuffs}
+        />
       </Accordion>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>

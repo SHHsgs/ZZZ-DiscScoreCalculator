@@ -9,7 +9,8 @@ export type Buff = {
   iceDamageBonus?: number; // 氷属性ダメージボーナス
   electricDamageBonus?: number; // 電気属性ダメージボーナス
   etherDamageBonus?: number; // エーテル属性ダメージボーナス
-  atkRate?: number; // 攻撃力増加（%）
+  atkRateInStatus?: number; // 戦闘中攻撃力増加（%）
+  atkRateInBattle?: number; // 戦闘中攻撃力増加（%）
   atkValue?: number; // 攻撃力増加（固定値）
   // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
   resistanceIgnore?: number;
@@ -25,7 +26,8 @@ export const BUFF_FIELDS: { key: keyof Buff; label: string }[] = [
   { key: "critRate", label: "会心率(%)" },
   { key: "critDamage", label: "会心ダメージ(%)" },
   { key: "damageBonus", label: "与ダメージ(%)" },
-  { key: "atkRate", label: "戦闘中攻撃力(%)" },
+  { key: "atkRateInStatus", label: "戦闘前攻撃力(%)" },
+  { key: "atkRateInBattle", label: "戦闘中攻撃力(%)" },
   { key: "atkValue", label: "攻撃力固定値(実数値)" },
   { key: "resistanceIgnore", label: "属性耐性無視" },
   { key: "sheerForce", label: "透徹ダメージ(%)" },
