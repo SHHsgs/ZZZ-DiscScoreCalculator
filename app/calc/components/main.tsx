@@ -106,7 +106,8 @@ export default function Main() {
     critRate: 0, // 会心率増加
     critDamage: 0, // 会心ダメージ増加
     damageBonus: 0, // 与ダメージ倍率/加算（%なら 10 -> +10%）
-    atkRateInBattle: 0, // 攻撃力増加（%）
+    atkRateInStatus: 0, // 戦闘前攻撃力（%）
+    atkRateInBattle: 0, // 戦闘中攻撃力（%）
     atkValue: 0, // 攻撃力増加（固定値）
     resistanceIgnore: 0, // 耐性無視（%）。例: 20 -> 相手の耐性を20%無視
     sheerForce: 0, // 透徹ダメージ（%）
