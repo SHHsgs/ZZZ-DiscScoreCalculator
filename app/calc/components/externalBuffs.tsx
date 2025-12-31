@@ -19,7 +19,7 @@ export const BuffInput = ({ value, onChange }: BuffInputProps) => {
         <div key={key} className="flex flex-col">
           <label
             htmlFor={key}
-            className="mb-1 text-xs font-medium opacity-70"
+            className="mb-1 text-xs font-medium opacity-70 break-keep"
           >
             {label}
           </label>
