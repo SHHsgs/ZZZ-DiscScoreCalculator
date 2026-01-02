@@ -184,7 +184,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     <div className="w-full overflow-auto">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
         <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }]} />
-        <div className="relative w-4/3 min-h-[2rem] sm:min-h-0"><span className="absolute bottom-2 w-full text-xs">通常の敵は952.8。<br />ワンダリングハンターのみ1588。</span></div>
+        <div className="relative w-4/3 min-h-[2rem] sm:min-h-0"><span className="absolute bottom-2 w-full text-xs"><br />2.5の新ボス：476.4<br />その他ボス：952.8</span></div>
       </div>
       <div className="flex items-center mb-2">
         <input
