@@ -179,19 +179,21 @@ export class DiscSubStatusOptimizer {
   getStatusWithoutBattle(effectiveSubStatusCount: number) {
     const effectiveSubStatusArray = this.subStatusArray.slice(0, effectiveSubStatusCount);
     const character = this.selectedItems.selectedCharacter;
-    const engineEquipment = this.selectedItems.selectedEngineEquipment
+    const engineEquipment = this.selectedItems.selectedEngineEquipment;
+    const discEffect4 = this.selectedItems.selectedDiscFour1;
+    const discEffect2 = this.selectedItems.selectedDiscFour1;
     const atkHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
     const critRateHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritRate).length;
     const critDamageHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
     const hpHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
-    const hpInStatus = (character.baseHp) * (1 + (3 * hpHitCount) / 100) + 2200;
-    const atkInStatus = (character.baseAtk + engineEquipment.baseAttack) * (1 + ((engineEquipment.advancedStats.atk || 0) + 3 * atkHitCount) / 100) + 316;
+    const hpInStatus = (character.baseHp) * (1 + (3 * hpHitCount + (discEffect4.twoEffects.hpPercent || 0) + (discEffect2.twoEffects.hpPercent || 0)) / 100) + 2200;
+    const atkInStatus = (character.baseAtk + engineEquipment.baseAttack) * (1 + ((engineEquipment.advancedStats.atk || 0) + 3 * atkHitCount + (discEffect4.twoEffects.atkRateInStatus || 0) + (discEffect2.twoEffects.atkRateInStatus || 0)) / 100) + 316;
     const characterStatus: CharacterStatus = {
       hp: hpInStatus,
       atk: atkInStatus,
-      critRate: (character.baseCritRate + ((engineEquipment.advancedStats.critRate || 0) + 2.4 * critRateHitCount)),
-      critDmg: (character.baseCritDamage + ((engineEquipment.advancedStats.critDamage || 0) + 4.8 * critDamageHitCount)),
+      critRate: (character.baseCritRate + ((engineEquipment.advancedStats.critRate || 0) + 2.4 * critRateHitCount)  + (discEffect4.twoEffects.critRate || 0) + (discEffect2.twoEffects.critRate || 0)),
+      critDmg: (character.baseCritDamage + ((engineEquipment.advancedStats.critDamage || 0) + 4.8 * critDamageHitCount)  + (discEffect4.twoEffects.critDamage || 0) + (discEffect2.twoEffects.critDamage || 0)),
       sheerForce: (character.role === Role.Rupture) ? (hpInStatus * 0.1 + atkInStatus * 0.3) : 0,
     }
     return characterStatus;
