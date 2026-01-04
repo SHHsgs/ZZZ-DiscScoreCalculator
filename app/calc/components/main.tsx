@@ -35,9 +35,6 @@ export default function Main() {
   const [disc1st, setDisc1st] = useState("df-shun");
   const [disc2nd, setDisc2nd] = useState("df-sword");
 
-  const [stunDiscFourSet, setStunDiscFourSet] = useState("df-taizan");
-  const [supportDiscFourSet, setSupportDiscFourSet] = useState("df-taizan");
-
   const [supportAgent, setSupportAgent] = useState("アストラ");
   const [supportEngineEquipment, setSupportEngineEquipment] = useState("ee-lu");
   const [stunAgent, setStunAgent] = useState("ダイアリン");
@@ -46,6 +43,9 @@ export default function Main() {
   const attackerDiscSets = discEffect.filter((de) => de.role != null && [Role.Attack, Role.Rupture].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
   const stunDiscSets = discEffect.filter((de) => [Role.Stun, Role.Defense, null].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
   const supportDiscSets = discEffect.filter((de) => [Role.Support, Role.Defense, null].includes(de.role)).map((de) => ({ value: de.id, label: de.name }));
+
+  const [stunDiscFourSet, setStunDiscFourSet] = useState(stunDiscSets[0].value);
+  const [supportDiscFourSet, setSupportDiscFourSet] = useState(supportDiscSets[0].value);
 
   const g4Options = [
     { value: "critRate", label: "会心率(24%)" },
