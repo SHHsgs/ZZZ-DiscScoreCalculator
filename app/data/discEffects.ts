@@ -79,6 +79,18 @@ export const discEffects: DiscEffect[] = [
     },
   },
   {
+    id: "df-akatsuki",
+    name: "暁に咲く花",
+    role: Role.Attack,
+    description: "『通常攻撃』の与ダメージ+20%。装備者が[強攻]メンバーの場合、『強化特殊スキル』または『終結スキル』を発動すると、『通常攻撃』の与ダメージが追加で+20%、継続時間25秒、重複して発動すると継続時間が更新される。",
+    fourEffects: {
+      damageBonus: 20+20, // 通常のみ、後半は強化特殊か終結発動後
+    },
+    twoEffects: {
+      damageBonus: 15, // 通常のみ
+    },
+  },
+  {
     id: "df-taizan",
     name: "大山を統べる者",
     role: Role.Stun,
