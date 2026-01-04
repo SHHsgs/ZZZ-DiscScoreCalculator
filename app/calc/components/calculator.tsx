@@ -1,5 +1,6 @@
 import { Attribute, Role } from "@/types/character";
 import { SelectedItems } from "@/types/selectedItems";
+import { DiscSubStatusOptimizer, StatusType } from "./discSubStatusOptimizer";
 
 export class Calculator {
   private selectedItems: SelectedItems;
@@ -32,11 +33,12 @@ export class Calculator {
     return (1 + (critRate / 100) * ((baseCridDmg + afterBuffRate) / 100)) / (1 + (critRate / 100) * ((baseCridDmg + beforeBuffRate) / 100)) * 100 - 100;
   }
 
-  calculatePENRatioBuffPercent(baseDiffence: number, beforeBuffRate: number, afterBuffRate: number) {
+  calculatePENRatioBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
       // 22 貫通率
     if (this.selectedItems.selectedCharacter.role === Role.Rupture) {
       return 0;
     }
+    const baseDeffence = parseFloat(this.selectedItems.baseDeffence)
     const PENRetio = (this.selectedItems.selectedCharacter.buff.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.effects.PENRatio || 0)
     + (this.selectedItems.selectedDiscFour1.twoEffects.PENRate || this.selectedItems.selectedDiscTwo1.twoEffects.PENRate || 0)
     + (this.selectedItems.selectedCharacter2.buff.PENRatio || 0)
@@ -44,9 +46,9 @@ export class Calculator {
     const registerDeffence = this.selectedItems.selectedCharacter.buff.registerDeffence || 0 + (this.selectedItems.selectedCharacter2.buff.registerDeffence || 0) + (this.selectedItems.selectedCharacter3.buff.registerDeffence || 0)
     + (this.selectedItems.selectedEngineEquipment.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment2.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment3.effects.registerDeffence || 0)
     + (this.selectedItems.externalBuffs.registerDeffence || 0);
-    const beforeDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + beforeBuffRate) / 100);
-    const afterDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + afterBuffRate) / 100); // ここで貫通値は扱わない
-    return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
+    const beforeDeffence = baseDeffence * (1 - registerDeffence / 100) * (1 - (PENRetio + beforeBuffRate) / 100);
+    const afterDeffence = baseDeffence * (1 - registerDeffence / 100) * (1 - (PENRetio + afterBuffRate) / 100); // ここで貫通値は扱わない
+    return (794 / (794 + afterDeffence)) / (794 / (794 + beforeDeffence)) * 100 - 100;
   }
 
   calculateDmgBonusBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
@@ -184,5 +186,23 @@ export class Calculator {
     } else {
       return afterAtk/beforeAtk * 100 - 100;
     }
+  }
+
+  calculateFinalBuffRate(optimizer: DiscSubStatusOptimizer, subStatusCount: number) {
+    const atkHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.AtkRate).length;
+    const critRateHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritRate).length;
+    const critDamageHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritDmg).length;
+    const hpHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.HpRate).length;
+    const PENRatioHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.PENRate).length;
+    const dmgBonusHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.DmgBonus).length;
+
+    const atkBuffRate = (this.calculateAtkBuffPercent(0, (3 * atkHitCount)) + 100) / 100;
+    const critRateBuffRate = (this.calculateCritRateBuffPercent(0, (2.4 * critRateHitCount)) + 100) / 100;
+    const critDamageBuffRate = (this.calculateCritDamageBuffPercent(0, (4.8 * critDamageHitCount)) + 100) / 100;
+    const hpBuffRate = (this.calculateHPBuffPercent(0, (3 * hpHitCount)) + 100) / 100;
+    const PENRatioBuffRate = (this.calculatePENRatioBuffPercent(0, (2.4 * PENRatioHitCount)) + 100) / 100;
+    const dmgBonusBuffRate = (this.calculateDmgBonusBuffPercent(0, (3 * dmgBonusHitCount)) + 100) / 100;
+    
+    return atkBuffRate * critRateBuffRate * critDamageBuffRate * hpBuffRate * PENRatioBuffRate * dmgBonusBuffRate;
   }
 }

@@ -357,6 +357,41 @@ export const characters: Character[] = [
       damageBonus: 40,
     },
   },
+  {
+    name: "「トリガー」",
+    role: Role.Stun,
+    attribute: Attribute.Electric,
+    motif: "ee-trigger",
+    baseHp: 0,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+    },
+  },
+  {
+    name: "ライト",
+    role: Role.Stun,
+    attribute: Attribute.Fire,
+    motif: "ee-lighter",
+    baseHp: 0,
+    baseAtk: 0,
+    baseDef: 0,
+    baseImpact: 0,
+    baseAbnormalControl: 0,
+    baseAbnormalMastery: 0,
+    baseCritRate: 0,
+    baseCritDamage: 0,
+    buff: {
+      iceDamageBonus: 75,
+      fireDamageBonus: 75,
+      resistanceIgnore: 15,
+    },
+  },
 ];
 
 export default characters;

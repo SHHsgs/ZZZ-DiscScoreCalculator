@@ -26,3 +26,11 @@ body {
 .text-accent,.border-accent {
   color: var(--accent);
 }
+
+/* iOS Safari のみ適用 */
+@supports (-webkit-touch-callout: none) {
+  .ios-break-fix {
+    word-break: normal;          /* keep を無効化 */
+    overflow-wrap: anywhere;     /* 強制的に折り返す */
+  }
+}
