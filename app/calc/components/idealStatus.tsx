@@ -8,8 +8,23 @@ export default function IdealStatus(props: SelectedItems) {
   const calculator = new Calculator(props);
   const [subStatusCount, setSubStatusCount] = useState(30);
 
-  const optimizer = new DiscSubStatusOptimizer(props);
-  const statusInBattle = optimizer.getStatusWithoutBattle(subStatusCount + 30);
+  const optimizer5thAtk = new DiscSubStatusOptimizer(props, StatusType.AtkRate);
+  const optimizer5thPEN = new DiscSubStatusOptimizer(props, StatusType.PENRate);
+  const optimizer5thAtt = new DiscSubStatusOptimizer(props, StatusType.DmgBonus);
+  const finalBuffrate5thAtk = calculator.calculateFinalBuffRate(optimizer5thAtk, subStatusCount);
+  const finalBuffrate5thPEN = calculator.calculateFinalBuffRate(optimizer5thPEN, subStatusCount);
+  const finalBuffrate5thAtt = calculator.calculateFinalBuffRate(optimizer5thAtt, subStatusCount);
+
+  const optimizer = (() => {
+    if (finalBuffrate5thAtt > finalBuffrate5thPEN && finalBuffrate5thAtt > finalBuffrate5thAtk) {
+      return optimizer5thAtt;
+    } else if (finalBuffrate5thPEN > finalBuffrate5thAtk && finalBuffrate5thPEN > finalBuffrate5thAtt) {
+      return optimizer5thPEN;
+    } else {
+      return optimizer5thAtk
+    }
+  })();
+  const statusWithoutBattle = optimizer.getStatusWithoutBattle(subStatusCount + 30);
   const atkHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.AtkRate).length;
   const critRateHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritRate).length;
   const critDamageHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritDmg).length;
@@ -53,19 +68,19 @@ export default function IdealStatus(props: SelectedItems) {
             <div className="grid grid-cols-2 gap-x-3 gap-y-1">
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>HP</div>
-                <div className="text-right">{Math.ceil(statusInBattle.hp)}</div>
+                <div className="text-right">{Math.ceil(statusWithoutBattle.hp)}</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>攻撃力</div>
-                <div className="text-right">{Math.ceil(statusInBattle.atk)}</div>
+                <div className="text-right">{Math.ceil(statusWithoutBattle.atk)}</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>会心率</div>
-                <div className="text-right">{Math.round(statusInBattle.critRate * 10) / 10}%</div>
+                <div className="text-right">{Math.round(statusWithoutBattle.critRate * 10) / 10}%</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>会心ダメ</div>
-                <div className="text-right">{Math.round(statusInBattle.critDmg * 10) / 10}%</div>
+                <div className="text-right">{Math.round(statusWithoutBattle.critDmg * 10) / 10}%</div>
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>貫通率</div>
@@ -73,7 +88,7 @@ export default function IdealStatus(props: SelectedItems) {
               </div>
               <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
                 <div>透徹力</div>
-                <div className="text-right">{Math.ceil(statusInBattle.sheerForce)}</div>
+                <div className="text-right">{Math.ceil(statusWithoutBattle.sheerForce)}</div>
               </div>
             </div>
           </div>

@@ -31,14 +31,13 @@ export class DiscSubStatusOptimizer {
   private critDamageHitCount;
   private hpHitCount;
 
-  constructor(selectedItems: SelectedItems) {
+  constructor(selectedItems: SelectedItems, mainStatusType5th: StatusType) {
     this.selectedItems = selectedItems;
     const calculator = new Calculator(selectedItems);
     const subStatusArray: SubStatusAssign[] = [];
-    const AtkRate5th6th = (this.selectedItems.selectedCharacter.role == Role.Rupture) ? 0 : 30;
+    const atkRate5th6th = (this.selectedItems.selectedCharacter.role == Role.Rupture) ? 0 : 30;
 
-    const idealCount = 78; // サブステヒット数: 有効3つ、+5、4,5,6で+10で78が理論値
-    // FIXME: 4,5番メインステ後から計算したほうがよい。6番は先でいい
+    const idealCount = 78; // サブステヒット数: 有効3つ、+5、×6、4,5,6で+10で78が理論値
     (() => {
       // 4番メインステ
       // FIXME: 冗長
@@ -47,7 +46,7 @@ export class DiscSubStatusOptimizer {
       const critDamageHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
       const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
-      const atkBuffPercent = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 10)));
+      const atkBuffPercent = calculator.calculateAtkBuffPercent((atkRate5th6th + 3 * atkHitCount), (atkRate5th6th + 3 * (atkHitCount + 10)));
       const critRateBuffPercent = calculator.calculateCritRateBuffPercent(2.4 * critRateHitCount, 2.4 * (critRateHitCount + 10));
       const critDamageBuffPercent = calculator.calculateCritDamageBuffPercent(4.8 * critDamageHitCount, 4.8 * (critDamageHitCount + 10));
       const hpBuffPercent = (() => {
@@ -80,38 +79,40 @@ export class DiscSubStatusOptimizer {
 
     (() => {
       // 5番メインステ
-      // FIXME: 冗長
-      const atkHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
-      const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
-
-      const atkBuffPercent = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 10)));
-      const hpBuffPercent = (() => {
-        if (this.selectedItems.selectedCharacter.role == Role.Rupture) {
-          return calculator.calculateHPBuffPercent(3 * hpHitCount, 3 * (hpHitCount + 10));
-        } else {
-          return 0;
-        }
-      })();
-      const PENBuffPercent = calculator.calculatePENRatioBuffPercent(0, 24);
-      const dmgBonusBuffPercent = calculator.calculateDmgBonusBuffPercent(0, 30);
-
-      // 伸び率が良いものを配列にpush
-      if (atkBuffPercent >= PENBuffPercent && atkBuffPercent >= dmgBonusBuffPercent && atkBuffPercent >= hpBuffPercent) {
-        for (let index = 10; index < 20; index++) {
-          subStatusArray.push({ idx: index, maxStatusType: StatusType.AtkRate, buffRate: atkBuffPercent });
-        }
-      } else if (PENBuffPercent >= atkBuffPercent && PENBuffPercent >= dmgBonusBuffPercent && PENBuffPercent >= hpBuffPercent) {
-        for (let index = 10; index < 20; index++) {
-          subStatusArray.push({ idx: index, maxStatusType: StatusType.PENRate, buffRate: PENBuffPercent });
-        }
-      } else if (dmgBonusBuffPercent >= atkBuffPercent && dmgBonusBuffPercent >= PENBuffPercent && dmgBonusBuffPercent >= hpBuffPercent) {
-        for (let index = 10; index < 20; index++) {
-          subStatusArray.push({ idx: index, maxStatusType: StatusType.DmgBonus, buffRate: dmgBonusBuffPercent });
-        }
-      } else {
-        for (let index = 10; index < 20; index++) {
-          subStatusArray.push({ idx: index, maxStatusType: StatusType.HpRate, buffRate: hpBuffPercent });
-        }
+      switch (mainStatusType5th) {
+        case StatusType.AtkRate:
+          const atkHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
+          const atkBuffPercent = calculator.calculateAtkBuffPercent((atkRate5th6th + 3 * atkHitCount), (atkRate5th6th + 3 * (atkHitCount + 10)));
+              
+          for (let index = 10; index < 20; index++) {
+            subStatusArray.push({ idx: index, maxStatusType: StatusType.AtkRate, buffRate: atkBuffPercent });
+          }
+          break;
+        case StatusType.PENRate:
+          const PENBuffPercent = calculator.calculatePENRatioBuffPercent(0, 24);
+          for (let index = 10; index < 20; index++) {
+            subStatusArray.push({ idx: index, maxStatusType: StatusType.PENRate, buffRate: PENBuffPercent });
+          }
+          break;
+        case StatusType.DmgBonus:
+          const dmgBonusBuffPercent = calculator.calculateDmgBonusBuffPercent(0, 30);
+          for (let index = 10; index < 20; index++) {
+            subStatusArray.push({ idx: index, maxStatusType: StatusType.DmgBonus, buffRate: dmgBonusBuffPercent });
+          }
+          break;
+        default:
+          const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
+          const hpBuffPercent = (() => {
+            if (this.selectedItems.selectedCharacter.role == Role.Rupture) {
+              return calculator.calculateHPBuffPercent(3 * hpHitCount, 3 * (hpHitCount + 10));
+            } else {
+              return 0;
+            }
+          })();
+          for (let index = 10; index < 20; index++) {
+            subStatusArray.push({ idx: index, maxStatusType: StatusType.HpRate, buffRate: hpBuffPercent });
+          }
+          break;
       }
     })();
 
@@ -121,7 +122,7 @@ export class DiscSubStatusOptimizer {
       const atkHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
       const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
-      const atkBuffPercent = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 10)));
+      const atkBuffPercent = calculator.calculateAtkBuffPercent((atkRate5th6th + 3 * atkHitCount), (atkRate5th6th + 3 * (atkHitCount + 10)));
       const hpBuffPercent = (() => {
         if (this.selectedItems.selectedCharacter.role == Role.Rupture) {
           return calculator.calculateHPBuffPercent(3 * hpHitCount, 3 * (hpHitCount + 10));
@@ -147,7 +148,7 @@ export class DiscSubStatusOptimizer {
       const critDamageHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
       const hpHitCount = subStatusArray.filter((x) => x.maxStatusType == StatusType.HpRate).length;
 
-      const atkBuffPercent = calculator.calculateAtkBuffPercent((AtkRate5th6th + 3 * atkHitCount), (AtkRate5th6th + 3 * (atkHitCount + 1)));
+      const atkBuffPercent = calculator.calculateAtkBuffPercent((atkRate5th6th + 3 * atkHitCount), (atkRate5th6th + 3 * (atkHitCount + 1)));
       const critRateBuffPercent = calculator.calculateCritRateBuffPercent(2.4 * critRateHitCount, 2.4 * (critRateHitCount + 1));
       const critDamageBuffPercent = calculator.calculateCritDamageBuffPercent(4.8 * critDamageHitCount, 4.8 * (critDamageHitCount + 1));
       const hpBuffPercent = (() => {

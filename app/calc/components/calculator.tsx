@@ -1,5 +1,6 @@
 import { Attribute, Role } from "@/types/character";
 import { SelectedItems } from "@/types/selectedItems";
+import { DiscSubStatusOptimizer, StatusType } from "./discSubStatusOptimizer";
 
 export class Calculator {
   private selectedItems: SelectedItems;
@@ -185,5 +186,23 @@ export class Calculator {
     } else {
       return afterAtk/beforeAtk * 100 - 100;
     }
+  }
+
+  calculateFinalBuffRate(optimizer: DiscSubStatusOptimizer, subStatusCount: number) {
+    const atkHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.AtkRate).length;
+    const critRateHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritRate).length;
+    const critDamageHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritDmg).length;
+    const hpHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.HpRate).length;
+    const PENRatioHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.PENRate).length;
+    const dmgBonusHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.DmgBonus).length;
+
+    const atkBuffRate = (this.calculateAtkBuffPercent(0, (3 * atkHitCount)) + 100) / 100;
+    const critRateBuffRate = (this.calculateCritRateBuffPercent(0, (2.4 * critRateHitCount)) + 100) / 100;
+    const critDamageBuffRate = (this.calculateCritDamageBuffPercent(0, (4.8 * critDamageHitCount)) + 100) / 100;
+    const hpBuffRate = (this.calculateHPBuffPercent(0, (3 * hpHitCount)) + 100) / 100;
+    const PENRatioBuffRate = (this.calculatePENRatioBuffPercent(0, (2.4 * PENRatioHitCount)) + 100) / 100;
+    const dmgBonusBuffRate = (this.calculateDmgBonusBuffPercent(0, (3 * dmgBonusHitCount)) + 100) / 100;
+    
+    return atkBuffRate * critRateBuffRate * critDamageBuffRate * hpBuffRate * PENRatioBuffRate * dmgBonusBuffRate;
   }
 }
