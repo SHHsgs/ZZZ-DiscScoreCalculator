@@ -278,7 +278,7 @@ export default function ShowBuffs(props: SelectedItems) {
         <tbody>
           {ROWS.map((row) => (
             <tr key={row} className="last:border-b-0">
-              <th className="border-r border-t border-slate-400 px-2 py-1 text-left font-medium max-w-32 break-keep">
+              <th className="border-r border-t border-slate-400 px-2 py-1 text-left font-medium max-w-32 break-keep ios-break-fix">
                 {row}
               </th>
 
