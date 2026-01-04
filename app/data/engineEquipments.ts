@@ -360,6 +360,33 @@ export const engineEquipments: EngineEquipment[] = [
     },
     note: "ダイアリンのモチーフ音動機。",
   },
+  {
+    id: "ee-trigger",
+    name: "奪魂の瞑目",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+      critRate: 24,
+    },
+    role: Role.Stun,
+    effects: {
+      registerDeffence: 25,
+    },
+    note: "「トリガー」のモチーフ音動機。",
+  },
+  {
+    id: "ee-lighter",
+    name: "炎心の桂冠",
+    attributes: [],
+    baseAttack: 713,
+    advancedStats: {
+    },
+    role: Role.Stun,
+    effects: {
+      critDamage: 1.5*20,
+    },
+    note: "ライトのモチーフ音動機。",
+  },
 ];
 
 export default engineEquipments;
