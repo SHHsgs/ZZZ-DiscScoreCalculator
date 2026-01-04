@@ -31,7 +31,7 @@ export class DiscSubStatusOptimizer {
   private critDamageHitCount;
   private hpHitCount;
 
-  constructor(selectedItems: SelectedItems, baseDeffence: number) {
+  constructor(selectedItems: SelectedItems) {
     this.selectedItems = selectedItems;
     const calculator = new Calculator(selectedItems);
     const subStatusArray: SubStatusAssign[] = [];
@@ -92,7 +92,7 @@ export class DiscSubStatusOptimizer {
           return 0;
         }
       })();
-      const PENBuffPercent = calculator.calculatePENRatioBuffPercent(baseDeffence, 0, 24);
+      const PENBuffPercent = calculator.calculatePENRatioBuffPercent(0, 24);
       const dmgBonusBuffPercent = calculator.calculateDmgBonusBuffPercent(0, 30);
 
       // 伸び率が良いものを配列にpush

@@ -15,4 +15,5 @@ export type SelectedItems = {
   selectedDiscFour3: DiscEffect;
   selectedDiscTwo1: DiscEffect;
   externalBuffs: Buff;
+  baseDeffence: string;
 }

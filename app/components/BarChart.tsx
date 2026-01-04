@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Character, Role } from "../../types/character";
 import { EngineEquipment } from "../../types/engineEquipment";
-import PullDown from "./PullDown";
 import { DiscEffect } from "@/types/DiscEffect";
 import { Buff } from "@/types/buff";
 import { Calculator } from "../calc/components/calculator";
@@ -29,9 +28,10 @@ type Props = {
   selectedDiscFour3: DiscEffect;
   selectedDiscTwo1: DiscEffect;
   externalBuffs: Buff;
+  baseDeffence: string;
 };
 
-export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1, externalBuffs }: Props) {
+export default function BarChart({ highlightIndices = [], width = 700, height = 300, maxY, selectedCharacter, selectedCharacter2, selectedCharacter3, selectedEngineEquipment, selectedEngineEquipment2, selectedEngineEquipment3, selectedDiscFour1, selectedDiscFour2, selectedDiscFour3, selectedDiscTwo1, externalBuffs, baseDeffence }: Props) {
   const [isFixed6th, setIsFixed6th] = useState(true);
   const selectedItems: SelectedItems = {
     selectedCharacter,
@@ -45,6 +45,7 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
     selectedDiscFour3,
     selectedDiscTwo1,
     externalBuffs,
+    baseDeffence,
   }
   const calculator = new Calculator(selectedItems);
   // 各カテゴリ値はそれぞれ独立した関数で計算する
@@ -61,10 +62,9 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
   function computeG4D() { return computeG5Atk(); }
   function computeG4E() { return computeG5Def(); }
 
-  const [baseDiffence, setBaseDiffence] = useState("952.8");
   function computeG5Pierce() {
     return calculator.calculatePENRatioBuffPercent(
-      parseFloat(baseDiffence), 0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
+      0, 24 // 5番に貫通率を選んでない→選んでいる場合の火力上昇率
     );
   }
   function computeG5AttrDmg() {
@@ -182,10 +182,6 @@ export default function BarChart({ highlightIndices = [], width = 700, height = 
 
   return (
     <div className="w-full overflow-auto">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
-        <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }, { label: "476.4", value: "476.4" }]} />
-        <div className="relative w-4/3 min-h-[3rem] sm:min-h-0"><span className="absolute bottom-2 w-full text-xs"><br />2.5の新ボス：476.4<br />ワンダリングハンター：1588<br />その他ボス：952.8</span></div>
-      </div>
       <div className="flex items-center mb-2">
         <input
           type="checkbox"

@@ -25,6 +25,8 @@ export default function PullDown({ label, value, onChange, options, className, s
         disabled={!onChange}
         className={`border p-2 rounded ${!onChange ? "opacity-50 cursor-not-allowed" : ""}`}
         defaultValue={selected}
+        id={label}
+        name={label}
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

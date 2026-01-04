@@ -32,11 +32,12 @@ export class Calculator {
     return (1 + (critRate / 100) * ((baseCridDmg + afterBuffRate) / 100)) / (1 + (critRate / 100) * ((baseCridDmg + beforeBuffRate) / 100)) * 100 - 100;
   }
 
-  calculatePENRatioBuffPercent(baseDiffence: number, beforeBuffRate: number, afterBuffRate: number) {
+  calculatePENRatioBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
       // 22 貫通率
     if (this.selectedItems.selectedCharacter.role === Role.Rupture) {
       return 0;
     }
+    const baseDeffence = parseFloat(this.selectedItems.baseDeffence)
     const PENRetio = (this.selectedItems.selectedCharacter.buff.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.effects.PENRatio || 0)
     + (this.selectedItems.selectedDiscFour1.twoEffects.PENRate || this.selectedItems.selectedDiscTwo1.twoEffects.PENRate || 0)
     + (this.selectedItems.selectedCharacter2.buff.PENRatio || 0)
@@ -44,9 +45,9 @@ export class Calculator {
     const registerDeffence = this.selectedItems.selectedCharacter.buff.registerDeffence || 0 + (this.selectedItems.selectedCharacter2.buff.registerDeffence || 0) + (this.selectedItems.selectedCharacter3.buff.registerDeffence || 0)
     + (this.selectedItems.selectedEngineEquipment.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment2.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment3.effects.registerDeffence || 0)
     + (this.selectedItems.externalBuffs.registerDeffence || 0);
-    const beforeDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + beforeBuffRate) / 100);
-    const afterDiffence = baseDiffence * (1 - registerDeffence / 100) * (1 - (PENRetio + afterBuffRate) / 100); // ここで貫通値は扱わない
-    return (794 / (794 + afterDiffence)) / (794 / (794 + beforeDiffence)) * 100 - 100;
+    const beforeDeffence = baseDeffence * (1 - registerDeffence / 100) * (1 - (PENRetio + beforeBuffRate) / 100);
+    const afterDeffence = baseDeffence * (1 - registerDeffence / 100) * (1 - (PENRetio + afterBuffRate) / 100); // ここで貫通値は扱わない
+    return (794 / (794 + afterDeffence)) / (794 / (794 + beforeDeffence)) * 100 - 100;
   }
 
   calculateDmgBonusBuffPercent(beforeBuffRate: number, afterBuffRate: number) {

@@ -1,16 +1,14 @@
 import { Role } from "@/types/character";
 import { DiscSubStatusOptimizer, StatusType } from "./discSubStatusOptimizer";
 import { Calculator } from "./calculator";
-import PullDown from "@/app/components/PullDown";
 import { useState } from "react";
 import { SelectedItems } from "@/types/selectedItems";
 
 export default function IdealStatus(props: SelectedItems) {
   const calculator = new Calculator(props);
-  const [baseDiffence, setBaseDiffence] = useState("952.8");
   const [subStatusCount, setSubStatusCount] = useState(30);
 
-  const optimizer = new DiscSubStatusOptimizer(props, parseFloat(baseDiffence));
+  const optimizer = new DiscSubStatusOptimizer(props);
   const statusInBattle = optimizer.getStatusWithoutBattle(subStatusCount + 30);
   const atkHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.AtkRate).length;
   const critRateHitCount = optimizer.subStatusArray.slice(0, subStatusCount + 30).filter((x) => x.maxStatusType == StatusType.CritRate).length;
@@ -20,7 +18,7 @@ export default function IdealStatus(props: SelectedItems) {
   const atkHitCountWithout6th = atkHitCount - 10;
   const atkHitCountWithout5th = atkHitCountWithout6th - 10;
   const atk5thBuffPercent = calculator.calculateAtkBuffPercent(atkHitCountWithout5th, atkHitCountWithout6th);
-  const PEN5thBuffPercent = calculator.calculatePENRatioBuffPercent(parseFloat(baseDiffence), 0, 24);
+  const PEN5thBuffPercent = calculator.calculatePENRatioBuffPercent(0, 24);
   const dmgBonus5thBuffPercent = calculator.calculateDmgBonusBuffPercent(atkHitCountWithout5th, atkHitCountWithout6th);
   const is5thAtk = optimizer.subStatusArray[10].maxStatusType === StatusType.AtkRate;
   const is5thPEN = optimizer.subStatusArray[10].maxStatusType === StatusType.PENRate;
@@ -48,10 +46,6 @@ export default function IdealStatus(props: SelectedItems) {
 
   return (
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-5 mb-4">
-        <PullDown label="敵の防御力" value={baseDiffence.toString()} onChange={setBaseDiffence} options={[{ value: "952.8", label: "952.8" }, { value: "1588.0", label: "1588.0" }, { label: "476.4", value: "476.4" }]} />
-        <div className="relative w-4/3 min-h-[3rem] sm:min-h-0"><span className="absolute bottom-2 w-full text-xs"><br />2.5の新ボス：476.4<br />ワンダリングハンター：1588<br />その他ボス：952.8</span></div>
-      </div>
       <div className="grid grid-cols-1 gap-1 sm:grid-cols-[2fr_1fr_2fr]">
         <div className="rounded-md border border-gray-300 p-2">
           <h3 className="text-base font-medium mb-2">理想ステ</h3>

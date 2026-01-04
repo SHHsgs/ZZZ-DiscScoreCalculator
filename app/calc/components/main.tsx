@@ -15,6 +15,7 @@ import { Buff } from "@/types/buff";
 import { BuffInput } from "./externalBuffs";
 import IdealStatus from "./idealStatus";
 import ShowBuffs from "./showBuffs";
+import { EnemyDeffence } from "./enemyDeffence";
 
 export default function Main() {
   const searchParams = useSearchParams();
@@ -46,6 +47,8 @@ export default function Main() {
 
   const [stunDiscFourSet, setStunDiscFourSet] = useState(stunDiscSets[0].value);
   const [supportDiscFourSet, setSupportDiscFourSet] = useState(supportDiscSets[0].value);
+
+  const [baseDeffence, setBaseDeffence] = useState("952.8");
 
   const g4Options = [
     { value: "critRate", label: "会心率(24%)" },
@@ -174,10 +177,13 @@ export default function Main() {
           selectedDiscFour3={selectedDiscFourSet3}
           selectedDiscTwo1={selectedDiscTwoSet}
           externalBuffs={externalBuffs}
+          baseDeffence={baseDeffence}
         />
       </Accordion>
 
       <h2 className="text-xl font-semibold mt-6 mb-3">メインステの火力上昇率</h2>
+
+      <EnemyDeffence baseDeffence={baseDeffence} onChange={setBaseDeffence} />
 
       <Tabs
         tabs={[
@@ -209,6 +215,7 @@ export default function Main() {
                 selectedDiscFour3={selectedDiscFourSet3}
                 selectedDiscTwo1={selectedDiscTwoSet}
                 externalBuffs={externalBuffs}
+                baseDeffence={baseDeffence}
               />
           } ,
           { id: "tab2", label: "5番について簡易まとめ", content: 
@@ -225,6 +232,7 @@ export default function Main() {
                 selectedDiscFour3={selectedDiscFourSet3}
                 selectedDiscTwo1={selectedDiscTwoSet}
                 externalBuffs={externalBuffs}
+                baseDeffence={baseDeffence}
               />
               {/* <div className="opacity-50 text-sm m-1">※メイン貫通率＋２セットパファーとメイン攻撃％＋２セット折枝の比較</div> */}
             </>
@@ -244,6 +252,7 @@ export default function Main() {
                 selectedDiscFour3={selectedDiscFourSet3}
                 selectedDiscTwo1={selectedDiscTwoSet}
                 externalBuffs={externalBuffs}
+                baseDeffence={baseDeffence}
               />
             </>
           }
