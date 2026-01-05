@@ -5,14 +5,16 @@ type AccordionProps = {
   title: string;
   children: ReactNode;
   as?: ElementType; // 見出しタグ変更用
+  isDefaultOpen?: boolean;
 };
 
 export default function Accordion({
   title,
   children,
   as: Heading = "h3",
+  isDefaultOpen = false,
 }: AccordionProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(isDefaultOpen);
 
   return (
     <div className="border-b border-slate-400 mb-2">
