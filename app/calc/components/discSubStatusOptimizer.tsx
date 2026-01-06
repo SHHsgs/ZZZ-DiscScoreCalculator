@@ -182,7 +182,7 @@ export class DiscSubStatusOptimizer {
     const character = this.selectedItems.selectedCharacter;
     const engineEquipment = this.selectedItems.selectedEngineEquipment;
     const discEffect4 = this.selectedItems.selectedDiscFour1;
-    const discEffect2 = this.selectedItems.selectedDiscFour1;
+    const discEffect2 = this.selectedItems.selectedDiscTwo1;
     const atkHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.AtkRate).length;
     const critRateHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritRate).length;
     const critDamageHitCount = effectiveSubStatusArray.filter((x) => x.maxStatusType == StatusType.CritDmg).length;
