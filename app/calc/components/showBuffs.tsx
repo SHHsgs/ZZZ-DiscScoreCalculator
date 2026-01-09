@@ -187,6 +187,7 @@ export default function ShowBuffs(props: SelectedItems) {
       damageBonus: String(props.selectedDiscFour2.fourEffects.damageBonus || 0),
     },
     "支援バフ": {
+      atkRate: String(props.selectedEngineEquipment3.effects.atkRateInBattle || 0),
       atkValue: String(props.selectedCharacter3.buff.atkValue || 0),
       critRate: String(props.selectedCharacter3.buff.critRate || 0),
       critDmg: String(props.selectedCharacter3.buff.critDamage || 0),
