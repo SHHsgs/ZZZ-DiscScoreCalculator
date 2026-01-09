@@ -218,7 +218,7 @@ export default function Main() {
                 baseDeffence={baseDeffence}
               />
           } ,
-          { id: "tab2", label: "5番について簡易まとめ", content: 
+          { id: "tab2", label: "5番について簡易まとめ(β)", content: 
             <>
               <StatSummary
                 selectedCharacter={selectedCharacter}
