@@ -18,6 +18,7 @@ function getSubStatusCountSub(maxRateBuff: number, secondRateBuff: number, optim
         return index;
       }
     }
+    return 9999; // 明らかに変な数字を返す
   })();
 
   const minimumSubStatusCount = (() => {
