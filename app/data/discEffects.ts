@@ -134,6 +134,19 @@ export const discEffects: DiscEffect[] = [
     twoEffects: {
     },
   },
+  {
+    id: "df-pyrois",
+    name: "夜明けの紀行",
+    role: Role.Attack,
+    description: "TODO: 効果説明を記載",
+    fourEffects: {
+      critDamage: 30,
+      atkRateInBattle: 10,
+    },
+    twoEffects: {
+      damageBonus: 10,
+    },
+  },
 ];
 
 export default discEffects;

@@ -387,6 +387,21 @@ export const engineEquipments: EngineEquipment[] = [
     },
     note: "ライトのモチーフ音動機。",
   },
+  {
+    id: "ee-pyrois",
+    name: "太陽の抜け殻",
+    attributes: [Attribute.Ether],
+    baseAttack: 713,
+    advancedStats: {
+      atk: 30,
+    },
+    role: Role.Attack,
+    effects: {
+      critRate: 20,
+      resistanceIgnore: 22,
+    },
+    note: "ピュロイスのモチーフ音動機。",
+  },
 ];
 
 export default engineEquipments;

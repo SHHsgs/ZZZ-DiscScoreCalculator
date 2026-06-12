@@ -3,7 +3,7 @@ import { Attribute, Character, Role } from "../../types/character";
 // サンプルのキャラクターデータ（画面表示は行わない）
 export const characters: Character[] = [
   {
-    name: "瞬光（仮）", // 先行体験での数値
+    name: "瞬光",
     role: Role.Attack,
     attribute: Attribute.Physical,
     motif: "ee-shun",
@@ -390,6 +390,25 @@ export const characters: Character[] = [
       iceDamageBonus: 75,
       fireDamageBonus: 75,
       resistanceIgnore: 15,
+    },
+  },
+  {
+    name: "ピュロイス（２凸）",
+    role: Role.Attack,
+    attribute: Attribute.Ether,
+    motif: "ee-pyrois",
+    baseHp: 7673,
+    baseAtk: 849+75,
+    baseDef: 612,
+    baseImpact: 94,
+    baseAbnormalControl: 94,
+    baseAbnormalMastery: 93,
+    baseCritRate: 5+4.8*3,
+    baseCritDamage: 50,
+    buff: {
+      damageBonus: 40,
+      critRate: 8,
+      critDamage: 40,
     },
   },
 ];
