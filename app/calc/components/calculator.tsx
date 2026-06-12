@@ -10,16 +10,18 @@ export class Calculator {
   }
 
   calculateCritRateBuffPercent (beforeBuffRate: number, afterBuffRate: number) {
-      // 会心率
-      const baseCritRate = this.selectedItems.selectedCharacter.baseCritRate + (this.selectedItems.selectedCharacter.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critRate || 0) + (this.selectedItems.selectedEngineEquipment.effects.critRate || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
-      + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critRate || 0)
-      + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critRate || 0)
-      const beforeCritRate = Math.min(baseCritRate + beforeBuffRate, 100);
-      const afterCritRate = Math.min(baseCritRate + afterBuffRate, 100);
-      const cridDmg = this.selectedItems.selectedCharacter.baseCritDamage + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
-      + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
-      + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
-      return (1 + (afterCritRate / 100) * (cridDmg / 100)) / (1 + (beforeCritRate / 100) * (cridDmg / 100)) * 100 - 100;
+    // 会心率
+    const baseCritRate = this.selectedItems.selectedCharacter.baseCritRate + (this.selectedItems.selectedCharacter.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critRate || 0) + (this.selectedItems.selectedEngineEquipment.effects.critRate || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critRate || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critRate || 0)
+    + (this.selectedItems.externalBuffs.critRate || 0);
+    const beforeCritRate = Math.min(baseCritRate + beforeBuffRate, 100);
+    const afterCritRate = Math.min(baseCritRate + afterBuffRate, 100);
+    const cridDmg = this.selectedItems.selectedCharacter.baseCritDamage + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
+    + (this.selectedItems.externalBuffs.critDamage || 0);
+    return (1 + (afterCritRate / 100) * (cridDmg / 100)) / (1 + (beforeCritRate / 100) * (cridDmg / 100)) * 100 - 100;
   }
 
   calculateCritDamageBuffPercent(beforeBuffRate: number, afterBuffRate: number) {
@@ -27,9 +29,11 @@ export class Calculator {
     const critRate = this.selectedItems.selectedCharacter.baseCritRate + (this.selectedItems.selectedCharacter.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critRate || 0) + (this.selectedItems.selectedEngineEquipment.effects.critRate || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critRate || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
     + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critRate || 0)
     + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critRate || 0)
+    + (this.selectedItems.externalBuffs.critRate || 0);
     const baseCridDmg = this.selectedItems.selectedCharacter.baseCritDamage + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscTwo1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.twoEffects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
     + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
     + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
+    + (this.selectedItems.externalBuffs.critDamage || 0);
     return (1 + (critRate / 100) * ((baseCridDmg + afterBuffRate) / 100)) / (1 + (critRate / 100) * ((baseCridDmg + beforeBuffRate) / 100)) * 100 - 100;
   }
 
@@ -43,6 +47,7 @@ export class Calculator {
     + (this.selectedItems.selectedDiscFour1.twoEffects.PENRate || this.selectedItems.selectedDiscTwo1.twoEffects.PENRate || 0)
     + (this.selectedItems.selectedCharacter2.buff.PENRatio || 0)
     + (this.selectedItems.selectedCharacter3.buff.PENRatio || 0)
+    + (this.selectedItems.externalBuffs.PENRatio || 0);
     const registerDeffence = this.selectedItems.selectedCharacter.buff.registerDeffence || 0 + (this.selectedItems.selectedCharacter2.buff.registerDeffence || 0) + (this.selectedItems.selectedCharacter3.buff.registerDeffence || 0)
     + (this.selectedItems.selectedEngineEquipment.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment2.effects.registerDeffence || 0) + (this.selectedItems.selectedEngineEquipment3.effects.registerDeffence || 0)
     + (this.selectedItems.externalBuffs.registerDeffence || 0);
@@ -169,7 +174,8 @@ export class Calculator {
 
     const atkPercentInBattle = this.selectedItems.selectedCharacter.buff.atkRateInBattle || 0 + (this.selectedItems.selectedCharacter2.buff.atkRateInBattle || 0) + (this.selectedItems.selectedCharacter3.buff.atkRateInBattle || 0)
     + (this.selectedItems.selectedEngineEquipment.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment2.effects.atkRateInBattle || 0) + (this.selectedItems.selectedEngineEquipment3.effects.atkRateInBattle || 0)
-    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atkRateInBattle || 0);
+    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour2.fourEffects.atkRateInBattle || 0) + (this.selectedItems.selectedDiscFour3.fourEffects.atkRateInBattle || 0)
+    + (this.selectedItems.externalBuffs.atkRateInBattle || 0);
 
     const beforeAtk = ((baseAttack + eeBaseAttack) * (1 + (beforeBuffRate + attackRateInStatus) / 100) + bonusAttackNumMain)
     * (1 + atkPercentInBattle / 100)
