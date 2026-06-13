@@ -388,6 +388,21 @@ export const engineEquipments: EngineEquipment[] = [
     note: "ライトのモチーフ音動機。",
   },
   {
+    id: "ee-sbilly",
+    name: "スターライトバイザー",
+    attributes: [Attribute.Physical],
+    baseAttack: 713,
+    advancedStats: {
+      hp: 30,
+    },
+    role: Role.Rupture,
+    effects: {
+      critRate: 20,
+      resistanceIgnore: 10 * 2,
+    },
+    note: "Sビリ―のモチーフ音動機。"
+  },
+  {
     id: "ee-pyrois",
     name: "太陽の抜け殻",
     attributes: [Attribute.Ether],
