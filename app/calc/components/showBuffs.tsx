@@ -89,8 +89,8 @@ export default function ShowBuffs(props: SelectedItems) {
       ,
       resistanceIgnore: String(props.selectedEngineEquipment.effects.resistanceIgnore || 0),
       registerDeffence: String(props.selectedEngineEquipment.effects.registerDeffence || 0),
-      PENRatio: String(props.selectedEngineEquipment.effects.PENRatio || 0),
-      hpRate: String(props.selectedEngineEquipment.effects.hpPercent || 0),
+      PENRatio: String(props.selectedEngineEquipment.advancedStats.PENRatio || 0) + "+" + String(props.selectedEngineEquipment.effects.PENRatio || 0),
+      hpRate: String(props.selectedEngineEquipment.advancedStats.hp || 0) + "+" + String(props.selectedEngineEquipment.effects.hpPercent || 0),
       sheerForce: String(props.selectedEngineEquipment.effects.sheerForcePowerNum || 0),
     },
     "自己バフ(コアパッシブ等)": {
