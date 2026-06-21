@@ -76,6 +76,23 @@ export default function IdealStatus(props: SelectedItems) {
   });
   const userStatusInBattle = calculator.calculateStatusInBattle(userStatus.atk, userStatus.hp, userStatus.critRate, userStatus.critDmg, userStatus.PENRatio, userStatus.dmgBonus);
 
+  const handleCopyIdealStatus = () => {
+    const penRatio = props.selectedCharacter.role === Role.Attack 
+      ? (is5thPEN ? 24 : 0) + (props.selectedDiscTwo1.twoEffects.PENRate || props.selectedDiscFour1.twoEffects.PENRate || 0)
+      : 0;
+    const dmgBonus = (props.selectedDiscTwo1.twoEffects.damageBonus || 0) + (props.selectedDiscFour1.twoEffects.damageBonus || 0) + (is5thDmgBuff ? 30 : 0);
+    
+    setUserStatus({
+      hp: Math.ceil(statusWithoutBattle.hp),
+      atk: Math.ceil(statusWithoutBattle.atk),
+      critRate: Math.round(statusWithoutBattle.critRate * 10) / 10,
+      critDmg: Math.round(statusWithoutBattle.critDmg * 100) / 100,
+      PENRatio: penRatio,
+      sheerForce: statusWithoutBattle.sheerForce,
+      dmgBonus: dmgBonus,
+    });
+  };
+
   return (
     <div className="rounded-md border border-slate-300 bg-slate-50 p-4">
       <div className="grid grid-cols-1 gap-1 sm:grid-cols-[2fr_1fr_2fr]">
@@ -210,114 +227,126 @@ export default function IdealStatus(props: SelectedItems) {
             </div>
           </div>
         </div>
-        <div className="rounded-md border border-gray-300 p-2">
-          <div className="mb-2">
-            <h3 className="text-base font-medium mb-2">
-              手持ちのステータス
-              <InfoTooltip>
-                自分のキャラのステータスを入力することで理想配分との比較ができます。<br />
-                もしくは、数値を記録しておくことでディスクセットやサブキャラを跨いだ火力比較ができます。<br />
-                なお、弱点（120%）を想定した計算です。それ以外については「その他バフ」欄の属性耐性無視にマイナスの値を入れてください。
-              </InfoTooltip>
-            </h3>
-            <div className="mx-2 text-xs">
-              <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>HP</div>
-                  <label htmlFor="userHp" className="sr-only">HP</label>
-                  <input id="userHp" type="number" value={userStatus.hp} min="0" onChange={(e) => setUserStatus({...userStatus, hp: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>攻撃力</div>
-                  <label htmlFor="userAtk" className="sr-only">攻撃力</label>
-                  <input id="userAtk" type="number" value={userStatus.atk} min="0" onChange={(e) => setUserStatus({...userStatus, atk: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>会心率</div>
-                  <label htmlFor="userCritRate" className="sr-only">会心率</label>
-                  <input id="userCritRate" type="number" value={userStatus.critRate} min="0" max="100" onChange={(e) => setUserStatus({...userStatus, critRate: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>会心ダメ</div>
-                  <label htmlFor="userCritDmg" className="sr-only">会心ダメ</label>
-                  <input id="userCritDmg" type="number" value={userStatus.critDmg} min="0" onChange={(e) => setUserStatus({...userStatus, critDmg: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                </div>
-                {props.selectedCharacter.role === Role.Attack && (
-                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                    <div>貫通率</div>
-                    <label htmlFor="userPENRatio" className="sr-only">貫通率</label>
-                    <input id="userPENRatio" type="number" value={userStatus.PENRatio} min="0" max="100" onChange={(e) => setUserStatus({...userStatus, PENRatio: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                  </div>
-                )}
-                {props.selectedCharacter.role === Role.Rupture && (
-                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                    <div>透徹力</div>
-                    <label htmlFor="userSheerForce" className="sr-only">透徹力</label>
-                    <input id="userSheerForce" type="number" value={userStatus.sheerForce} min="0" onChange={(e) => setUserStatus({...userStatus, sheerForce: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                  </div>
-                )}
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>属性ダメ</div>
-                    <label htmlFor="userDmgBonus" className="sr-only">属性ダメ</label>
-                    <input id="userDmgBonus" type="number" value={userStatus.dmgBonus} min="0" onChange={(e) => setUserStatus({...userStatus, dmgBonus: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <Accordion title="戦闘中ステ">
-            <div className="mx-2 text-xs">
-              <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>HP</div>
-                  <div className="text-right">{Math.ceil(userStatusInBattle.hp)}</div>
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>攻撃力</div>
-                  <div className="text-right">{Math.ceil(userStatusInBattle.atk)}</div>
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>会心率</div>
-                  <div className="text-right">{Math.round(userStatusInBattle.critRate * 10) / 10}%</div>
-                </div>
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>会心ダメ</div>
-                  <div className="text-right">{Math.round(userStatusInBattle.critDmg * 10) / 10}%</div>
-                </div>
-                {props.selectedCharacter.role === Role.Attack && (
-                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                    <div>貫通率</div>
-                    <div className="text-right">{Math.round(userStatusInBattle.PENRatio * 10) / 10}%</div>
-                  </div>
-                )}
-                {props.selectedCharacter.role === Role.Rupture && (
-                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                    <div>透徹力</div>
-                    <div className="text-right">{Math.ceil(userStatusInBattle.sheerForce)}</div>
-                  </div>
-                )}
-                <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
-                  <div>属性ダメ</div>
-                  <div className="text-right">{Math.round(userStatusInBattle.dmgBonus * 10) / 10}%</div>
-                </div>
-              </div>
-            </div>
-          </Accordion>
-          <div className="grid grid-cols-[2fr_1fr_2fr]">
-            <div className="text-base font-normal mt-1">火力指数</div>
-            <div></div>
-            <div className="mx-2 text-right text-lg font-bold font-mono">
-              {Math.round(userStatusInBattle.finalAttackValue * 100) / 100}
-            </div>
-          </div>
-        </div>
-        <StatusRecorder
-          characterName={props.selectedCharacter.name}
-          userAttackValue={userStatusInBattle.finalAttackValue}
-          discFourSetId={props.selectedDiscFour1.id}
-          discTwoSetId={props.selectedDiscTwo1.id}
-          main5thStatusType={mainStatus5thType}
-        />
       </div>
+      <Accordion title="手持ちのステータスと比較">
+        <div className="grid grid-cols-1 gap-1 sm:grid-cols-[2fr_1.5fr_1.5fr]">
+          <div className="rounded-md border border-gray-300 p-2">
+            <div className="mb-2">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-medium">
+                  手持ちのステータス
+                  <InfoTooltip>
+                    自分のキャラのステータスを入力することで理想配分との比較ができます。<br />
+                    もしくは、数値を記録しておくことでディスクセットやサブキャラを跨いだ火力比較ができます。<br />
+                    なお、弱点（120%）を想定した計算です。それ以外については「その他バフ」欄の属性耐性無視にマイナスの値を入れてください。
+                  </InfoTooltip>
+                </h3>
+                <button
+                  onClick={handleCopyIdealStatus}
+                  className="px-3 py-1 border border-blue-500 text-blue-500 rounded text-xs hover:bg-blue-600 transition-colors whitespace-nowrap ml-2"
+                >
+                  理想ステをコピー
+                </button>
+              </div>
+              <div className="mx-2 text-xs">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>HP</div>
+                    <label htmlFor="userHp" className="sr-only">HP</label>
+                    <input id="userHp" type="number" value={userStatus.hp} min="0" onChange={(e) => setUserStatus({...userStatus, hp: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>攻撃力</div>
+                    <label htmlFor="userAtk" className="sr-only">攻撃力</label>
+                    <input id="userAtk" type="number" value={userStatus.atk} min="0" onChange={(e) => setUserStatus({...userStatus, atk: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>会心率</div>
+                    <label htmlFor="userCritRate" className="sr-only">会心率</label>
+                    <input id="userCritRate" type="number" value={userStatus.critRate} min="0" max="100" onChange={(e) => setUserStatus({...userStatus, critRate: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>会心ダメ</div>
+                    <label htmlFor="userCritDmg" className="sr-only">会心ダメ</label>
+                    <input id="userCritDmg" type="number" value={userStatus.critDmg} min="0" onChange={(e) => setUserStatus({...userStatus, critDmg: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                  </div>
+                  {props.selectedCharacter.role === Role.Attack && (
+                    <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                      <div>貫通率</div>
+                      <label htmlFor="userPENRatio" className="sr-only">貫通率</label>
+                      <input id="userPENRatio" type="number" value={userStatus.PENRatio} min="0" max="100" onChange={(e) => setUserStatus({...userStatus, PENRatio: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                    </div>
+                  )}
+                  {props.selectedCharacter.role === Role.Rupture && (
+                    <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                      <div>透徹力</div>
+                      <label htmlFor="userSheerForce" className="sr-only">透徹力</label>
+                      <input id="userSheerForce" type="number" value={userStatus.sheerForce} min="0" onChange={(e) => setUserStatus({...userStatus, sheerForce: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                    </div>
+                  )}
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>属性ダメ</div>
+                      <label htmlFor="userDmgBonus" className="sr-only">属性ダメ</label>
+                      <input id="userDmgBonus" type="number" value={userStatus.dmgBonus} min="0" onChange={(e) => setUserStatus({...userStatus, dmgBonus: Number(e.target.value)})} className="text-right bg-white w-14 border border-gray-400 no-spinner px-1" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Accordion title="戦闘中ステ">
+              <div className="mx-2 text-xs">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>HP</div>
+                    <div className="text-right">{Math.ceil(userStatusInBattle.hp)}</div>
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>攻撃力</div>
+                    <div className="text-right">{Math.ceil(userStatusInBattle.atk)}</div>
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>会心率</div>
+                    <div className="text-right">{Math.round(userStatusInBattle.critRate * 10) / 10}%</div>
+                  </div>
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>会心ダメ</div>
+                    <div className="text-right">{Math.round(userStatusInBattle.critDmg * 10) / 10}%</div>
+                  </div>
+                  {props.selectedCharacter.role === Role.Attack && (
+                    <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                      <div>貫通率</div>
+                      <div className="text-right">{Math.round(userStatusInBattle.PENRatio * 10) / 10}%</div>
+                    </div>
+                  )}
+                  {props.selectedCharacter.role === Role.Rupture && (
+                    <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                      <div>透徹力</div>
+                      <div className="text-right">{Math.ceil(userStatusInBattle.sheerForce)}</div>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-[2fr_1fr] rounded-md bg-gray-200 px-2 py-0.5">
+                    <div>属性ダメ</div>
+                    <div className="text-right">{Math.round(userStatusInBattle.dmgBonus * 10) / 10}%</div>
+                  </div>
+                </div>
+              </div>
+            </Accordion>
+            <div className="grid grid-cols-[2fr_1fr_2fr]">
+              <div className="text-base font-normal mt-1">火力指数</div>
+              <div></div>
+              <div className="mx-2 text-right text-lg font-bold font-mono">
+                {Math.round(userStatusInBattle.finalAttackValue * 100) / 100}
+              </div>
+            </div>
+          </div>
+          <StatusRecorder
+            characterName={props.selectedCharacter.name}
+            userAttackValue={userStatusInBattle.finalAttackValue}
+            discFourSetId={props.selectedDiscFour1.id}
+            discTwoSetId={props.selectedDiscTwo1.id}
+            main5thStatusType={mainStatus5thType}
+          />
+        </div>
+      </Accordion>
     </div>
   );
 }

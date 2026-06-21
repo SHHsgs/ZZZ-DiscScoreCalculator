@@ -67,10 +67,10 @@ export default function StatusRecorder({
   };
 
   return (
-    <div className="rounded-md border border-gray-300 p-1 flex flex-col h-full">
+    <div className="rounded-md border border-gray-300 p-1 flex flex-col h-full max-h-52">
       {/* 保存されたステータスリスト */}
       {statusRecords.length > 0 && (
-        <div className="space-y-2 text-xs overflow-y-auto flex-1">
+        <div className="space-y-2 text-xs overflow-y-auto flex-1 min-h-0">
           {statusRecords.map((record) => {
             const fourSetName = discEffects.find((de) => de.id === record.discFourSetId)?.name || "";
             const twoSetName = discEffects.find((de) => de.id === record.discTwoSetId)?.name || "";
