@@ -211,4 +211,145 @@ export class Calculator {
     
     return atkBuffRate * critRateBuffRate * critDamageBuffRate * hpBuffRate * PENRatioBuffRate * dmgBonusBuffRate;
   }
+
+  calculateIdealStatusInBattle(optimizer: DiscSubStatusOptimizer, subStatusCount: number, mainStatus5thType: StatusType) {
+    const statusWithoutBattle = optimizer.getStatusWithoutBattle(subStatusCount + 30);
+    const hpInStatus = Math.ceil(statusWithoutBattle.hp);
+    const atkInStatus = Math.ceil(statusWithoutBattle.atk);
+    const critRateInStatus = Math.round(statusWithoutBattle.critRate * 10) / 10;
+    const critDamageInStatus = Math.round(statusWithoutBattle.critDmg * 10) / 10;
+    const PENRatioInStatus =(this.selectedItems.selectedDiscTwo1.twoEffects.PENRate || this.selectedItems.selectedDiscTwo1.twoEffects.PENRate || 0)
+    + (this.selectedItems.selectedDiscFour1.twoEffects.PENRate || this.selectedItems.selectedDiscFour1.twoEffects.PENRate || 0) 
+    + ((mainStatus5thType === StatusType.PENRate) ? 24 : 0);
+    const dmgBonusInStatus = (this.selectedItems.selectedDiscTwo1.twoEffects.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour1.twoEffects.damageBonus || 0)
+    + ((mainStatus5thType === StatusType.DmgBonus) ? 30 : 0);
+
+    return this.calculateStatusInBattle(atkInStatus, hpInStatus, critRateInStatus, critDamageInStatus, PENRatioInStatus, dmgBonusInStatus);
+  }
+
+  calculateStatusInBattle(atkInStatus: number, hpInStatus: number, critRateInStatus: number, critDamageInStatus: number, PENRatioInStatus: number, dmgBonusInStatus: number) {
+    const atkBuffRateInBattle = (this.selectedItems.selectedCharacter.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedCharacter2.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedCharacter3.buff.atkRateInBattle || 0)
+    const atkBuffValueInBattle = (this.selectedItems.selectedCharacter.buff.atkValue || 0)
+    + (this.selectedItems.selectedCharacter2.buff.atkValue || 0)
+    + (this.selectedItems.selectedCharacter3.buff.atkValue || 0);
+
+    const atkValueInBattle = atkInStatus * (1 + atkBuffRateInBattle / 100) + atkBuffValueInBattle;
+    const critRateInBattle = Math.min(100, critRateInStatus + (this.selectedItems.selectedCharacter.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment.effects.critRate || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critRate || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critRate || 0)
+    + (this.selectedItems.externalBuffs.critRate || 0));
+    const critDamageInBattle = critDamageInStatus + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
+    + (this.selectedItems.externalBuffs.critDamage || 0);
+    const dmgBonusInBattle = dmgBonusInStatus + (this.selectedItems.selectedCharacter.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.damageBonus || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.damageBonus || 0)
+    + (this.selectedItems.selectedCharacter2.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour2.fourEffects.damageBonus || 0)
+    + (this.selectedItems.selectedCharacter3.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour3.fourEffects.damageBonus || 0)
+    + (this.selectedItems.externalBuffs.damageBonus || 0);  
+    const PENRatioInBattle = PENRatioInStatus + (this.selectedItems.selectedCharacter.buff.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.effects.PENRatio || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.PENRatio ||  0)
+    + (this.selectedItems.selectedCharacter2.buff.PENRatio || 0)
+    + (this.selectedItems.selectedCharacter3.buff.PENRatio || 0)
+    + (this.selectedItems.externalBuffs.PENRatio || 0);
+
+    const hpInBattle = hpInStatus * (1 + (this.selectedItems.selectedCharacter.buff.hpPercentInBattle || 0) / 100) * (1 + (this.selectedItems.selectedCharacter2.buff.hpPercentInBattle || 0) / 100) * (1 + (this.selectedItems.selectedCharacter3.buff.hpPercentInBattle || 0) / 100);
+    const sheerForceInBattle = hpInBattle * 0.1 + atkValueInBattle * 0.3 + (this.selectedItems.selectedCharacter2.buff.sheerForcePowerNum || 0) + (this.selectedItems.selectedCharacter3.buff.sheerForcePowerNum || 0);
+
+    const finalAttackValue =  this.calculateFinalAttackValue(atkInStatus, hpInBattle * 0.1 + atkValueInBattle * 0.3, critRateInStatus, critDamageInStatus, PENRatioInStatus, dmgBonusInStatus);
+    return {
+      hp: hpInBattle,
+      atk: atkValueInBattle,
+      critRate: critRateInBattle,
+      critDmg: critDamageInBattle,
+      PENRatio: PENRatioInBattle,
+      sheerForce: sheerForceInBattle,
+      dmgBonus: dmgBonusInBattle,
+      finalAttackValue: finalAttackValue,
+    }
+  }
+
+  calculateFinalAttackValue(
+    atkInStatus: number,  
+    sheerForceInStatus: number,
+    critRateInStatus: number,
+    critDamageInStatus: number,
+    PENRatioInStatus: number = 0, // 貫通率のため命破の場合は0を指定すること
+    dmgBonusInStatus: number,
+  ) {
+    const atkBuffRateInBattle = (this.selectedItems.selectedCharacter.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.atkRateInBattle || 0)
+    + (this.selectedItems.selectedCharacter2.buff.atkRateInBattle || 0)
+    + (this.selectedItems.selectedCharacter3.buff.atkRateInBattle || 0)
+    const atkBuffValueInBattle = (this.selectedItems.selectedCharacter.buff.atkValue || 0)
+    + (this.selectedItems.selectedCharacter2.buff.atkValue || 0)
+    + (this.selectedItems.selectedCharacter3.buff.atkValue || 0);
+
+    const atkValueInBattle = atkInStatus * (1 + atkBuffRateInBattle / 100) + atkBuffValueInBattle;
+    const critRateInBattle = Math.min(100, critRateInStatus + (this.selectedItems.selectedCharacter.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment.effects.critRate || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critRate || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedCharacter2.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critRate || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedCharacter3.buff.critRate || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critRate || 0)
+    + (this.selectedItems.externalBuffs.critRate || 0));
+    const critDamageInBattle = critDamageInStatus + (this.selectedItems.selectedCharacter.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment.effects.critDamage || 0) + (this.selectedItems.selectedDiscFour1.fourEffects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedCharacter2.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.effects.critDamage || 0)
+    + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedCharacter3.buff.critDamage || 0) + (this.selectedItems.selectedEngineEquipment2.advancedStats.critDamage || 0) + (this.selectedItems.selectedEngineEquipment3.effects.critDamage || 0)
+    + (this.selectedItems.externalBuffs.critDamage || 0);
+    const dmgBonusInBattle = dmgBonusInStatus + (this.selectedItems.selectedCharacter.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.damageBonus || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.damageBonus || 0)
+    + (this.selectedItems.selectedCharacter2.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour2.fourEffects.damageBonus || 0)
+    + (this.selectedItems.selectedCharacter3.buff.damageBonus || 0)
+    + (this.selectedItems.selectedDiscFour3.fourEffects.damageBonus || 0)
+    + (this.selectedItems.externalBuffs.damageBonus || 0);  
+    const PENRatioInBattle = PENRatioInStatus + (this.selectedItems.selectedCharacter.buff.PENRatio || 0) + (this.selectedItems.selectedEngineEquipment.effects.PENRatio || 0)
+    + (this.selectedItems.selectedDiscFour1.fourEffects.PENRatio ||  0)
+    + (this.selectedItems.selectedCharacter2.buff.PENRatio || 0)
+    + (this.selectedItems.selectedCharacter3.buff.PENRatio || 0)
+    + (this.selectedItems.externalBuffs.PENRatio || 0);
+    const registerDeffenceInBattle = (this.selectedItems.selectedCharacter.buff.registerDeffence || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.registerDeffence || 0)
+    + (this.selectedItems.selectedCharacter2.buff.registerDeffence || 0)
+    + (this.selectedItems.selectedEngineEquipment2.effects.registerDeffence || 0)
+    + (this.selectedItems.selectedCharacter3.buff.registerDeffence || 0)
+    + (this.selectedItems.selectedEngineEquipment3.effects.registerDeffence || 0)
+    + (this.selectedItems.externalBuffs.registerDeffence || 0)
+    const finalRegisterDeffenceInBattle = (1 - (100 - PENRatioInBattle) / 100 * (100 - registerDeffenceInBattle) / 100) * 100;
+
+    const resistanceIgnoreInBattle = (this.selectedItems.selectedCharacter.buff.resistanceIgnore || 0)
+    + (this.selectedItems.selectedEngineEquipment.effects.resistanceIgnore || 0)
+    + (this.selectedItems.selectedCharacter2.buff.resistanceIgnore || 0)
+    + (this.selectedItems.selectedEngineEquipment2.effects.resistanceIgnore || 0)
+    + (this.selectedItems.selectedCharacter3.buff.resistanceIgnore || 0)
+    + (this.selectedItems.selectedEngineEquipment3.effects.resistanceIgnore || 0)
+    + (this.selectedItems.externalBuffs.resistanceIgnore || 0);
+
+    return (() => {
+      switch (this.selectedItems.selectedCharacter.role) {
+        case Role.Attack:
+          return atkValueInBattle
+            * (1 + critRateInBattle / 100 * critDamageInBattle / 100)
+            * (1 + dmgBonusInBattle / 100)
+            * (1 + this.calculatePENRatioBuffPercent(0, finalRegisterDeffenceInBattle) / 100)
+            * ((120 + resistanceIgnoreInBattle) / 100);
+        case Role.Rupture:
+          return 0; // sheerForceInStatusを受け取らず、戦闘中HPバフを反映して計算する必要あり
+          // sheerForceInStatus
+          //   * (1 + critRateInBattle / 100 * critDamageInBattle / 100)
+          //   * (1 + dmgBonusInBattle / 100)
+          //   * (1 + this.calculatePENRatioBuffPercent(0, 100) / 100);
+        default:
+          return 0;
+      }
+    })();
+  }
 }

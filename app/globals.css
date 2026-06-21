@@ -34,3 +34,12 @@ body {
     overflow-wrap: anywhere;     /* 強制的に折り返す */
   }
 }
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  appearance: textfield;
+}

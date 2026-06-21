@@ -9,8 +9,8 @@ type Tab = {
   content: React.ReactNode;
 };
 
-export default function Tabs({ tabs }: { tabs: Tab[] }) {
-  const [activeId, setActiveId] = useState(tabs[0]?.id);
+export default function Tabs({ tabs, selectedTabId }: { tabs: Tab[], selectedTabId?: string }) {
+  const [activeId, setActiveId] = useState(selectedTabId || tabs[0]?.id);
 
   return (
     <div>

@@ -257,6 +257,7 @@ export default function Main() {
             </>
           }
         ]}
+        selectedTabId="tab3"
       />
 
       <h2 className="text-xl font-semibold mt-6 mb-3">【未実装】メインステータス</h2>
