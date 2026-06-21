@@ -5,6 +5,7 @@ import { useState } from "react";
 import { SelectedItems } from "@/types/selectedItems";
 import Accordion from "@/app/components/Accordion";
 import InfoTooltip from "@/app/components/InfoTooltip";
+import StatusRecorder from "./statusRecorder";
 
 export default function IdealStatus(props: SelectedItems) {
   const calculator = new Calculator(props);
@@ -309,6 +310,13 @@ export default function IdealStatus(props: SelectedItems) {
             </div>
           </div>
         </div>
+        <StatusRecorder
+          characterName={props.selectedCharacter.name}
+          userAttackValue={userStatusInBattle.finalAttackValue}
+          discFourSetId={props.selectedDiscFour1.id}
+          discTwoSetId={props.selectedDiscTwo1.id}
+          main5thStatusType={mainStatus5thType}
+        />
       </div>
     </div>
   );
