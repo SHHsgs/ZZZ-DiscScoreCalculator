@@ -17,7 +17,7 @@ export default function Accordion({
   const [open, setOpen] = useState(isDefaultOpen);
 
   return (
-    <div className="border-b border-slate-400 mb-2">
+    <div className="border-b border-slate-400 my-2">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

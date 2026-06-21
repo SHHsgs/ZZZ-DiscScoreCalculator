@@ -32,7 +32,7 @@ export default function Home() {
           <div className="h-10 w-full bg-red-500 flex items-center px-4 font-bold">
             炎
           </div>
-          <div className="h-32 w-full mt-4">
+          <div className="h-32 w-full mt-4 px-4">
             {renderAgentList(agentOptionsFire)}
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function Home() {
           <div className="h-10 w-full bg-cyan-400 flex items-center px-4 font-bold">
             氷
           </div>
-          <div className="h-32 w-full mt-4">
+          <div className="h-32 w-full mt-4 px-4">
             {renderAgentList(agentOptionsIce)}
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function Home() {
           <div className="h-10 w-full bg-blue-500 flex items-center px-4 font-bold">
             電気
           </div>
-          <div className="h-32 w-full mt-4">
+          <div className="h-32 w-full mt-4 px-4">
             {renderAgentList(agentOptionsElectric)}
           </div>
         </div>
@@ -62,7 +62,7 @@ export default function Home() {
           <div className="h-10 w-full bg-pink-500 flex items-center px-4 font-bold">
             エーテル
           </div>
-          <div className="h-32 w-full mt-4">
+          <div className="h-32 w-full mt-4 px-4">
             {renderAgentList(agentOptionsEther)}
           </div>
         </div>

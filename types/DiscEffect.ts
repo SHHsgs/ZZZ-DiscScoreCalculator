@@ -15,6 +15,7 @@ export type FourEffects = {
   atkRateInBattle?: number;
   damageBonus?: number;
   sheerForce?: number;
+  PENRatio?: number;
 }
 
 export type DiscEffect = {
